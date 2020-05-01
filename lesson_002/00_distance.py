@@ -36,6 +36,4 @@ distances['Paris']['Moscow'] = moscow_paris
 
 print(distances)
 
-
-
-
+# Зачёт!
