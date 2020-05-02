@@ -32,31 +32,39 @@ secret_message = [
 #   4е и 5е слова нужно получить за 1 срез
 #   Если нужны вычисления и разные пробы - делайте это в консоли пайтона, тут нужен только результат
 
-message = secret_message[0][3] + ' ' + secret_message[1][9:13] + ' ' + secret_message[2][5:15:2] + ' ' + secret_message[3][12:6:-1] + ' ' + secret_message[4][20:15:-1]
-print(message)
+message = (
+    secret_message[0][3]
+    + secret_message[1][9:13]
+    + secret_message[2][5:15:2]
+    + secret_message[3][12:6:-1]
+    + secret_message[4][20:15:-1]
+)
 
-# NOTE: Печатая принтом не обязательно всё формировать в одну строку. Принт принимает множество аргументов.
-# Как пример:
-print("This", "is", "a", "set", "of", 7, "arguments")
-
-# NOTE Также как в принте есть полезные аргументы навроде sep= и end=.
-# Первый определяет что будет печататься между переданными аргументами,
-# последний - что будет печататься в конце.
-# Как пример:
-print("This", "is", "a", "set", "of", 7, "arguments", sep=" # ", end="!!!\n")
-
-# Собственно результат вывода на консоль: This # is # a # set # of # 7 # arguments!!!
-# Поскольку мы разделяем с помощью подстроки " # " и завершаем всё подстрокой с тремя восклицательными знаками.
-# Символ \n использованный в завершающей подстроке является так называемым escape-character'ом.
-# Т.е. символом со специальным функционалом. Собственно \n переводит курсор на следующую строку, как это делает нажатие клавиши escape.
-# Также есть например символ \t, который добавляет отступы (табуляции) в строку.
-# Пример:
-print("This", "is", "a", "set", "of", 7, "arguments", sep="\t", end="\n")
-
-# NOTE: Ну и последний момент. Если уж выводить множество длинных аргументов в принт, то выписывать их лучше в столбик:
 print(
-    my_favorite_movies[:10],
-    my_favorite_movies[:20],
-    my_favorite_movies[10:20],
-    my_favorite_movies[20:],
+    message[0],
+    message[1:5],
+    message[5:10],
+    message[10:16],
+    message[16:],
+    sep='\n',
+    end='!!!\n'
+)
+
+# сложновато получилось!
+# Вариант
+
+secret_word_1 = secret_message[0][3]
+secret_word_2 = secret_message[1][9:13]
+secret_word_3 = secret_message[2][5:15:2]
+secret_word_4 = secret_message[3][12:6:-1]
+secret_word_5 = secret_message[4][20:15:-1]
+
+print(
+    secret_word_1,
+    secret_word_2,
+    secret_word_3,
+    secret_word_4,
+    secret_word_5,
+    sep=' ',
+    end='!!!'
 )

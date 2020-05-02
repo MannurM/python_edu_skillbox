@@ -52,28 +52,61 @@ print('Лампа -', lamps_quantity, 'шт, стоимость', lamps_cost, '�
 # WARNING для знающих циклы: БЕЗ циклов. Да, с переменными; да, неэффективно; да, копипаста.
 # Это задание на ручное вычисление - что бы потом понять как работают циклы и насколько с ними проще жить.
 
-# TODO: Не все вычисления произведены. Например был использован только один тип диванов, хотя их там два:
-table_code = goods['Лампа']
+# считаем столы
+table_code = goods['Стол']
 table_item = store[table_code][0]
 table_quantity = table_item['quantity']
 table_price = table_item['price']
 table_cost = table_quantity * table_price
+table_sum = table_quantity
 
+table_code = goods['Стол']
+table_item = store[table_code][1]
+table_quantity = table_item['quantity']
+table_price = table_item['price']
+table_cost += table_quantity * table_price
+table_sum += table_quantity
+
+#считаем диваны
 sofa_code = goods['Диван']
 sofa_item = store[sofa_code][0]
 sofa_quantity = sofa_item['quantity']
 sofa_price = sofa_item['price']
 sofa_cost = sofa_quantity * sofa_price
+sofa_sum = sofa_quantity
 
+sofa_code = goods['Диван']
+sofa_item = store[sofa_code][1]
+sofa_quantity = sofa_item['quantity']
+sofa_price = sofa_item['price']
+sofa_cost += sofa_quantity * sofa_price
+sofa_sum += sofa_quantity
+
+#считаем стулья
 chair_code = goods['Стул']
 chair_item = store[chair_code][0]
 chair_quantity = chair_item['quantity']
 chair_price = chair_item['price']
 chair_cost = chair_quantity * chair_price
+chair_sum = chair_quantity
 
-print('Стол -', table_quantity, 'шт, стоимость', table_cost, 'руб')
-print('Диван -', sofa_quantity, 'шт, стоимость', sofa_cost, 'руб')
-print('Стул -', chair_quantity, 'шт, стоимость', chair_cost, 'руб')
+chair_code = goods['Стул']
+chair_item = store[chair_code][1]
+chair_quantity = chair_item['quantity']
+chair_price = chair_item['price']
+chair_cost += chair_quantity * chair_price
+chair_sum += chair_quantity
+
+chair_code = goods['Стул']
+chair_item = store[chair_code][1]
+chair_quantity = chair_item['quantity']
+chair_price = chair_item['price']
+chair_cost += chair_quantity * chair_price
+chair_sum += chair_quantity
+
+print('Стол -', table_sum, 'шт, стоимость', table_cost, 'руб')
+print('Диван -', sofa_sum, 'шт, стоимость', sofa_cost, 'руб')
+print('Стул -', chair_sum, 'шт, стоимость', chair_cost, 'руб')
 
 ##########################################################################################
 # ВНИМАНИЕ! После того как __ВСЯ__ домашняя работа сделана и запушена на сервер,         #
