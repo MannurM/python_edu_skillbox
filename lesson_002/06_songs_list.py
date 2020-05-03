@@ -25,6 +25,7 @@ song_playing_time = (
     violator_songs_list[3][1]
     + violator_songs_list[5][1]
     + violator_songs_list[-1][1]
+    # TODO: Странная двойка в конце этого выражения. Но вы думаю понимаете где она должна быть:
     ,2
 )
 print('Три песни звучат', round(song_playing_time), 'минут')
