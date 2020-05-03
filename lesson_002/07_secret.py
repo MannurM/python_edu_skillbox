@@ -32,27 +32,6 @@ secret_message = [
 #   4е и 5е слова нужно получить за 1 срез
 #   Если нужны вычисления и разные пробы - делайте это в консоли пайтона, тут нужен только результат
 
-message = (
-    secret_message[0][3]
-    + secret_message[1][9:13]
-    + secret_message[2][5:15:2]
-    + secret_message[3][12:6:-1]
-    + secret_message[4][20:15:-1]
-)
-
-print(
-    message[0],
-    message[1:5],
-    message[5:10],
-    message[10:16],
-    message[16:],
-    sep='\n',
-    end='!!!\n'
-)
-
-# сложновато получилось!
-# Вариант
-
 secret_word_1 = secret_message[0][3]
 secret_word_2 = secret_message[1][9:13]
 secret_word_3 = secret_message[2][5:15:2]
@@ -65,8 +44,5 @@ print(
     secret_word_3,
     secret_word_4,
     secret_word_5,
-    sep=' ',
-    end='!!!'
 )
 
-# TODO: Удалите первый вариант, ну а у второго уберите sep и end. Тут они точно не нужны.
