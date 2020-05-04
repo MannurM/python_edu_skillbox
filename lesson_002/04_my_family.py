@@ -36,3 +36,5 @@ height_family_sum = (
 )
 
 print('Общий рост моей семьи -', height_family_sum, 'см')
+
+# Зачёт!

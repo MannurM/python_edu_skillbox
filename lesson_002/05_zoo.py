@@ -32,3 +32,5 @@ print(zoo)
 print('в',  zoo.index('lion') + 1, 'клетке сидит лев (lion)')
 
 print('в', zoo.index('lark') + 1, 'клетке сидит жаворонок (lark)')
+
+# Зачёт!

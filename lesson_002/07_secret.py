@@ -46,3 +46,4 @@ print(
     secret_word_5,
 )
 
+# Зачёт!
