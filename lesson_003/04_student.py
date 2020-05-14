@@ -10,5 +10,18 @@
 #   Студенту надо попросить ХХХ.ХХ рублей
 
 educational_grant, expenses = 10000, 12000
+count = 1
+material_assistance = 0
+expenses_procent = 0
 
-# TODO здесь ваш код
+while count < 10:
+    expenses_procent += (12000 + expenses_procent) * 0.03
+    expenses += 12000
+    educational_grant += 10000
+
+    count += 1
+
+material_assistance = round(expenses + expenses_procent - educational_grant, 2)
+print("Студенту надо попросить", material_assistance, "рублей")
+
+

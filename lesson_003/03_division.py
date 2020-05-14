@@ -10,5 +10,12 @@
 #   Целочисленное деление ХХХ на YYY дает ZZZ
 
 a, b = 179, 37
+xxx, yyy = a, b
+count = 0
+text_box = 'Целочисленное деление ' + str(xxx) + ' на ' + str(yyy) + ' дает'
 
-# TODO здесь ваш код
+while a > b:
+    a = a - b
+    count += 1
+
+print(text_box, count)
