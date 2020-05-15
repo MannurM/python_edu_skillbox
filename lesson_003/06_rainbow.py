@@ -40,3 +40,5 @@ for color in rainbow_colors:
     sd.circle(center_position=point, radius=radius, color=color, width=width)
     y -= 10
 sd.pause()
+
+# Зачёт!

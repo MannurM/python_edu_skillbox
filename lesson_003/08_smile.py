@@ -37,3 +37,5 @@ for _ in range(10):
     smile(x, y, sd.COLOR_YELLOW)
 
 sd.pause()
+
+# Зачёт!

@@ -74,7 +74,4 @@ for good,  good_key in goods.items():
 
     print(good, article_sum, 'шт, стоимость', article_cost, 'руб')
 
-
-
-
-
+# Зачёт!

@@ -24,4 +24,4 @@ while count < 10:
 material_assistance = round(expenses + expenses_procent - educational_grant, 2)
 print("Студенту надо попросить", material_assistance, "рублей")
 
-
+# TODO: Вычисления неверные. Должно получиться что-то около 37500.

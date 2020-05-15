@@ -19,3 +19,5 @@ while a > b:
     count += 1
 
 print(text_box, count)
+
+# Зачёт!

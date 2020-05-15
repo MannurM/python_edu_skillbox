@@ -12,6 +12,7 @@ color = sd.COLOR_DARK_GREEN
 width = 1
 count = 0
 
+# TODO: Лучше использовать цикл for: for _ in range(3)
 while count < 3:
     point = sd.get_point(x, y)
     sd.circle(center_position=point, radius=radius, color=color, width=width)
@@ -21,6 +22,7 @@ while count < 3:
 # Написать функцию рисования пузырька, принммающую 3 (или более) параметра: точка рисования, шаг и цвет
 
 def circle_param(x, y, radius, color, width):
+    # TODO: Аналогично и здесь:
     count = 0
 
     while count < 3:
@@ -63,7 +65,7 @@ for j in range(3):
         x = 100 * (i + 1)
         point = sd.get_point(x, y)
         radius = 50
-        
+
         while count < 3:
             sd.circle(center_position=point, radius=radius, color=color, width=width)
             radius -= 5
@@ -71,7 +73,7 @@ for j in range(3):
 
 # Нарисовать 100 пузырьков в произвольных местах экрана случайными цветами
 scoring = 0
-
+# TODO: Аналогично здесь:
 while scoring < 100:
     point = sd.random_point()
     radius = 25
@@ -86,5 +88,3 @@ while scoring < 100:
     scoring += 1
 
 sd.pause()
-
-
