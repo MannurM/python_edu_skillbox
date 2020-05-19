@@ -7,12 +7,12 @@ import simple_draw as sd
 # Использовать вложенные циклы for
 sd.resolution = (600, 600)
 
-# TODO: Есть просвет слева. Т.е. кирпичи начинают рисоваться не из-за границы экрана:
+
 for _ in range(5):
-    y = -100
+    y = - 99
 
     for _ in range(6):
-        x = -50
+        x = - 49
         y += 100
 
         for _ in range(6):

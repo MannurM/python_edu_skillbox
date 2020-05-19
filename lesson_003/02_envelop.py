@@ -13,15 +13,50 @@
 envelop_x, envelop_y = 10, 7
 paper_x, paper_y = 8, 9
 # проверить для
-# paper_x, paper_y = 9, 8
-# paper_x, paper_y = 6, 8
-# paper_x, paper_y = 8, 6
-# paper_x, paper_y = 3, 4
-# paper_x, paper_y = 11, 9
-# paper_x, paper_y = 9, 11
+paper_x, paper_y = 9, 8
+if envelop_x >= paper_x or envelop_x >= paper_y:
+    if envelop_y >= paper_x or envelop_y >= paper_y:
+        print('Да')
+    else:
+        print('Нет')
+paper_x, paper_y = 6, 8
+if envelop_x >= paper_x or envelop_x >= paper_y:
+    if envelop_y >= paper_x or envelop_y >= paper_y:
+        print('Да')
+    else:
+        print('Нет')
+paper_x, paper_y = 8, 6
+if envelop_x >= paper_x or envelop_x >= paper_y:
+    if envelop_y >= paper_x or envelop_y >= paper_y:
+        print('Да')
+    else:
+        print('Нет')
+paper_x, paper_y = 3, 4
+
+if envelop_x >= paper_x:
+    if envelop_x >= paper_y:
+        if envelop_y >= paper_x:
+            if envelop_y >= paper_y:
+                print('Даaaaa')
+
+else:
+    print('Неееет')
+
+paper_x, paper_y = 11, 9
+if envelop_x >= paper_x or envelop_x >= paper_y:
+    if envelop_y >= paper_x or envelop_y >= paper_y:
+        print('Да')
+    else:
+        print('Нет')
+paper_x, paper_y = 9, 11
+if envelop_x >= paper_x or envelop_x >= paper_y:
+    if envelop_y >= paper_x or envelop_y >= paper_y:
+        print('Да')
+    else:
+        print('Нет')
 # (просто раскоментировать нужную строку и проверить свой код)
 
-# TODO здесь ваш код
+print("закончились конверты")
 
 # Усложненное задание, решать по желанию.
 # Заданы размеры hole_x, hole_y прямоугольного отверстия и размеры brick_х, brick_у, brick_z кирпича (все размеры
@@ -50,41 +85,6 @@ paper_x, paper_y = 8, 9
 # brick_x, brick_y, brick_z = 3, 11, 6
 # (просто раскоментировать нужную строку и проверить свой код)
 
-# TODO здесь ваш код
-
-# TODO: Функции пока нельзя использовать. От нас требуют строгого следования курса:
-def paper_in_envelope(paper_x, paper_y, envelop_x, envelop_y):
-    # TODO: вложенный elif тут помог бы:
-    if envelop_x >= paper_x or envelop_x >= paper_y:
-        if envelop_y >= paper_x or envelop_y >= paper_y:
-            print('Да')
-        else:
-            print('Нет')
-
-envelop_x, envelop_y = 10, 7
-
-paper_x, paper_y = 8, 9
-paper_in_envelope(paper_x, paper_y, envelop_x, envelop_y)
-
-# проверить для
-paper_x, paper_y = 9, 8
-paper_in_envelope(paper_x, paper_y, envelop_x, envelop_y)
-
-paper_x, paper_y = 6, 8
-paper_in_envelope(paper_x, paper_y, envelop_x, envelop_y)
-
-paper_x, paper_y = 8, 6
-paper_in_envelope(paper_x, paper_y, envelop_x, envelop_y)
-
-paper_x, paper_y = 3, 4
-paper_in_envelope(paper_x, paper_y, envelop_x, envelop_y)
-
-paper_x, paper_y = 11, 9
-paper_in_envelope(paper_x, paper_y, envelop_x, envelop_y)
-
-paper_x, paper_y = 9, 11
-paper_in_envelope(paper_x, paper_y, envelop_x, envelop_y)
-
 
 # Усложненное задание, решать по желанию.
 # Заданы размеры hole_x, hole_y прямоугольного отверстия и размеры brick_х, brick_у, brick_z кирпича (все размеры
@@ -93,27 +93,37 @@ paper_in_envelope(paper_x, paper_y, envelop_x, envelop_y)
 # Определить, пройдет ли кирпич через отверстие (грани кирпича параллельны сторонам отверстия)
 
 def brick_in_hole(hole_x, hole_y, brick_x, brick_y, brick_z):
-    hole = 0
-    brick_1 = 0
-    brick_2 = 0
-    brick_3 = 0
+    # hole = 0
+    # brick_1 = 0
+    # brick_2 = 0
+    # brick_3 = 0
+    #
+    #
+    # hole = hole_x + hole_y
+    # brick_1 = brick_x + brick_y
+    # brick_2 = brick_x + brick_z
+    # brick_3 = brick_y + brick_z
+    #
+    # if hole >= brick_1 and hole >= brick_2 and hole >= brick_3:
+    #     print('Да', brick_x, brick_y, brick_z)
+    # else:
+    #     print('Нет', brick_x, brick_y, brick_z)
 
-    # TODO: Любопытные вычисления но... зачем? Не так же проверяют входит что-либо в дырку, или нет:
-    hole = hole_x + hole_y
-    brick_1 = brick_x + brick_y
-    brick_2 = brick_x + brick_z
-    brick_3 = brick_y + brick_z
-
-    if hole >= brick_1 and hole >= brick_2 and hole >= brick_3:
-        print('Да', brick_x, brick_y, brick_z)
+    if hole_x >= brick_x:
+        if hole_x >= brick_y:
+            if hole_x >= brick_z:
+                if hole_y >= brick_x:
+                    if hole_y >= brick_y:
+                        if hole_y >= brick_z:
+                            print('Да')
     else:
-        print('Нет', brick_x, brick_y, brick_z)
+        print("Нет")
 
 print('усложненный блок')
 
 hole_x, hole_y = 8, 9
 
-# TODO: Вернул данные из исходного состояния файла чтобы можно было спокойно убрать всё ниженаписанное:
+
 #тест
 brick_x, brick_y, brick_z = 8, 8, 9
 brick_in_hole(hole_x, hole_y, brick_x, brick_y, brick_z)

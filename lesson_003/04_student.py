@@ -14,14 +14,30 @@ count = 1
 material_assistance = 0
 expenses_procent = 0
 
-while count < 10:
-    expenses_procent += (12000 + expenses_procent) * 0.03
-    expenses += 12000
-    educational_grant += 10000
-
+while count < 11:
+    expenses_procent += (expenses + expenses_procent) * .03
     count += 1
 
-material_assistance = round(expenses + expenses_procent - educational_grant, 2)
+
+material_assistance = round(expenses * 10 + expenses_procent - educational_grant * 10, 2)
 print("Студенту надо попросить", material_assistance, "рублей")
 
-# TODO: Вычисления неверные. Должно получиться что-то около 37500.
+
+# другой логики вычисления  у меня нет - всю голову сломал!!!!
+#
+
+educational_grant, expenses = 10000, 12000
+count = 1
+material_assistance = 0
+expenses_procent = 0
+
+
+while count < 11:
+    expenses_procent += expenses * 0.03 + expenses_procent * .03
+    print('месяц', count)
+    print('проценты нарастающим итогом', expenses_procent)
+    count += 1
+
+material_assistance = round(expenses * 10 + expenses_procent - educational_grant * 10, 2)
+print("Студенту надо попросить", material_assistance, "рублей")
+
