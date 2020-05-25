@@ -15,29 +15,14 @@ material_assistance = 0
 expenses_procent = 0
 
 while count < 11:
+    # TODO В этом цикле нужно выполнять последовательно 3 действия
+    # TODO 1) Прибавлять расходы (expenses) в переменную с общими расходами
+    # TODO 2) Увеличивать расходы на 3% (expenses *= 1.03 например)
+    # TODO 3) Прибавлять +1 месяц
     expenses_procent += (expenses + expenses_procent) * .03
     count += 1
 
 
 material_assistance = round(expenses * 10 + expenses_procent - educational_grant * 10, 2)
 print("Студенту надо попросить", material_assistance, "рублей")
-
-
-# другой логики вычисления  у меня нет - всю голову сломал!!!!
-#
-
-educational_grant, expenses = 10000, 12000
-count = 1
-material_assistance = 0
-expenses_procent = 0
-
-
-while count < 11:
-    expenses_procent += expenses * 0.03 + expenses_procent * .03
-    print('месяц', count)
-    print('проценты нарастающим итогом', expenses_procent)
-    count += 1
-
-material_assistance = round(expenses * 10 + expenses_procent - educational_grant * 10, 2)
-print("Студенту надо попросить", material_assistance, "рублей")
-
+# TODO Получится примерно 37567 рублей

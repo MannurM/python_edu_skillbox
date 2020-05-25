@@ -11,21 +11,22 @@
 
 user_input = input("Введите, пожалуйста, номер месяца: ")
 
-if user_input.isdigit() == True:
+if user_input.isdigit() == True: # TODO с синглтонами вроде True/False/None - лучше использовать 'is' вместо '=='
     month = user_input
     print('Вы ввели', month)
-
 else:
     print('номер месяца не является целым числом')
-    exit()
+    exit()  # TODO Такой выход использовать нежелательно
 
-if 0 < month > 13:
+if 0 < month > 13:  # TODO Условие сформированы неверно, под такое подойдут все числа больше 13
+    # TODO нужно 0 < месяц < 13
     print('номер месяца некорректен')
 
 else:
 
     all_month = {1: 31, 3: 31, 5: 31, 7: 31, 8: 31, 10: 31, 12: 31, 2: 28, 4: 30, 6: 30, 9: 30, 11: 30, }
-
+    # TODO цикл тут использовать рановато, да и не нужно, можно просто использовать month в качестве ключа
+    # TODO all_month[month] например
     for month_num, month_date in all_month.items():
 
         if month == month_num:

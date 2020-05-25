@@ -2,7 +2,10 @@
 
 # (определение функций)
 import simple_draw as sd
+
 sd.resolution = (600, 600)
+
+
 # Написать функцию отрисовки смайлика по заданным координатам
 # Форма рожицы-смайлика на ваше усмотрение
 # Параметры функции: кордината X, координата Y, цвет.
@@ -29,6 +32,7 @@ def smile(x, y, color):
     sd.circle(center_position=point_eye_2, radius=3, color=sd.COLOR_DARK_RED, width=1)
 
     sd.lines(point_list=point_list, color=sd.COLOR_GREEN, closed=False, width=1)
+
 
 for _ in range(10):
     x = sd.randint(30, 570)
