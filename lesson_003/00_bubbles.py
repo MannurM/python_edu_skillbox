@@ -19,7 +19,7 @@ for _ in range(3):
     radius -= 5
 
 # Написать функцию рисования пузырька, принммающую 3 (или более) параметра: точка рисования, шаг и цвет
-
+# TODO Стоит подправить стиль - попробуйте использовать Code/Reformat code
 def circle_param(x, y, radius, color, width):
     for _ in range(3):
         point = sd.get_point(x, y)
@@ -36,8 +36,9 @@ y = 100
 color = sd.COLOR_DARK_GREEN
 width = 1
 
-for i in range(10):
+for i in range(10):  # TODO Попробуйте координату "x" изменять при помощи диапазона, например for x in range(0, 500, 50)
     count = 0
+    # TODO Тут проще будет использовать функцию circle_param
     x = 100 * (i + 1)
     point = sd.get_point(x, y)
     radius = 50
@@ -53,11 +54,12 @@ y = 650
 color = sd.COLOR_RED
 width = 1
 
-for j in range(3):
+for j in range(3):  # TODO И здесь. Вместо j, i используйте в циклах x, y и изменяйте их в нужных диапазонах
     y = y-100
 
     for i in range(10):
         count = 0
+        # TODO А сами координаты передавайте в функцию сircle_param
         x = 100 * (i + 1)
         point = sd.get_point(x, y)
         radius = 50
@@ -75,7 +77,7 @@ for _ in range(100):
     radius = 25
     color = sd.random_color()
     width = 1
-
+    # TODO Здесь тоже нужно использовать функцию, а в неё уже передавать случайные координаты и цвет
     for _ in range(3):
         sd.circle(center_position=point, radius=radius, color=color, width=width)
         radius -= 3
