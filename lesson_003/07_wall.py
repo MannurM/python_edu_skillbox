@@ -7,40 +7,17 @@ import simple_draw as sd
 # Использовать вложенные циклы for
 sd.resolution = (600, 600)
 
-# TODO Решение рабочее, но усложненное
-# TODO Для зачёта и для практики дополнительной - давайте попробуем упростить этот код
-# TODO Не теряя функционал.
+for row, y in enumerate(range(0, 600, 50)):
+    x0 = -50 if row % 2 == 0 else 0
 
-# TODO Первым делом стоит задать изменение координат при помощи циклов и range с нужным шагом
-# TODO Что-то похожее вы делали в 00 задании с пузырьяками в несколько рядов
+    x = x0
 
-# TODO Тк сдвиг зависит от номеря ряда, а ряд от внешнего цикла
-# TODO Будем нумеровать итерации в нём -
-# TODO for row, y in enumerate(range(...))
-# TODO Так, в row у нас будет номер ряда.
-# TODO Проверив его на чётность, мы сможем решить, двигать ли ряд, или нет
-# TODO (row % 2 == 0)
-# TODO Как добавить сдвиг, узнав о чётности ряда?
-# TODO Например, если ряд четный, начинать цикл с -50, если нет - то с 0
-# TODO Для этого до цикла создадим x0 и с помощью тернарного оператора будем менять его значения
-# TODO x0 = -50 if (условие четности ряда) else 0
-# TODO И этот x0 добавим в цикл фор вместо -50, которое там есть сейчас
-for _ in range(5):
-    y = - 99
+    for x in range(x, 600, 100):
+        left_bottom = sd.get_point(x, y)
 
-    for _ in range(6):
-        x = - 49
-        y += 100
+        right_top = sd.get_point(x + 100, y + 50)
 
-        for _ in range(6):
-            x += 100
-            left_bottom = sd.get_point(x, y)
-            right_top = sd.get_point(x + 100, y + 50)
-            left_bottom_2 = sd.get_point(x - 50, y + 50)
-            right_top_2 = sd.get_point(x + 50, y + 100)
-            sd.rectangle(left_bottom=left_bottom, right_top=right_top, color=sd.COLOR_YELLOW, width=1)
-            # TODO Второй прямоугольник не будет нужен
-            sd.rectangle(left_bottom=left_bottom_2, right_top=right_top_2, color=sd.COLOR_YELLOW, width=1)
+        sd.rectangle(left_bottom=left_bottom, right_top=right_top, color=sd.COLOR_YELLOW, width=1)
 
 # Подсказки:
 #  Для отрисовки кирпича использовать функцию rectangle

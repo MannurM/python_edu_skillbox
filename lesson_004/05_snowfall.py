@@ -2,13 +2,47 @@
 
 import simple_draw as sd
 
-
 # На основе кода из практической части реализовать снегопад:
 # - создать списки данных для отрисовки N снежинок
 # - нарисовать падение этих N снежинок
 # - создать список рандомных длинн лучей снежинок (от 10 до 100) и пусть все снежинки будут разные
+# x = 0
+# y = 570
+# N = 20
+#
+# n_list_x = []
+# factor_b_list = []
+#
+# length = 15
+# step = int(length / 2)
+#
+#
+# for i in range(N):
+#     x = i * length * 4
+#     n_list_x.append(x)
+#
+#     factor_b_random = sd.random_number(1, 10)/10
+#     factor_b_list.append(factor_b_random)
+#
+#
+# sd.resolution = 1200, 600
+#
+# for y in range(570, length, - step):
+#
+#     for i in range(N):
+#         point = sd.get_point(n_list_x[i]+sd.random_number(0, 20), y + sd.random_number(0, 25))
+#
+#         factor_b = factor_b_list[i]
+#
+#         sd.snowflake(center=point, length=length, factor_b=factor_b)
+#
+#     sd.sleep(0.1)
+#
+#     sd.clear_screen()
+#
+#     if sd.user_want_exit():
+#         break
 
-N = 20
 
 # Пригодятся функции
 # sd.get_point()
@@ -17,14 +51,6 @@ N = 20
 # sd.random_number()
 # sd.user_want_exit()
 
-
-while True:
-    sd.clear_screen()
-    # TODO здесь ваш код
-    sd.sleep(0.1)
-    if sd.user_want_exit():
-        break
-sd.pause()
 
 # Примерный алгоритм отрисовки снежинок
 #   навсегда
@@ -57,3 +83,92 @@ sd.pause()
 #   и добавлять новую снежинку
 # Результат решения см https://youtu.be/XBx0JtxHiLg
 
+
+x = 0
+y = 570
+N = 20
+
+n_list_x = []
+n_list_x2 = []
+n_list_y2 = []
+factor_b_list = []
+
+length = 15
+step = int(length / 2)
+
+for i in range(N):
+    x = i * length * 4
+    n_list_x.append(x)
+
+    n_list_x2.append(0)
+    n_list_y2.append(0)
+
+    factor_b_random = sd.random_number(1, 10) / 10
+    factor_b_list.append(factor_b_random)
+
+sd.resolution = 1200, 600
+
+while True:
+    for i in range(N):
+        x = i * length * 4
+        n_list_x.append(x)
+
+        n_list_x2.append(0)
+        n_list_y2.append(0)
+
+        factor_b_random = sd.random_number(1, 10) / 10
+        factor_b_list.append(factor_b_random)
+
+    for y in range(570, 0, - step):
+
+        for i in range(N):
+            x1 = n_list_x2[i]
+            y1 = n_list_y2[i]
+
+            point = sd.get_point(x1, y1)
+
+            factor_b = factor_b_list[i]
+
+            sd.snowflake(center=point, length=length, color=sd.background_color, factor_b=factor_b)
+
+        for i in range(N):
+            x1 = n_list_x[i] + sd.random_number(0, 25)
+            y1 = y + sd.random_number(0, 15)
+
+            n_list_x2[i] = x1
+
+            n_list_y2[i] = y1
+
+            point = sd.get_point(x1, y1)
+
+            factor_b = factor_b_list[i]
+
+            sd.snowflake(center=point, length=length, color=sd.COLOR_WHITE, factor_b=factor_b)
+
+        sd.sleep(0.2)
+
+        if y <= length:
+            for i in range(N):
+                x1 = n_list_x2[i]
+                y1 = n_list_y2[i]
+
+                point = sd.get_point(x1, y1)
+
+                factor_b = factor_b_list[i]
+
+                sd.snowflake(center=point, length=length, color=sd.background_color, factor_b=factor_b)
+
+            for i in range(N):
+                x1 = n_list_x2[i]
+                y1 = 0
+
+                point = sd.get_point(x1, y1)
+
+                factor_b = factor_b_list[i]
+
+                sd.snowflake(center=point, length=length, color=sd.COLOR_WHITE, factor_b=factor_b)
+
+    if sd.user_want_exit():
+        break
+
+sd.pause()

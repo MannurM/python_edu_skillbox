@@ -95,50 +95,61 @@ print("закончились конверты")
 # Определить, пройдет ли кирпич через отверстие (грани кирпича параллельны сторонам отверстия)
 
 def brick_in_hole(hole_x, hole_y, brick_x, brick_y, brick_z):
-    # hole = 0
-    # brick_1 = 0
-    # brick_2 = 0
-    # brick_3 = 0
-    #
-    #
+    hole = 0
+    brick_1 = 0
+    brick_2 = 0
+    brick_3 = 0
+
     # hole = hole_x + hole_y
     # brick_1 = brick_x + brick_y
     # brick_2 = brick_x + brick_z
     # brick_3 = brick_y + brick_z
     #
-
-    # TODO Подобные лесенки условий строить не стоит. Это сложно читать да и зачастую не эффективно выполнять
-    # TODO Здесь подойдет перебор подобного вида:
-    # if hole >= brick_1 and hole >= brick_2:
+    # if hole >= brick_1 and hole >= brick_2 and hole >= brick_3:
     #     print('Да')
+    #
     # else:
     #     print('Нет')
-    # TODO Для того, чтобы кирпич прошёл в отверстие - достаточно проверить 2 стороны, чтобы они были меньше отверстия
-    # TODO Тут всего может быть 6 различных вариантов (3 площади у кирпича это первые три варианта,
-    # TODO и если их перевернуть будет ещё 3)
-    # TODO Дам вам вот такую подсказочку:
-    # TODO h_x - b_x  h_y - b_y
-    # TODO h_x - b_y  h_y - b_x
-    # TODO h_x - b_x  h_y - b_z
-    # TODO h_x - b_z  h_y - b_x
-    # TODO h_x - b_y  h_y - b_z
-    # TODO h_x - b_z  h_y - b_y
-    if hole_x >= brick_x:
-        if hole_x >= brick_y:
-            if hole_x >= brick_z:
-                if hole_y >= brick_x:
-                    if hole_y >= brick_y:
-                        if hole_y >= brick_z:
-                            print('Да')
-    else:
-        print("Нет")
+    #
+    # первоначально было так, потом сказали можно проще - без расчетов, теперь опять считать.
+    # Да мне тоже эта лесенка не нравилась.
+    # Можно и с минусами!!!
+    # result1 = 0
+    # result2 = 0
+    # result3 = 0
+    # result1 = hole - brick_1
+    # result2 = hole - brick_2
+    # result3 = hole - brick_3
+    #
+    # if result1 >= 0 and result2 >= 0 and result3 >= 0:
+    #     print('Размеры', brick_x, brick_y, brick_z, 'Да')
+    # else:
+    #     print('Размеры', brick_x, brick_y, brick_z,'Нет')
+    # мой вариант годится только для целых чисел
 
+
+    # Вариант с площадями годится и для дробных значений размеров кирпича
+    # а зачем 6 площадей? они же попарно равны
+    hole = hole_x * hole_y
+    brick_1 = brick_x * brick_y
+    brick_2 = brick_x * brick_z
+    brick_3 = brick_y * brick_z
+
+    if hole >= brick_1 and hole >= brick_2 and hole >= brick_3:
+        print('Да')
+
+    else:
+        print('Нет')
 print('усложненный блок')
 
 hole_x, hole_y = 8, 9
 
 
 #тест
+brick_x, brick_y, brick_z = 8.1, 8.1, 8.9
+brick_in_hole(hole_x, hole_y, brick_x, brick_y, brick_z)
+# не пролезет
+
 brick_x, brick_y, brick_z = 8, 8, 9
 brick_in_hole(hole_x, hole_y, brick_x, brick_y, brick_z)
 

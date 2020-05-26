@@ -127,7 +127,6 @@ def n_gon(point, angle=0, length=100, n=3):
     while i < n - 1:
         vn = sd.get_vector(start_point=point_n, angle=angle + angle_n * i, length=length, width=3)
         vn.draw()
-
         point_n = vn.end_point
         i += 1
 

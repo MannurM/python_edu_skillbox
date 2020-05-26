@@ -14,10 +14,28 @@ import simple_draw as sd
 # и константы COLOR_RED, COLOR_ORANGE, COLOR_YELLOW, COLOR_GREEN, COLOR_CYAN, COLOR_BLUE, COLOR_PURPLE
 # Результат решения см lesson_004/results/exercise_02_global_color.jpg
 
-sd.resolution = 1200, 600
 
 
-def n_gon(point, angle=0, length=100, color, n=3):
+
+color_draw = 0
+color_num = 0
+
+colors = {
+    0: sd.COLOR_RED,
+    1: sd.COLOR_ORANGE,
+    2: sd.COLOR_YELLOW,
+    3: sd.COLOR_GREEN,
+    4: sd.COLOR_CYAN,
+    5: sd.COLOR_BLUE,
+    6: sd.COLOR_PURPLE,
+}
+
+
+def n_gon(point, angle=0, length=50, n=3, width=3):
+    color_draw = colors.get(int(color_num))
+
+    sd.resolution = 1200, 600
+
     if n < 3:
         print('мало углов')
         return
@@ -26,18 +44,47 @@ def n_gon(point, angle=0, length=100, color, n=3):
     point_n = point
 
     while i < n - 1:
-        vn = sd.get_vector(start_point=point_n, angle=angle + angle_n * i, length=length, color=color, width=3)
-        vn.draw()
+        vn = sd.get_vector(start_point=point_n, angle=angle + angle_n * i, length=length)
+        sd.line(start_point=point_n, end_point=vn.end_point, color=color_draw, width=width)
 
         point_n = vn.end_point
         i += 1
 
-    sd.line(start_point=vn.end_point, end_point=point, width=3)
+    sd.line(start_point=vn.end_point, end_point=point, color=color_draw, width=width)
+
+    sd.pause()
+
+def color_number():
+    color_num = input('Введите желаемый номер цвета:')
+
+    color_digit = color_num
+
+    if not color_digit.isdigit():
+        print('вы ввели не число, попробуйте еще раз')
+        color_num = 0
+        color_number()
+
+    if 0 < int(color_num) > 6:
+        print('вы ввели некорректный номер, попробуйте еще раз')
+        color_number()
+
+    else:
+        return color_num
+
+
+
+print('Возможные цвета:')
+print('0: red')
+print('1: orange')
+print('2: yellow')
+print('3: green')
+print('4: cyan')
+print('5: blue')
+print('6: purple')
+
+color_num = color_number()
 
 
 point = sd.get_point(600, 250)
 
-n_gon( angle=0, n=14, length=50)# работает до n = 25, при длине вектора length < 50 дальше накапливается ошибка в углах поворота вектора
-
-
-sd.pause()
+n_gon(point, angle=0, length=50, n=12, width=4)  # работает до n = 25, при длине вектора length < 50 дальше накапливается ошибка в углах поворота вектора
