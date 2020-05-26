@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import simple_draw as sd
+
 sd.resolution = 1200, 600
+
 
 # Часть 1.
 # Написать функции рисования равносторонних геометрических фигур:
@@ -47,7 +49,8 @@ def triangle(point, angle=0, length=100):
     v3 = sd.get_vector(start_point=v2.end_point, angle=angle + 240, length=length, width=3)
     v3.draw()
 
-def square(point, angle=0, length = 100):
+
+def square(point, angle=0, length=100):
     v1 = sd.get_vector(start_point=point, angle=angle, length=length, width=3)
     v1.draw()
 
@@ -76,6 +79,7 @@ def pentagon(point, angle=0, length=100):
 
     v5 = sd.get_vector(start_point=v4.end_point, angle=angle + 288, length=length, width=3)
     v5.draw()
+
 
 def hexagon(point, angle=0, length=100):
     v1 = sd.get_vector(start_point=point, angle=angle, length=length, width=3)
@@ -121,24 +125,30 @@ def n_gon(point, angle=0, length=100, n=3):
         print('мало углов')
         return
     i = 0
-    angle_n = 180 - (n - 2) * 180 / n
+    angle_n = 180 - (n - 2) * 180 / n  # TODO Можно просто 360//n взять
     point_n = point
-
+    # vn = None TODO Ниже описываю зачем это тут нужно
     while i < n - 1:
+        # TODO Цикл можно использовать не только для нужного количества итераций
+        # TODO Но так же и для расчёта нужных значений переменных.
+        # TODO Так мы можем задать цикл по значениям угла с нужным нам шагом и не считать угол отдельной операцией
+        # TODO Например для треугольнкиа это будет: for angle in range(0, 360 - 120, 120)
+        # TODO angle будет на первой итерации равен 0, на второй 120 (от третьей мы избавились отняв от 360 120)
         vn = sd.get_vector(start_point=point_n, angle=angle + angle_n * i, length=length, width=3)
         vn.draw()
         point_n = vn.end_point
         i += 1
-
+    # TODO Обратите внимание, что тут вы используете vn, который создается внутри цикла
+    # TODO В таких случаях принято задавать эту переменную до цикла, чтобы она в любом случае была инициализирована
     sd.line(start_point=vn.end_point, end_point=point, width=3)
 
 
-
-
-
+# TODO Кроме общей функции - нужно будет добавить 4 функции-обертки
+# TODO Который будут принимать 3 параметра и вызывать общую функцию, добавляя количество сторон
+# TODO треугольник(3параметра) --> общая_функция(3параметра + количество-сторон=3)
 point = sd.get_point(600, 250)
-n_gon(point, angle=0, n=14, length=50)# работает до n = 25, при длине вектора length < 50 дальше накапливается ошибка в углах поворота вектора
-
+n_gon(point, angle=0, n=14, length=50)
+# работает до n = 25, при длине вектора length < 50 дальше накапливается ошибка в углах поворота вектора
 # Надо сформировать функцию, параметризированную в местах где была "небольшая правка".
 # Это называется "Выделить общую часть алгоритма в отдельную функцию"
 # Потом надо изменить функции рисования конкретных фигур - вызывать общую функцию вместо "почти" одинакового кода.

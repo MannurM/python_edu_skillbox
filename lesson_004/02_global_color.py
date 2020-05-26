@@ -15,11 +15,15 @@ import simple_draw as sd
 # Результат решения см lesson_004/results/exercise_02_global_color.jpg
 
 
-
-
 color_draw = 0
 color_num = 0
-
+# TODO В этом случае удобнее создать словарь следующей структуры
+# TODO словарь = {'0': {'color_name': 'red', 'sd_name': sd.COLOR_RED},...}
+# TODO Таким образом для каждого цвета у нас будет свой словарь. И у каждого словаря будут одинаковые ключи
+# TODO 'color_name' и 'sd_name'
+# TODO Тогда можно будет легко проверить ввод (user_input in словарь)
+# TODO А если среди ключей есть выбор пользователя - по этому ключу мы получим нужный вложенный словарь
+# TODO А там все ключи одинаковые, можем получить как название цвета, так и sd_цвет
 colors = {
     0: sd.COLOR_RED,
     1: sd.COLOR_ORANGE,
@@ -31,6 +35,9 @@ colors = {
 }
 
 
+# TODO Подобный тип кода(создание функций - def), который создает какой-то инструмент для дальнейшего использования
+# TODO Но сам по себе ничего не делает - надо располагать в начале, а "исполняемый" код
+# TODO В частности вызов функций и создание точек - после этого "подготовительного" кода)
 def n_gon(point, angle=0, length=50, n=3, width=3):
     color_draw = colors.get(int(color_num))
 
@@ -54,6 +61,7 @@ def n_gon(point, angle=0, length=50, n=3, width=3):
 
     sd.pause()
 
+
 def color_number():
     color_num = input('Введите желаемый номер цвета:')
 
@@ -72,7 +80,6 @@ def color_number():
         return color_num
 
 
-
 print('Возможные цвета:')
 print('0: red')
 print('1: orange')
@@ -84,7 +91,7 @@ print('6: purple')
 
 color_num = color_number()
 
-
 point = sd.get_point(600, 250)
 
-n_gon(point, angle=0, length=50, n=12, width=4)  # работает до n = 25, при длине вектора length < 50 дальше накапливается ошибка в углах поворота вектора
+n_gon(point, angle=0, length=50, n=12, width=4)
+# работает до n = 25, при длине вектора length < 50 дальше накапливается ошибка в углах поворота вектора

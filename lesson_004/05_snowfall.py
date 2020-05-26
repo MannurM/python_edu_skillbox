@@ -109,6 +109,7 @@ step = int(length / 2)
 sd.resolution = 1200, 600
 
 while True:
+    # TODO Заполнять снежинки нужно до цикла While
     for i in range(N):
         x = i * length * 4
         n_list_x.append(x)
@@ -118,7 +119,17 @@ while True:
 
         factor_b_random = sd.random_number(1, 10) / 10
         factor_b_list.append(factor_b_random)
-
+    # TODO Внутри цикла while нужен один цикл по снежинкам, остальное - лищнее
+    # TODO Лучшей практикой будет for i, y in enumerate(список):
+    # TODO Так у вас будет доступ и к индексам (i) и к объектам списка
+    # TODO В итоге алгоритм следующий
+    # TODO цикл while:
+    # TODO   циклом проходим по списку со снежинками
+    # TODO     получаем точку из текущих координат
+    # TODO     рисуем снежинку фоном
+    # TODO     меняем координату и получаем новую точку
+    # TODO     рисуем снежинку белым цветом
+    # TODO Про то, что делать с упавшими снежинками поговорим после реализации этой части алгоритма
     for y in range(570, 0, - step):
 
         for i in range(N):

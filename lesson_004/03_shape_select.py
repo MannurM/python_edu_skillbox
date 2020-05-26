@@ -45,8 +45,6 @@ def n_gon(point, angle=0, length=50, n=3, width=3):
     sd.line(start_point=vn.end_point, end_point=point, color=color_draw, width=width)
 
 
-
-
 def color_number():
     print('Возможные цвета:')
     print('0: red')
@@ -73,6 +71,7 @@ def color_number():
     else:
         return color_num
 
+
 def n_gon_input():
     print('3')
     print('4')
@@ -84,13 +83,18 @@ def n_gon_input():
     n_gon_in = input('Введите желаемое количество углов у фигуры:')
 
     color_digit = n_gon_in
-
+    # TODO А если проверка не пройдена - можно запустить цикл while, который будет повторять запрос ввода до тех пор
+    # TODO пока не будет введено нужное значение
+    # TODO Тут можно хитро воспользоваться тем, что input() передает ввод пользователя в строках (str)
+    # TODO И ключи у нас в словаре строчные '0'...
+    # TODO Можем просто написать условие while ввод не в словаре
     if not color_digit.isdigit():
         print('вы ввели не число, попробуйте еще раз')
 
         n_gon_in = 0
 
-        n_gon_input()
+        n_gon_input()  # TODO Рекурсии - это интересно, но их нужно использовать только в тех случаях, когда
+        # TODO Нет возможности использовать цикл
 
     if 2 <= int(n_gon_in) >= 9:
         print('вы ввели некорректный номер, попробуйте еще раз')
@@ -100,11 +104,20 @@ def n_gon_input():
     else:
         return n_gon_in
 
-color_num = 0 # выбор цвета фигур
+
+color_num = 0  # выбор цвета фигур
 
 n = 0
 
 i = 3
+# TODO Нам надо реализовать выбор функции пользователем
+# TODO Для этого мы выбираем тот же путь, что в 02 с выбором цвета.
+# TODO Берем ту же структуру данных. Чтобы хранить функции в словаре - надо указать их без скобок, только имя
+# TODO Запустить её можно будет следующим образом:
+# TODO функция = словарь[юзер_выбор]['func']
+# TODO функция(параметры)
+
+
 
 for x in range(150, 900, 300):
     for y in range(100, 600, 300):
@@ -116,19 +129,15 @@ for x in range(150, 900, 300):
 
 print("Рисуем Вашу фигуру")
 
-color_num = color_number()# выбор цвета
+color_num = color_number()  # выбор цвета
 
-n_gon_in = int(n_gon_input())# выбираем количество углов
+n_gon_in = int(n_gon_input())  # выбираем количество углов
 
 x = 600
 y = 200
-
 
 sd.clear_screen()
 
 n_gon(point=sd.get_point(x, y), angle=0, length=100, n=n_gon_in, width=5)
 
 sd.pause()
-
-
-
