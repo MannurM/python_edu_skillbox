@@ -96,15 +96,15 @@ factor_b_list = []
 length = 15
 step = int(length / 2)
 
-for i in range(N):
-    x = i * length * 4
-    n_list_x.append(x)
-
-    n_list_x2.append(0)
-    n_list_y2.append(0)
-
-    factor_b_random = sd.random_number(1, 10) / 10
-    factor_b_list.append(factor_b_random)
+# for i in range(N):
+#     x = i * length * 4
+#     n_list_x.append(x)
+#
+#     n_list_x2.append(0)
+#     n_list_y2.append(0)
+#
+#     factor_b_random = sd.random_number(1, 10) / 10
+#     factor_b_list.append(factor_b_random)
 
 sd.resolution = 1200, 600
 
@@ -129,6 +129,8 @@ while True:
 
             factor_b = factor_b_list[i]
 
+            sd.start_drawing()
+
             sd.snowflake(center=point, length=length, color=sd.background_color, factor_b=factor_b)
 
         for i in range(N):
@@ -145,7 +147,9 @@ while True:
 
             sd.snowflake(center=point, length=length, color=sd.COLOR_WHITE, factor_b=factor_b)
 
-        sd.sleep(0.2)
+            sd.finish_drawing()
+
+        #sd.sleep(0.2) # чтобы быстрее проходил цикл - поставил диез
 
         if y <= length:
             for i in range(N):
@@ -167,6 +171,8 @@ while True:
                 factor_b = factor_b_list[i]
 
                 sd.snowflake(center=point, length=length, color=sd.COLOR_WHITE, factor_b=factor_b)
+
+    factor_b_list = []
 
     if sd.user_want_exit():
         break
