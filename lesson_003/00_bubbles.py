@@ -56,3 +56,4 @@ for _ in range(scoring):
     circle_param(x, y, radius, color, width)
 
 sd.pause()
+#зачет!

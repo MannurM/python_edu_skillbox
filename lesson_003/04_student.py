@@ -24,3 +24,4 @@ while count < 11:
 material_assistance = round(expenses_all - educational_grant * 10, 2)
 
 print("Студенту надо попросить", material_assistance, "рублей")
+#зачет!
