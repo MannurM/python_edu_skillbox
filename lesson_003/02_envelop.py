@@ -14,6 +14,16 @@ envelop_x, envelop_y = 10, 7
 paper_x, paper_y = 0, 0
 # проверить для
 paper_x, paper_y = 9, 8
+# TODO С этими условиями часть правильных вариантов не пройдет проверку
+# TODO и структура хромает, нужно
+# if условие_1
+#     Да
+# elif условие_2
+#     Да
+# else:
+#     Нет
+# TODO При этом 1 условие должно проверять иксы друг сдругом и игрики друг с другом
+# TODO А второе наоборот икс конверта с игриком бумаги и игрик конверта с иксом бумаги
 if envelop_x >= paper_x and envelop_x >= paper_y:
     if envelop_y >= paper_x and envelop_y >= paper_y:
         print('Да')
@@ -98,6 +108,7 @@ brick_x, brick_y, brick_z = 0, 0, 0
 # TODO: def print_answer_brick_in_hole():
 # TODO:     print('Да')
 
+# TODO Нет, такая функция не нужна, т.к. по сути она не сокращает ничего, можно просто в нужных местах писать print
 
 def brick_in_hole(hole_x, hole_y, brick_x, brick_y, brick_z):
     if hole_x >= brick_x and hole_y >= brick_y:
@@ -108,7 +119,7 @@ def brick_in_hole(hole_x, hole_y, brick_x, brick_y, brick_z):
 
     elif hole_x >= brick_y and hole_y >= brick_z:
         print(brick_x, brick_y, brick_z, 'Да')
-
+    # TODO Тут нужно ещё три варианта с elif добавить
     else:
         print(brick_x, brick_y, brick_z, 'Нет')
 
