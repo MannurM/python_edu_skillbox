@@ -103,23 +103,27 @@ brick_x, brick_y, brick_z = 0, 0, 0
 # могут быть в диапазоне от 1 до 1000)
 #
 # Определить, пройдет ли кирпич через отверстие (грани кирпича параллельны сторонам отверстия)
-# TODO:  я понял нужно чтобы было использование elif
-# TODO: не знаю стоит ли выделять блок для печати - отдельную подпрограмму (функцию)
-# TODO: def print_answer_brick_in_hole():
-# TODO:     print('Да')
 
-# TODO Нет, такая функция не нужна, т.к. по сути она не сокращает ничего, можно просто в нужных местах писать print
 
 def brick_in_hole(hole_x, hole_y, brick_x, brick_y, brick_z):
     if hole_x >= brick_x and hole_y >= brick_y:
-        print(brick_x, brick_y, brick_z, 'Да')  # def print_answer_brick_in_hole():
+        print(brick_x, brick_y, brick_z, 'Да')
 
     elif hole_x >= brick_x and hole_y >= brick_z:
         print(brick_x, brick_y, brick_z, 'Да')
 
     elif hole_x >= brick_y and hole_y >= brick_z:
         print(brick_x, brick_y, brick_z, 'Да')
-    # TODO Тут нужно ещё три варианта с elif добавить
+
+    elif hole_x >= brick_y and hole_x >= brick_x:
+        print(brick_x, brick_y, brick_z, 'Да')
+
+    elif hole_x >= brick_z and hole_y >= brick_x:
+        print(brick_x, brick_y, brick_z, 'Да')
+
+    elif hole_x >= brick_z and hole_y >= brick_y:
+        print(brick_x, brick_y, brick_z, 'Да')
+
     else:
         print(brick_x, brick_y, brick_z, 'Нет')
 

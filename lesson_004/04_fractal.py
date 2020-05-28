@@ -1,4 +1,4 @@
- # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 import simple_draw as sd
 
@@ -81,7 +81,6 @@ start_point = 0
 # draw_branches(start_point=root_point, angle=90, length=100)
 
 
-
 # 4) Усложненное задание (делать по желанию)
 # - сделать рандомное отклонение угла ветвей в пределах 40% от 30-ти градусов
 # - сделать рандомное отклонение длины ветвей в пределах 20% от коэффициента 0.75
@@ -91,9 +90,9 @@ start_point = 0
 # sd.random_number()
 sd.resolution = 600, 600
 root_point = sd.get_point(300, 30)
-# TODO Используйте Code/Reformat code для внесения правок по стилю
-def draw_branches(start_point, angle=90, length=75, width=1):
 
+
+def draw_branches(start_point, angle=90, length=75, width=1):
     trunk = sd.get_vector(start_point=start_point, angle=angle, length=length, width=1)
     trunk.draw()
 
@@ -102,15 +101,14 @@ def draw_branches(start_point, angle=90, length=75, width=1):
     # TODO Тут не нужно два вектора рисовать, достаточно одного
     # TODO А тк в функции вызывается два раза эта же функция, то и будут нарисованы две ветки
     # TODO рисуем вектор с текущими параметрами, затем рассчитать новые параметры и передать их в вызовы
-    brunch_1 = sd.get_vector(start_point=trunk.end_point, angle=angle-30, length=length, width=1)
+    brunch_1 = sd.get_vector(start_point=trunk.end_point, angle=angle - 30, length=length, width=1)
     brunch_1.draw()
 
     brunch_2 = sd.get_vector(start_point=trunk.end_point, angle=angle + 30, length=length, width=1)
     brunch_2.draw(color=sd.COLOR_DARK_YELLOW)
 
-    random_angle = sd.random_number(1, 40)/100
-    random_length = sd.random_number(1, 20)/100 * .75
-
+    random_angle = sd.random_number(1, 40) / 100
+    random_length = sd.random_number(1, 20) / 100 * .75
 
     next_angle = angle - 30 * random_angle
 
@@ -120,15 +118,11 @@ def draw_branches(start_point, angle=90, length=75, width=1):
     next_point_2 = brunch_2.end_point
     next_length_2 = length * (.75 - random_length)
 
-    draw_branches(start_point=next_point_1, angle=next_angle, length=next_length_1,)
+    draw_branches(start_point=next_point_1, angle=next_angle, length=next_length_1, )
 
-    draw_branches(start_point=next_point_2, angle=next_angle+60*random_angle, length=next_length_2,)
+    draw_branches(start_point=next_point_2, angle=next_angle + 60 * random_angle, length=next_length_2, )
+
 
 draw_branches(start_point=root_point, angle=90, length=100)
 
-
-
-
 sd.pause()
-
-
