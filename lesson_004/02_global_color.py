@@ -17,6 +17,8 @@ import simple_draw as sd
 
 color_draw = 0
 color_num = 0
+
+
 # TODO В этом случае удобнее создать словарь следующей структуры
 # TODO словарь = {'0': {'color_name': 'red', 'sd_name': sd.COLOR_RED},...}
 # TODO Таким образом для каждого цвета у нас будет свой словарь. И у каждого словаря будут одинаковые ключи
@@ -35,33 +37,6 @@ colors = {
 }
 
 
-# TODO Подобный тип кода(создание функций - def), который создает какой-то инструмент для дальнейшего использования
-# TODO Но сам по себе ничего не делает - надо располагать в начале, а "исполняемый" код
-# TODO В частности вызов функций и создание точек - после этого "подготовительного" кода)
-def n_gon(point, angle=0, length=50, n=3, width=3):
-    color_draw = colors.get(int(color_num))
-
-    sd.resolution = 1200, 600
-
-    if n < 3:
-        print('мало углов')
-        return
-    i = 0
-    angle_n = 180 - (n - 2) * 180 / n
-    point_n = point
-
-    while i < n - 1:
-        vn = sd.get_vector(start_point=point_n, angle=angle + angle_n * i, length=length)
-        sd.line(start_point=point_n, end_point=vn.end_point, color=color_draw, width=width)
-
-        point_n = vn.end_point
-        i += 1
-
-    sd.line(start_point=vn.end_point, end_point=point, color=color_draw, width=width)
-
-    sd.pause()
-
-
 def color_number():
     color_num = input('Введите желаемый номер цвета:')
 
@@ -78,6 +53,32 @@ def color_number():
 
     else:
         return color_num
+
+def n_gon(point, angle=0, length=50, n=3, width=3):
+    color_draw = colors.get(int(color_num))
+
+    sd.resolution = 1200, 600
+
+    if n < 3:
+        print('мало углов')
+        return
+    i = 0
+    angle_n = 360 // n
+    point_n = point
+    vn = None
+    while i < n - 1:
+        vn = sd.get_vector(start_point=point_n, angle=angle + angle_n * i, length=length)
+        sd.line(start_point=point_n, end_point=vn.end_point, color=color_draw, width=width)
+
+        point_n = vn.end_point
+        i += 1
+
+    sd.line(start_point=vn.end_point, end_point=point, color=color_draw, width=width)
+
+    sd.pause()
+
+
+
 
 
 print('Возможные цвета:')

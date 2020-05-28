@@ -12,58 +12,76 @@
 
 envelop_x, envelop_y = 10, 7
 paper_x, paper_y = 0, 0
+
 # проверить для
 paper_x, paper_y = 9, 8
-# TODO С этими условиями часть правильных вариантов не пройдет проверку
-# TODO и структура хромает, нужно
-# if условие_1
-#     Да
-# elif условие_2
-#     Да
-# else:
-#     Нет
-# TODO При этом 1 условие должно проверять иксы друг сдругом и игрики друг с другом
-# TODO А второе наоборот икс конверта с игриком бумаги и игрик конверта с иксом бумаги
-if envelop_x >= paper_x and envelop_x >= paper_y:
-    if envelop_y >= paper_x and envelop_y >= paper_y:
-        print('Да')
-    else:
-        print('Нет')
-paper_x, paper_y = 6, 8
-if envelop_x >= paper_x and envelop_x >= paper_y:
-    if envelop_y >= paper_x and envelop_y >= paper_y:
-        print('Да')
-    else:
-        print('Нет')
-paper_x, paper_y = 8, 6
-if envelop_x >= paper_x and envelop_x >= paper_y:
-    if envelop_y >= paper_x and envelop_y >= paper_y:
-        print('Да')
-    else:
-        print('Нет')
-paper_x, paper_y = 3, 4
 
-if envelop_x >= paper_x:
-    if envelop_x >= paper_y:
-        if envelop_y >= paper_x:
-            if envelop_y >= paper_y:
-                print('Даaaaa')
+if envelop_x >= paper_x and envelop_x >= paper_y:
+    print('Да')
+
+elif envelop_y >= paper_x and envelop_y >= paper_y:
+    print('Да')
 
 else:
-    print('Неееет')
+    print('Нет')
+
+
+paper_x, paper_y = 6, 8
+
+if envelop_x >= paper_x and envelop_x >= paper_y:
+    print('Да')
+
+elif envelop_y >= paper_x and envelop_y >= paper_y:
+    print('Да')
+
+else:
+    print('Нет')
+
+
+paper_x, paper_y = 8, 6
+if envelop_x >= paper_x and envelop_x >= paper_y:
+    print('Да')
+
+elif envelop_y >= paper_x and envelop_y >= paper_y:
+    print('Да')
+
+else:
+    print('Нет')
+
+
+paper_x, paper_y = 3, 4
+
+print('Да')
+
+elif envelop_y >= paper_x and envelop_y >= paper_y:
+print('Да')
+
+else:
+print('Нет')
+
 
 paper_x, paper_y = 11, 9
 if envelop_x >= paper_x and envelop_x >= paper_y:
-    if envelop_y >= paper_x and envelop_y >= paper_y:
-        print('Да')
-    else:
-        print('Нет')
+    print('Да')
+
+elif envelop_y >= paper_x and envelop_y >= paper_y:
+    print('Да')
+
+else:
+    print('Нет')
+
+
 paper_x, paper_y = 9, 11
+
 if envelop_x >= paper_x and envelop_x >= paper_y:
-    if envelop_y >= paper_x and envelop_y >= paper_y:
-        print('Да')
-    else:
-        print('Нет')
+    print('Да')
+
+elif envelop_y >= paper_x and envelop_y >= paper_y:
+    print('Да')
+
+else:
+    print('Нет')
+
 # (просто раскоментировать нужную строку и проверить свой код)
 
 print("закончились конверты")
