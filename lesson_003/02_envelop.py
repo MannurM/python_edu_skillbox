@@ -11,67 +11,9 @@
 # Использовать только операторы if/elif/else, можно вложенные
 
 envelop_x, envelop_y = 10, 7
-paper_x, paper_y = 0, 0
 
 # проверить для
 paper_x, paper_y = 9, 8
-
-if envelop_x >= paper_x and envelop_x >= paper_y:
-    print('Да')
-
-elif envelop_y >= paper_x and envelop_y >= paper_y:
-    print('Да')
-
-else:
-    print('Нет')
-
-
-paper_x, paper_y = 6, 8
-
-if envelop_x >= paper_x and envelop_x >= paper_y:
-    print('Да')
-
-elif envelop_y >= paper_x and envelop_y >= paper_y:
-    print('Да')
-
-else:
-    print('Нет')
-
-
-paper_x, paper_y = 8, 6
-if envelop_x >= paper_x and envelop_x >= paper_y:
-    print('Да')
-
-elif envelop_y >= paper_x and envelop_y >= paper_y:
-    print('Да')
-
-else:
-    print('Нет')
-
-
-paper_x, paper_y = 3, 4
-
-print('Да')
-
-elif envelop_y >= paper_x and envelop_y >= paper_y:
-print('Да')
-
-else:
-print('Нет')
-
-
-paper_x, paper_y = 11, 9
-if envelop_x >= paper_x and envelop_x >= paper_y:
-    print('Да')
-
-elif envelop_y >= paper_x and envelop_y >= paper_y:
-    print('Да')
-
-else:
-    print('Нет')
-
-
-paper_x, paper_y = 9, 11
 
 if envelop_x >= paper_x and envelop_x >= paper_y:
     print('Да')
@@ -213,3 +155,4 @@ brick_in_hole(hole_x, hole_y, brick_x, brick_y, brick_z)
 
 brick_x, brick_y, brick_z = 3, 11, 6
 brick_in_hole(hole_x, hole_y, brick_x, brick_y, brick_z)
+#зачет!
