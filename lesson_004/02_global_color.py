@@ -19,21 +19,15 @@ color_draw = 0
 color_num = 0
 
 
-# TODO В этом случае удобнее создать словарь следующей структуры
-# TODO словарь = {'0': {'color_name': 'red', 'sd_name': sd.COLOR_RED},...}
-# TODO Таким образом для каждого цвета у нас будет свой словарь. И у каждого словаря будут одинаковые ключи
-# TODO 'color_name' и 'sd_name'
-# TODO Тогда можно будет легко проверить ввод (user_input in словарь)
-# TODO А если среди ключей есть выбор пользователя - по этому ключу мы получим нужный вложенный словарь
-# TODO А там все ключи одинаковые, можем получить как название цвета, так и sd_цвет
+
 colors = {
-    0: sd.COLOR_RED,
-    1: sd.COLOR_ORANGE,
-    2: sd.COLOR_YELLOW,
-    3: sd.COLOR_GREEN,
-    4: sd.COLOR_CYAN,
-    5: sd.COLOR_BLUE,
-    6: sd.COLOR_PURPLE,
+    '0': {'color_name': 'red', 'sd_name': sd.COLOR_RED},
+    '1': {'color_name': 'orange', 'sd_name': sd.COLOR_ORANGE},
+    '2': {'color_name': 'yellow', 'sd_name': sd.COLOR_YELLOW},
+    '3': {'color_name': 'cyan', 'sd_name': sd.COLOR_CYAN},
+    '4': {'color_name': 'blue', 'sd_name': sd.COLOR_BLUE},
+    '5': {'color_name': 'purple', 'sd_name': sd.COLOR_PURPLE},
+    '6': {'color_name': 'green', 'sd_name': sd.COLOR_GREEN},
 }
 
 
@@ -55,7 +49,7 @@ def color_number():
         return color_num
 
 def n_gon(point, angle=0, length=50, n=3, width=3):
-    color_draw = colors.get(int(color_num))
+    color_draw = colors[color_num]['sd_name']
 
     sd.resolution = 1200, 600
 
@@ -82,13 +76,10 @@ def n_gon(point, angle=0, length=50, n=3, width=3):
 
 
 print('Возможные цвета:')
-print('0: red')
-print('1: orange')
-print('2: yellow')
-print('3: green')
-print('4: cyan')
-print('5: blue')
-print('6: purple')
+for number, color_name in colors.items():
+    print(number, ':',  colors[number]['color_name'])
+
+
 
 color_num = color_number()
 

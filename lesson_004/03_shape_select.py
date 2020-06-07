@@ -10,30 +10,43 @@ import simple_draw as sd
 # Результат решения см lesson_004/results/exercise_03_shape_select.jpg
 
 color_draw = 0
-color_num = 0
+color_num = '3'
 n_gon_in = 0
-colors = {
-    0: sd.COLOR_RED,
-    1: sd.COLOR_ORANGE,
-    2: sd.COLOR_YELLOW,
-    3: sd.COLOR_GREEN,
-    4: sd.COLOR_CYAN,
-    5: sd.COLOR_BLUE,
-    6: sd.COLOR_PURPLE,
+n = 0
+i = 3
+
+gon_choice = {
+    'треугольник': '3',
+    'квадрат': '4',
+    'пятиугольник': '5',
+    'гайка': '6',
+    'семиугольник': '7',
+    'восьмиугольник': '8',
 }
 
+colors = {
+    '0': {'color_name': 'red', 'sd_name': sd.COLOR_RED},
+    '1': {'color_name': 'orange', 'sd_name': sd.COLOR_ORANGE},
+    '2': {'color_name': 'yellow', 'sd_name': sd.COLOR_YELLOW},
+    '3': {'color_name': 'cyan', 'sd_name': sd.COLOR_CYAN},
+    '4': {'color_name': 'blue', 'sd_name': sd.COLOR_BLUE},
+    '5': {'color_name': 'purple', 'sd_name': sd.COLOR_PURPLE},
+    '6': {'color_name': 'green', 'sd_name': sd.COLOR_GREEN},
+}
 
 def n_gon(point, angle=0, length=50, n=3, width=3):
-    color_draw = colors.get(int(color_num))
-
-    sd.resolution = 1200, 600
+    color_draw = colors[color_num]['sd_name']
 
     if n < 3:
         print('мало углов')
         return
+
     i = 0
-    angle_n = 180 - (n - 2) * 180 / n
+    angle_n = 360 // n
     point_n = point
+
+    sd.resolution = 1200, 600
+    vn = None
 
     while i < n - 1:
         vn = sd.get_vector(start_point=point_n, angle=angle + angle_n * i, length=length)
@@ -47,78 +60,38 @@ def n_gon(point, angle=0, length=50, n=3, width=3):
 
 def color_number():
     print('Возможные цвета:')
-    print('0: red')
-    print('1: orange')
-    print('2: yellow')
-    print('3: green')
-    print('4: cyan')
-    print('5: blue')
-    print('6: purple')
+    for number, color_name in colors.items():
+        print(number, ':', colors[number]['color_name'])
 
     color_num = input('Введите желаемый номер цвета:')
 
-    color_digit = color_num
-
-    if not color_digit.isdigit():
-        print('вы ввели не число, попробуйте еще раз')
-        color_num = 0
-        color_number()
-
-    if 0 < int(color_num) > 6:
-        print('вы ввели некорректный номер, попробуйте еще раз')
-        color_number()
-
+    for number, color_name in colors.items():
+        if color_num == number:
+            color_num = number
+            print(color_num)
+            return color_num
     else:
-        return color_num
+        color_number()
 
 
 def n_gon_input():
-    print('3')
-    print('4')
-    print('5')
-    print('6')
-    print('7')
-    print('8')
+    for _ in range(100000):
+        n_gon_in = input('Введите желаемое количество углов у фигуры от 3 до 8 включительно:')
 
-    n_gon_in = input('Введите желаемое количество углов у фигуры:')
+        n_digit = n_gon_in
+        if not n_digit.isdigit():
+            print('вы ввели не число', n_gon_in, ',', 'попробуйте еще раз')
+            continue
 
-    color_digit = n_gon_in
-    # TODO А если проверка не пройдена - можно запустить цикл while, который будет повторять запрос ввода до тех пор
-    # TODO пока не будет введено нужное значение
-    # TODO Тут можно хитро воспользоваться тем, что input() передает ввод пользователя в строках (str)
-    # TODO И ключи у нас в словаре строчные '0'...
-    # TODO Можем просто написать условие while ввод не в словаре
-    if not color_digit.isdigit():
-        print('вы ввели не число, попробуйте еще раз')
+        if int(n_gon_in) <= 2 or int(n_gon_in) > 8:
+            print('вы ввели некорректный номер', n_gon_in, ',', 'попробуйте еще раз')
+            continue
 
-        n_gon_in = 0
-
-        n_gon_input()  # TODO Рекурсии - это интересно, но их нужно использовать только в тех случаях, когда
-        # TODO Нет возможности использовать цикл
-
-    if 2 <= int(n_gon_in) >= 9:
-        print('вы ввели некорректный номер, попробуйте еще раз')
-
-        n_gon_input()
-
-    else:
-        return n_gon_in
+        else:
+            return n_gon_in
 
 
-color_num = 0  # выбор цвета фигур
-
-n = 0
-
-i = 3
-# TODO Нам надо реализовать выбор функции пользователем
-# TODO Для этого мы выбираем тот же путь, что в 02 с выбором цвета.
-# TODO Берем ту же структуру данных. Чтобы хранить функции в словаре - надо указать их без скобок, только имя
-# TODO Запустить её можно будет следующим образом:
-# TODO функция = словарь[юзер_выбор]['func']
-# TODO функция(параметры)
-
-
-
+print('Рисуем заставку')
 for x in range(150, 900, 300):
     for y in range(100, 600, 300):
         n = i
@@ -131,8 +104,14 @@ print("Рисуем Вашу фигуру")
 
 color_num = color_number()  # выбор цвета
 
+for user_input, func in gon_choice.items():
+
+    print('выберите фигуру - ', user_input, 'введите - ', gon_choice[user_input])
+
 n_gon_in = int(n_gon_input())  # выбираем количество углов
 
+# print('углы', n_gon_in)
+# print('цвет', color_num)
 x = 600
 y = 200
 
@@ -141,3 +120,4 @@ sd.clear_screen()
 n_gon(point=sd.get_point(x, y), angle=0, length=100, n=n_gon_in, width=5)
 
 sd.pause()
+

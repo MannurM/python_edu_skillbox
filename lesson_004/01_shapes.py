@@ -39,79 +39,79 @@ sd.resolution = 1200, 600
 # sd.line()
 # Результат решения см lesson_004/results/exercise_01_shapes.jpg
 
-def triangle(point, angle=0, length=100):
-    v1 = sd.get_vector(start_point=point, angle=angle, length=length, width=3)
-    v1.draw()
-
-    v2 = sd.get_vector(start_point=v1.end_point, angle=angle + 120, length=length, width=3)
-    v2.draw()
-
-    v3 = sd.get_vector(start_point=v2.end_point, angle=angle + 240, length=length, width=3)
-    v3.draw()
-
-
-def square(point, angle=0, length=100):
-    v1 = sd.get_vector(start_point=point, angle=angle, length=length, width=3)
-    v1.draw()
-
-    v2 = sd.get_vector(start_point=v1.end_point, angle=angle + 90, length=length, width=3)
-    v2.draw()
-
-    v3 = sd.get_vector(start_point=v2.end_point, angle=angle + 180, length=length, width=3)
-    v3.draw()
-
-    v4 = sd.get_vector(start_point=v3.end_point, angle=angle + 270, length=length, width=3)
-    v4.draw()
-
-
-def pentagon(point, angle=0, length=100):
-    v1 = sd.get_vector(start_point=point, angle=angle, length=length, width=3)
-    v1.draw()
-
-    v2 = sd.get_vector(start_point=v1.end_point, angle=angle + 72, length=length, width=3)
-    v2.draw()
-
-    v3 = sd.get_vector(start_point=v2.end_point, angle=angle + 144, length=length, width=3)
-    v3.draw()
-
-    v4 = sd.get_vector(start_point=v3.end_point, angle=angle + 216, length=length, width=3)
-    v4.draw()
-
-    v5 = sd.get_vector(start_point=v4.end_point, angle=angle + 288, length=length, width=3)
-    v5.draw()
-
-
-def hexagon(point, angle=0, length=100):
-    v1 = sd.get_vector(start_point=point, angle=angle, length=length, width=3)
-    v1.draw()
-
-    v2 = sd.get_vector(start_point=v1.end_point, angle=angle + 60, length=length, width=3)
-    v2.draw()
-
-    v3 = sd.get_vector(start_point=v2.end_point, angle=angle + 120, length=length, width=3)
-    v3.draw()
-
-    v4 = sd.get_vector(start_point=v3.end_point, angle=angle + 180, length=length, width=3)
-    v4.draw()
-
-    v5 = sd.get_vector(start_point=v4.end_point, angle=angle + 240, length=length, width=3)
-    v5.draw()
-
-    v6 = sd.get_vector(start_point=v5.end_point, angle=angle + 300, length=length, width=3)
-    v6.draw()
-
-
-point = sd.get_point(1, 1)
-triangle(point, length=200, angle=30)
-
-point = sd.get_point(240, 1)
-square(point, length=200, angle=30)
-
-point = sd.get_point(550, 1)
-pentagon(point, length=200, angle=30)
-
-point = sd.get_point(970, 1)
-hexagon(point, angle=30)
+# def triangle(point, angle=0, length=100):
+#     v1 = sd.get_vector(start_point=point, angle=angle, length=length, width=3)
+#     v1.draw()
+#
+#     v2 = sd.get_vector(start_point=v1.end_point, angle=angle + 120, length=length, width=3)
+#     v2.draw()
+#
+#     v3 = sd.get_vector(start_point=v2.end_point, angle=angle + 240, length=length, width=3)
+#     v3.draw()
+#
+#
+# def square(point, angle=0, length=100):
+#     v1 = sd.get_vector(start_point=point, angle=angle, length=length, width=3)
+#     v1.draw()
+#
+#     v2 = sd.get_vector(start_point=v1.end_point, angle=angle + 90, length=length, width=3)
+#     v2.draw()
+#
+#     v3 = sd.get_vector(start_point=v2.end_point, angle=angle + 180, length=length, width=3)
+#     v3.draw()
+#
+#     v4 = sd.get_vector(start_point=v3.end_point, angle=angle + 270, length=length, width=3)
+#     v4.draw()
+#
+#
+# def pentagon(point, angle=0, length=100):
+#     v1 = sd.get_vector(start_point=point, angle=angle, length=length, width=3)
+#     v1.draw()
+#
+#     v2 = sd.get_vector(start_point=v1.end_point, angle=angle + 72, length=length, width=3)
+#     v2.draw()
+#
+#     v3 = sd.get_vector(start_point=v2.end_point, angle=angle + 144, length=length, width=3)
+#     v3.draw()
+#
+#     v4 = sd.get_vector(start_point=v3.end_point, angle=angle + 216, length=length, width=3)
+#     v4.draw()
+#
+#     v5 = sd.get_vector(start_point=v4.end_point, angle=angle + 288, length=length, width=3)
+#     v5.draw()
+#
+#
+# def hexagon(point, angle=0, length=100):
+#     v1 = sd.get_vector(start_point=point, angle=angle, length=length, width=3)
+#     v1.draw()
+#
+#     v2 = sd.get_vector(start_point=v1.end_point, angle=angle + 60, length=length, width=3)
+#     v2.draw()
+#
+#     v3 = sd.get_vector(start_point=v2.end_point, angle=angle + 120, length=length, width=3)
+#     v3.draw()
+#
+#     v4 = sd.get_vector(start_point=v3.end_point, angle=angle + 180, length=length, width=3)
+#     v4.draw()
+#
+#     v5 = sd.get_vector(start_point=v4.end_point, angle=angle + 240, length=length, width=3)
+#     v5.draw()
+#
+#     v6 = sd.get_vector(start_point=v5.end_point, angle=angle + 300, length=length, width=3)
+#     v6.draw()
+#
+#
+# point = sd.get_point(1, 1)
+# triangle(point, length=200, angle=30)
+#
+# point = sd.get_point(240, 1)
+# square(point, length=200, angle=30)
+#
+# point = sd.get_point(550, 1)
+# pentagon(point, length=200, angle=30)
+#
+# point = sd.get_point(970, 1)
+# hexagon(point, angle=30)
 
 
 # Часть 1-бис.
@@ -120,34 +120,55 @@ hexagon(point, angle=30)
 # А если таких функций не 4, а 44? Код писать не нужно, просто представь объем работы... и запомни это.
 
 # Часть 2 (делается после зачета первой части) - Эх, устал ждать когда проверят третий урок - сделал вот такую функцию.
-def n_gon(point, angle=0, length=100, n=3):
+angle_n = []
+def n_gon(point, angle, length=100, n=3):
     if n < 3:
         print('мало углов')
         return
     i = 0
-    angle_n = 360 // n
+    # angle_n = 360 // n
     point_n = point
     vn = None
+    angle_original = angle
+    for angle in range(0, 360 - (360//n), 360//n):
+        angle_n.append(angle + angle_original)
+        # print(angle_n)
+    # for angle in range(0, 360 - (360 // n), 360 // n):
     while i < n - 1:
-        # TODO Цикл можно использовать не только для нужного количества итераций
-        # TODO Но так же и для расчёта нужных значений переменных.
-        # TODO Так мы можем задать цикл по значениям угла с нужным нам шагом и не считать угол отдельной операцией
-        # TODO Например для треугольнкиа это будет: for angle in range(0, 360 - 120, 120)
-        # TODO angle будет на первой итерации равен 0, на второй 120 (от третьей мы избавились отняв от 360 120)
-        vn = sd.get_vector(start_point=point_n, angle=angle + angle_n * i, length=length, width=3)
+        # print(angle_n[i])
+        vn = sd.get_vector(start_point=point_n, angle=angle_n[i], length=length, width=3)
         vn.draw()
         point_n = vn.end_point
         i += 1
 
     sd.line(start_point=vn.end_point, end_point=point, width=3)
+    angle_n.clear()
+    # print(angle_n)
 
 
-# TODO Кроме общей функции - нужно будет добавить 4 функции-обертки
-# TODO Который будут принимать 3 параметра и вызывать общую функцию, добавляя количество сторон
-# TODO треугольник(3параметра) --> общая_функция(3параметра + количество-сторон=3)
+def triangle(point, angle=0, length=100):
+    point = sd.get_point(300, 50)
+    n_gon(point, angle, length, n=3)
 
-point = sd.get_point(600, 250)
-n_gon(point, angle=0, n=14, length=50)
+def square(point, angle=0, length=100):
+    point = sd.get_point(300, 250)
+    n_gon(point, angle, length, n=4)
+
+def pentagon(point, angle=0, length=100):
+    point = sd.get_point(900, 50)
+    n_gon(point, angle, length, n=5)
+
+def hexagon(point, angle=0, length=100, n=6):
+    point = sd.get_point(900, 250)
+    n_gon(point, angle, length, n=6)
+
+
+triangle(point=0, angle=30, length=50)
+square(point=0, angle=50, length=100)
+pentagon(point=0, angle=-15, length=70)
+hexagon(point=0, angle=0, length=120)
+
+# n_gon(point, angle=0, n=14, length=50)
 # работает до n = 25, при длине вектора length < 50 дальше накапливается ошибка в углах поворота вектора
 # Надо сформировать функцию, параметризированную в местах где была "небольшая правка".
 # Это называется "Выделить общую часть алгоритма в отдельную функцию"
