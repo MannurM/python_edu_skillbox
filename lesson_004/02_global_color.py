@@ -18,7 +18,7 @@ import simple_draw as sd
 color_draw = 0
 color_num = 0
 
-
+# TODO Используйте Code/Reformat code для внесения правок по стилю
 
 colors = {
     '0': {'color_name': 'red', 'sd_name': sd.COLOR_RED},
@@ -30,7 +30,7 @@ colors = {
     '6': {'color_name': 'green', 'sd_name': sd.COLOR_GREEN},
 }
 
-
+# TODO все def надо держать в верхенй части программы, а остальной код после всех def
 def color_number():
     color_num = input('Введите желаемый номер цвета:')
 
@@ -39,7 +39,10 @@ def color_number():
     if not color_digit.isdigit():
         print('вы ввели не число, попробуйте еще раз')
         color_num = 0
-        color_number()
+        color_number()  # TODO Вместо рекурсий старайтесь использовать циклы там, где это возможно
+        # TODO Тут можно просто цикл while использовать, который будет повторять инпут до тех пор
+        # TODO пока ввод не будет верным
+        # TODO Кроме того два этих условия можно объединить в одно "Если ввод есть в ключах словаря"
 
     if 0 < int(color_num) > 6:
         print('вы ввели некорректный номер, попробуйте еще раз')

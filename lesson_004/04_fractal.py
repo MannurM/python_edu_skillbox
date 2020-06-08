@@ -97,14 +97,16 @@ sd.resolution = 900, 700
 root_point = sd.get_point(650, 30)
 
 sd.start_drawing()
-
+# TODO Используйте Code/Reformat code для внесения правок по стилю
 def draw_branches(start_point, angle=90, length=50, width=1):
     trunk = sd.get_vector(start_point=start_point, angle=angle, length=length, width=1)
     trunk.draw()
 
     if length < 1:
         return
-
+    # TODO Тут не нужно два вектора рисовать, достаточно одного
+    # TODO А тк в функции вызывается два раза эта же функция, то и будут нарисованы две ветки
+    # TODO рисуем вектор с текущими параметрами, затем рассчитать новые параметры и передать их в вызовы
     brunch_1 = sd.get_vector(start_point=trunk.end_point, angle=angle - 30, length=length, width=1)
     brunch_1.draw()
 

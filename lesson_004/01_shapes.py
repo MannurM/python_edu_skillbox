@@ -118,15 +118,16 @@ sd.resolution = 1200, 600
 # Попробуйте прикинуть обьем работы, если нужно будет внести изменения в этот код.
 # Скажем, связывать точки не линиями, а дугами. Или двойными линиями. Или рисовать круги в угловых точках. Или...
 # А если таких функций не 4, а 44? Код писать не нужно, просто представь объем работы... и запомни это.
-
+# TODO Используйте Code/Reformat code для внесения правок по стилю
 # Часть 2 (делается после зачета первой части) - Эх, устал ждать когда проверят третий урок - сделал вот такую функцию.
-angle_n = []
-def n_gon(point, angle, length=100, n=3):
+angle_n = []  # TODO В данном случае этот список не нужен, но на будущее - его стоило расположить внутри функции
+def n_gon(point, angle, length=100, n=3):  # TODO Стоит ещё подумать над названием
     if n < 3:
         print('мало углов')
         return
     i = 0
-    # angle_n = 360 // n
+    # angle_n = 360 // n  # TODO Это хорошая идея, чтобы использовать дальше переменную, вместо рассчётов заново
+    # TODO правда назвать стоило бы angle_step например
     point_n = point
     vn = None
     angle_original = angle
@@ -134,7 +135,8 @@ def n_gon(point, angle, length=100, n=3):
         angle_n.append(angle + angle_original)
         # print(angle_n)
     # for angle in range(0, 360 - (360 // n), 360 // n):
-    while i < n - 1:
+    while i < n - 1:  # TODO Второй цикл не нужен, векторы можно нарисовать в первом, там
+        # TODO где рассчитываются сами углы
         # print(angle_n[i])
         vn = sd.get_vector(start_point=point_n, angle=angle_n[i], length=length, width=3)
         vn.draw()
@@ -146,8 +148,8 @@ def n_gon(point, angle, length=100, n=3):
     # print(angle_n)
 
 
-def triangle(point, angle=0, length=100):
-    point = sd.get_point(300, 50)
+def triangle(point, angle=0, length=100):  # TODO Тут вы уже получаете точку point снаружи
+    point = sd.get_point(300, 50)  # TODO не нужно создавать новую
     n_gon(point, angle, length, n=3)
 
 def square(point, angle=0, length=100):

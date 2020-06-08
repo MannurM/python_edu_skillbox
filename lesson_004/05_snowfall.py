@@ -143,7 +143,8 @@ def snow():
             # print(i, 'point_old', point)
 
             sd.snowflake(center=point, length=length, color=sd.background_color, factor_b=factor_b)
-
+            # TODO С изменениями координат слишком много операций выходит
+            # TODO Попробуйте откинуть использование x1, y1 и записать код из 148-155 строк в две строки
             x1 = n_list_x[i] + sd.random_number(1, 15)
 
             step_random_y = sd.random_number(1, 50)
@@ -160,7 +161,9 @@ def snow():
 
             if y1 <= length:
                 # print(y1)
-                if n_list_y1[i] <= length:
+                if n_list_y1[i] <= length:  # TODO Тут и ниже у вас дублируется один код многократно
+                    # TODO Делать этого не стоит. Лучше используйте отдельную переменную, для обозначения нижнего порога
+                    # TODO И увеличивайте эту переменную раз в N-итераций цикла
                     n_list_y1[i] = 650
                     n_list_y[i] = 650
                     n_list_x1[i] = 0

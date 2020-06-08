@@ -8,7 +8,7 @@ import simple_draw as sd
 
 # Код функций из упр lesson_004/02_global_color.py скопировать сюда
 # Результат решения см lesson_004/results/exercise_03_shape_select.jpg
-
+# TODO Используйте Code/Reformat code для внесения правок по стилю
 color_draw = 0
 color_num = '3'
 n_gon_in = 0
@@ -33,7 +33,7 @@ colors = {
     '5': {'color_name': 'purple', 'sd_name': sd.COLOR_PURPLE},
     '6': {'color_name': 'green', 'sd_name': sd.COLOR_GREEN},
 }
-
+# TODO все def надо держать в верхенй части программы, а остальной код после всех def
 def n_gon(point, angle=0, length=50, n=3, width=3):
     color_draw = colors[color_num]['sd_name']
 
@@ -64,7 +64,7 @@ def color_number():
         print(number, ':', colors[number]['color_name'])
 
     color_num = input('Введите желаемый номер цвета:')
-
+    # TODO Тут тоже надо будет заменить рекурсию на цикл
     for number, color_name in colors.items():
         if color_num == number:
             color_num = number
@@ -75,7 +75,7 @@ def color_number():
 
 
 def n_gon_input():
-    for _ in range(100000):
+    for _ in range(100000):  # TODO И здесь цикл while подойдет лучше, понимаете почему?
         n_gon_in = input('Введите желаемое количество углов у фигуры от 3 до 8 включительно:')
 
         n_digit = n_gon_in
