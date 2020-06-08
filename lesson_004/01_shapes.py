@@ -118,28 +118,25 @@ sd.resolution = 1200, 600
 # Попробуйте прикинуть обьем работы, если нужно будет внести изменения в этот код.
 # Скажем, связывать точки не линиями, а дугами. Или двойными линиями. Или рисовать круги в угловых точках. Или...
 # А если таких функций не 4, а 44? Код писать не нужно, просто представь объем работы... и запомни это.
-# TODO Используйте Code/Reformat code для внесения правок по стилю
+
 # Часть 2 (делается после зачета первой части) - Эх, устал ждать когда проверят третий урок - сделал вот такую функцию.
-angle_n = []  # TODO В данном случае этот список не нужен, но на будущее - его стоило расположить внутри функции
-def n_gon(point, angle, length=100, n=3):  # TODO Стоит ещё подумать над названием
-    if n < 3:
-        print('мало углов')
-        return
+
+def poly_gon(point, angle, length=100, n=3):
+    angle_n = []  # TODO В данном случае этот список не нужен, но на будущее - его стоило расположить внутри функции
+    # TODO ...Без него программа вылетает..., перенёс внутрь файла.
+
     i = 0
-    # angle_n = 360 // n  # TODO Это хорошая идея, чтобы использовать дальше переменную, вместо рассчётов заново
-    # TODO правда назвать стоило бы angle_step например
+    angle_step = 360 // n
     point_n = point
     vn = None
     angle_original = angle
-    for angle in range(0, 360 - (360//n), 360//n):
+
+    for angle in range(0, 360 - angle_step, angle_step):
         angle_n.append(angle + angle_original)
-        # print(angle_n)
-    # for angle in range(0, 360 - (360 // n), 360 // n):
-    while i < n - 1:  # TODO Второй цикл не нужен, векторы можно нарисовать в первом, там
-        # TODO где рассчитываются сами углы
-        # print(angle_n[i])
+
         vn = sd.get_vector(start_point=point_n, angle=angle_n[i], length=length, width=3)
         vn.draw()
+
         point_n = vn.end_point
         i += 1
 
@@ -148,30 +145,34 @@ def n_gon(point, angle, length=100, n=3):  # TODO Стоит ещё подума
     # print(angle_n)
 
 
-def triangle(point, angle=0, length=100):  # TODO Тут вы уже получаете точку point снаружи
-    point = sd.get_point(300, 50)  # TODO не нужно создавать новую
-    n_gon(point, angle, length, n=3)
+def triangle(point, angle=0, length=100):
+    # point = sd.get_point(300, 50)
+    poly_gon(point, angle, length, n=3)
+
 
 def square(point, angle=0, length=100):
-    point = sd.get_point(300, 250)
-    n_gon(point, angle, length, n=4)
+    # point = sd.get_point(300, 250)
+    poly_gon(point, angle, length, n=4)
+
 
 def pentagon(point, angle=0, length=100):
-    point = sd.get_point(900, 50)
-    n_gon(point, angle, length, n=5)
+    # point = sd.get_point(900, 50)
+    poly_gon(point, angle, length, n=5)
+
 
 def hexagon(point, angle=0, length=100, n=6):
-    point = sd.get_point(900, 250)
-    n_gon(point, angle, length, n=6)
+    # point = sd.get_point(900, 250)
+    poly_gon(point, angle, length, n=6)
 
 
-triangle(point=0, angle=30, length=50)
-square(point=0, angle=50, length=100)
-pentagon(point=0, angle=-15, length=70)
-hexagon(point=0, angle=0, length=120)
+triangle(point=sd.get_point(300, 50), angle=30, length=50)
+square(point=sd.get_point(300, 250), angle=50, length=100)
+pentagon(point=sd.get_point(900, 50), angle=-15, length=70)
+hexagon(point=sd.get_point(900, 250), angle=0, length=120)
 
-# n_gon(point, angle=0, n=14, length=50)
+# poly_gon(point, angle=0, n=14, length=50)
 # работает до n = 25, при длине вектора length < 50 дальше накапливается ошибка в углах поворота вектора
+
 # Надо сформировать функцию, параметризированную в местах где была "небольшая правка".
 # Это называется "Выделить общую часть алгоритма в отдельную функцию"
 # Потом надо изменить функции рисования конкретных фигур - вызывать общую функцию вместо "почти" одинакового кода.

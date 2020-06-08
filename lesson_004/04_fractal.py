@@ -33,8 +33,8 @@ start_point = 0
 #     trunk = sd.get_vector(start_point=root_point, angle=angle, length=100, width=1)
 #     trunk.draw()
 #
-#     brunch_1 = sd.get_vector(start_point=trunk.end_point, angle=angle-30, length=100, width=1)
-#     brunch_1.draw()
+#     brunch = sd.get_vector(start_point=trunk.end_point, angle=angle-30, length=100, width=1)
+#     brunch.draw()
 #
 #     brunch_2 = sd.get_vector(start_point=trunk.end_point, angle=angle + 30, length=100, width=1)
 #     brunch_2.draw()
@@ -51,33 +51,32 @@ start_point = 0
 # branch(point=next_point, angle=next_angle, length=next_length, delta=delta)
 
 sd.start_drawing()
+
+
 def draw_branches(start_point, angle=90, length=30, width=1):
     trunk = sd.get_vector(start_point=start_point, angle=angle, length=length, width=1)
     trunk.draw(color=sd.COLOR_GREEN)
-    #print(length)
+
     if length < 2:
-        #print('меньше')
         return
 
-    brunch_1 = sd.get_vector(start_point=trunk.end_point, angle=angle - 30, length=length, width=1)
-    brunch_1.draw()
+    brunch = sd.get_vector(start_point=trunk.end_point, angle=angle - 30, length=length, width=1)
+    brunch.draw()
 
     brunch_2 = sd.get_vector(start_point=trunk.end_point, angle=angle + 30, length=length, width=1)
     brunch_2.draw(color=sd.COLOR_DARK_RED)
 
     next_angle = angle - 30
 
-    next_point_1 = brunch_1.end_point
+    next_point_1 = brunch.end_point
     next_length_1 = length * .75
-    #print(next_length_1, '1')
-
 
     next_point_2 = brunch_2.end_point
     next_length_2 = length * .75
-    #print(next_length_2, '2')
 
-    draw_branches(start_point=next_point_1, angle=next_angle, length=next_length_1,)
-    draw_branches(start_point=next_point_2, angle=next_angle + 60, length=next_length_2,)
+    draw_branches(start_point=next_point_1, angle=next_angle, length=next_length_1, )
+    draw_branches(start_point=next_point_2, angle=next_angle + 60, length=next_length_2, )
+
 
 print('поехали!')
 draw_branches(start_point=root_point, angle=90, length=50)
@@ -91,13 +90,15 @@ sd.sleep(3)
 # Возможный результат решения см lesson_004/results/exercise_04_fractal_02.jpg
 
 # Пригодятся функции
-#sd.random_number()
+# sd.random_number()
+
 sd.clear_screen()
 sd.resolution = 900, 700
 root_point = sd.get_point(650, 30)
 
 sd.start_drawing()
-# TODO Используйте Code/Reformat code для внесения правок по стилю
+
+
 def draw_branches(start_point, angle=90, length=50, width=1):
     trunk = sd.get_vector(start_point=start_point, angle=angle, length=length, width=1)
     trunk.draw()
@@ -107,8 +108,11 @@ def draw_branches(start_point, angle=90, length=50, width=1):
     # TODO Тут не нужно два вектора рисовать, достаточно одного
     # TODO А тк в функции вызывается два раза эта же функция, то и будут нарисованы две ветки
     # TODO рисуем вектор с текущими параметрами, затем рассчитать новые параметры и передать их в вызовы
-    brunch_1 = sd.get_vector(start_point=trunk.end_point, angle=angle - 30, length=length, width=1)
-    brunch_1.draw()
+
+    # TODO  вопрос - 2  вектора ствол и ветка? наверное название brunch_1 было некорректно, вторая ветку была удалена.
+
+    brunch = sd.get_vector(start_point=trunk.end_point, angle=angle - 30, length=length, width=1)
+    brunch.draw()
 
     random_angle = sd.random_number(20, 80) / 100 * 30
     random_length = sd.random_number(1, 20) / 100 * .75
@@ -118,19 +122,12 @@ def draw_branches(start_point, angle=90, length=50, width=1):
     next_angle = angle - random_angle
     next_length_1 = length * (.75 - random_length)
 
-    # next_angle = angle - 30
-
-    next_point_1 = brunch_1.end_point
-    # next_length_1 = length * .75
-
-
+    next_point_1 = brunch.end_point
 
     draw_branches(start_point=next_point_1, angle=next_angle, length=next_length_1, )
 
     random_angle = sd.random_number(20, 80) / 100 * 30
     random_length = sd.random_number(1, 20) / 100 * .75
-    # print(random_angle, 'угол')
-    # print(random_length, ' длина')
 
     next_angle = angle + random_angle
     next_length_1 = length * (.75 - random_length)
