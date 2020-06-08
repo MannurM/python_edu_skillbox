@@ -141,13 +141,13 @@ def snow():
 
             n_list_x1[i] = x = n_list_x[i] + sd.random_number(1, 15)
             n_list_y[i] = n_list_y1[i] = y = n_list_y[i] - step_random_y[i]
-
+            # TODO Зачем нужны списки n_list_y[i] и n_list_x[i]?
             point = sd.get_point(x, y)
             # print(i, 'point_new', point)
 
             sd.snowflake(center=point, length=length, color=sd.COLOR_WHITE, factor_a=factor_a, factor_b=factor_b)
 
-            if count >= 250:
+            if count >= 250:  # TODO Дублирование кода надо убрать. Оставьте только одно условие!
                 step_drift = 2 * length
 
                 if count >= 450:

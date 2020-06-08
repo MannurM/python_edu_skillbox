@@ -17,6 +17,7 @@ import simple_draw as sd
 
 
 def color_number():
+    # TODO Старайтесь не использовать одинаковые названия для переменных внутри и снаружи функции
     color_num = input('Введите желаемый номер цвета:')
 
     while not color_num in colors:
@@ -26,7 +27,8 @@ def color_number():
 
 
 def poly_gon(point_1, angle=0, length=50, n=3, width=3):
-    color_vector_draw = colors[color_num]['sd_name']
+    color_vector_draw = colors[color_num]['sd_name']  # TODO Не обращайтесь ко внешней переменной из функции
+    # TODO Передавайте нужный цвет параметром
 
     sd.resolution = 1200, 600
 

@@ -122,9 +122,9 @@ sd.resolution = 1200, 600
 # Часть 2 (делается после зачета первой части) - Эх, устал ждать когда проверят третий урок - сделал вот такую функцию.
 
 def poly_gon(point, angle, length=100, n=3):
-    angle_n = []  # TODO В данном случае этот список не нужен, но на будущее - его стоило расположить внутри функции
-    # TODO ...Без него программа вылетает..., перенёс внутрь файла.
-
+    angle_n = []
+    # ...Без него программа вылетает..., перенёс внутрь файла.
+    # TODO Нужно убрать код, который использует его
     i = 0
     angle_step = 360 // n
     point_n = point
@@ -132,13 +132,13 @@ def poly_gon(point, angle, length=100, n=3):
     angle_original = angle
 
     for angle in range(0, 360 - angle_step, angle_step):
-        angle_n.append(angle + angle_original)
-
+        angle_n.append(angle + angle_original)  # TODO Например этот
+        # TODO Угол, который надо передать в вектор можно брать из переменной цикла
         vn = sd.get_vector(start_point=point_n, angle=angle_n[i], length=length, width=3)
         vn.draw()
 
         point_n = vn.end_point
-        i += 1
+        i += 1  # TODO Это надо убрать, угол рассчитывается циклом for без индексов
 
     sd.line(start_point=vn.end_point, end_point=point, width=3)
     angle_n.clear()

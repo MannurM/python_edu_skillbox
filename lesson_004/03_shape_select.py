@@ -92,7 +92,8 @@ for x in range(150, 900, 300):
         n = i
 
         poly_gon(point=sd.get_point(x, y), angle=0, length=50, n=n, width=4)
-
+        # TODO NameError: name 'color_num' is not defined
+        # TODO Последствия того, о чём я писал в 02 - Не обращайтесь ко внешней переменной из функции
         i += 1
 
 print("Рисуем Вашу фигуру")
