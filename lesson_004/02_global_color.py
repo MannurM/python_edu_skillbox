@@ -17,18 +17,16 @@ import simple_draw as sd
 
 
 def color_number():
-    # TODO Старайтесь не использовать одинаковые названия для переменных внутри и снаружи функции
-    color_num = input('Введите желаемый номер цвета:')
+    color_num_1 = input('Введите желаемый номер цвета:')
 
-    while not color_num in colors:
-        color_num = input('Введите желаемый номер цвета:')
+    while not color_num_1 in colors:
+        color_num_1 = input('Введите желаемый номер цвета:')
 
-    return color_num
+    return color_num_1
 
 
-def poly_gon(point_1, angle=0, length=50, n=3, width=3):
-    color_vector_draw = colors[color_num]['sd_name']  # TODO Не обращайтесь ко внешней переменной из функции
-    # TODO Передавайте нужный цвет параметром
+def poly_gon(point_1, angle=0, length=50, n=3, width=3, color_num_int=sd.COLOR_RED):
+    color_vector_draw = color_num_int
 
     sd.resolution = 1200, 600
 
@@ -53,8 +51,6 @@ def poly_gon(point_1, angle=0, length=50, n=3, width=3):
     sd.pause()
 
 
-color_num = 0
-
 colors = {
     '0': {'color_name': 'red', 'sd_name': sd.COLOR_RED},
     '1': {'color_name': 'orange', 'sd_name': sd.COLOR_ORANGE},
@@ -73,5 +69,5 @@ color_num = color_number()
 
 point = sd.get_point(600, 250)
 
-poly_gon(point, angle=0, length=50, n=12, width=4)
+poly_gon(point, angle=0, length=50, n=12, width=4, color_num_int=colors[color_num]['sd_name'])
 # работает до n = 25, при длине вектора length < 50 дальше накапливается ошибка в углах поворота вектора

@@ -57,7 +57,7 @@ def draw_branches(start_point, angle=90, length=30, width=1):
     trunk = sd.get_vector(start_point=start_point, angle=angle, length=length, width=1)
     trunk.draw(color=sd.COLOR_GREEN)
 
-    if length < 2:
+    if length < 1:
         return
 
     brunch = sd.get_vector(start_point=trunk.end_point, angle=angle - 30, length=length, width=1)
@@ -82,7 +82,7 @@ print('поехали!')
 draw_branches(start_point=root_point, angle=90, length=50)
 
 sd.finish_drawing()
-sd.sleep(3)
+sd.sleep(5)
 
 # 4) Усложненное задание (делать по желанию)
 # - сделать рандомное отклонение угла ветвей в пределах 40% от 30-ти градусов
@@ -100,43 +100,33 @@ sd.start_drawing()
 
 
 def draw_branches(start_point, angle=90, length=50, width=1):
-    trunk = sd.get_vector(start_point=start_point, angle=angle, length=length, width=1)
-    trunk.draw()
-
     if length < 1:
         return
-    # TODO Тут не нужно два вектора рисовать, достаточно одного
-    # TODO А тк в функции вызывается два раза эта же функция, то и будут нарисованы две ветки
-    # TODO рисуем вектор с текущими параметрами, затем рассчитать новые параметры и передать их в вызовы
 
-    # вопрос - 2  вектора ствол и ветка? наверное название brunch_1 было некорректно, вторая ветку была удалена.
-    # TODO Функция должна рисовать один вектор, либо trunk, либо brunch
-    # TODO 1 функция == 1 вектор, далее функция вызывает себя же 2 раза
-    # TODO Поэтому векторы увеличиваются в таком порядке 1 - 2 - 4 - 8 и тд
-    brunch = sd.get_vector(start_point=trunk.end_point, angle=angle - 30, length=length, width=1)
+    brunch = sd.get_vector(start_point=start_point, angle=angle, length=length, width=1)
     brunch.draw()
 
-    random_angle = sd.random_number(20, 80) / 100 * 30
-    random_length = sd.random_number(1, 20) / 100 * .75
-    print(random_angle, 'угол')
-    print(random_length, ' длина')
+    random_angle = sd.random_number(10, 90) / 100 * 30
+    random_length = sd.random_number(1, 20) / 100 * .5
+    # print(random_angle, 'угол')
+    # print(random_length, ' длина')
 
-    next_angle = angle - random_angle
+    next_angle = angle + random_angle
     next_length_1 = length * (.75 - random_length)
 
     next_point_1 = brunch.end_point
 
     draw_branches(start_point=next_point_1, angle=next_angle, length=next_length_1, )
 
-    random_angle = sd.random_number(20, 80) / 100 * 30
-    random_length = sd.random_number(1, 20) / 100 * .75
+    random_angle = sd.random_number(1, 99) / 100 * 30  # увеличил разброс более 40 процентов
+    random_length = sd.random_number(1, 20) / 100 * .5
 
-    next_angle = angle + random_angle
+    next_angle = angle - random_angle
     next_length_1 = length * (.75 - random_length)
 
     draw_branches(start_point=next_point_1, angle=next_angle, length=next_length_1, )
 
 
-draw_branches(start_point=root_point, angle=90, length=70)
+draw_branches(start_point=root_point, angle=90, length=150)
 sd.finish_drawing()
 sd.pause()

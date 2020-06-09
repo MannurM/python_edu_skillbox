@@ -38,8 +38,8 @@ def poly_gon_input():
             return poly_gon_in
 
 
-def poly_gon(point, angle=0, length=50, n=3, width=3):
-    color_draw = colors[color_num]['sd_name']
+def poly_gon(point, angle=0, length=50, n=3, width=3, color_num_int=sd.COLOR_RED):
+    color_draw = color_num_int
 
     if n < 3:
         print('мало углов')
@@ -91,9 +91,8 @@ for x in range(150, 900, 300):
     for y in range(100, 600, 300):
         n = i
 
-        poly_gon(point=sd.get_point(x, y), angle=0, length=50, n=n, width=4)
-        # TODO NameError: name 'color_num' is not defined
-        # TODO Последствия того, о чём я писал в 02 - Не обращайтесь ко внешней переменной из функции
+        poly_gon(point=sd.get_point(x, y), angle=0, length=50, n=n, width=4, color_num_int=sd.COLOR_YELLOW)
+
         i += 1
 
 print("Рисуем Вашу фигуру")
@@ -110,6 +109,7 @@ y = 200
 
 sd.clear_screen()
 
-poly_gon(point=sd.get_point(x, y), angle=0, length=100, n=poly_gon_in, width=5)
+poly_gon(point=sd.get_point(x, y), angle=0, length=100, n=poly_gon_in, width=5,
+         color_num_int=colors[color_num]['sd_name'])
 
 sd.pause()
