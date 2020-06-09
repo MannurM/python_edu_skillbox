@@ -52,37 +52,37 @@ start_point = 0
 
 sd.start_drawing()
 
-
-def draw_branches(start_point, angle=90, length=30, width=1):
-    trunk = sd.get_vector(start_point=start_point, angle=angle, length=length, width=1)
-    trunk.draw(color=sd.COLOR_GREEN)
-
-    if length < 1:
-        return
-
-    brunch = sd.get_vector(start_point=trunk.end_point, angle=angle - 30, length=length, width=1)
-    brunch.draw()
-
-    brunch_2 = sd.get_vector(start_point=trunk.end_point, angle=angle + 30, length=length, width=1)
-    brunch_2.draw(color=sd.COLOR_DARK_RED)
-
-    next_angle = angle - 30
-
-    next_point_1 = brunch.end_point
-    next_length_1 = length * .75
-
-    next_point_2 = brunch_2.end_point
-    next_length_2 = length * .75
-
-    draw_branches(start_point=next_point_1, angle=next_angle, length=next_length_1, )
-    draw_branches(start_point=next_point_2, angle=next_angle + 60, length=next_length_2, )
-
-
-print('поехали!')
-draw_branches(start_point=root_point, angle=90, length=50)
-
-sd.finish_drawing()
-sd.sleep(5)
+#
+# def draw_branches(start_point, angle=90, length=30, width=1):
+#     trunk = sd.get_vector(start_point=start_point, angle=angle, length=length, width=1)
+#     trunk.draw(color=sd.COLOR_GREEN)
+#
+#     if length < 1:
+#         return
+#
+#     brunch = sd.get_vector(start_point=trunk.end_point, angle=angle - 30, length=length, width=1)
+#     brunch.draw()
+#
+#     brunch_2 = sd.get_vector(start_point=trunk.end_point, angle=angle + 30, length=length, width=1)
+#     brunch_2.draw(color=sd.COLOR_DARK_RED)
+#
+#     next_angle = angle - 30
+#
+#     next_point_1 = brunch.end_point
+#     next_length_1 = length * .75
+#
+#     next_point_2 = brunch_2.end_point
+#     next_length_2 = length * .75
+#
+#     draw_branches(start_point=next_point_1, angle=next_angle, length=next_length_1, )
+#     draw_branches(start_point=next_point_2, angle=next_angle + 60, length=next_length_2, )
+#
+#
+# print('поехали!')
+# draw_branches(start_point=root_point, angle=90, length=50)
+#
+# sd.finish_drawing()
+# sd.sleep(5)
 
 # 4) Усложненное задание (делать по желанию)
 # - сделать рандомное отклонение угла ветвей в пределах 40% от 30-ти градусов
@@ -108,8 +108,6 @@ def draw_branches(start_point, angle=90, length=50, width=1):
 
     random_angle = sd.random_number(10, 90) / 100 * 30
     random_length = sd.random_number(1, 20) / 100 * .5
-    # print(random_angle, 'угол')
-    # print(random_length, ' длина')
 
     next_angle = angle + random_angle
     next_length_1 = length * (.75 - random_length)
@@ -130,3 +128,4 @@ def draw_branches(start_point, angle=90, length=50, width=1):
 draw_branches(start_point=root_point, angle=90, length=150)
 sd.finish_drawing()
 sd.pause()
+#зачет!

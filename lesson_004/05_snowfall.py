@@ -150,7 +150,7 @@ def snow():
                 n_list_y1[i] = 650
                 n_list_x1[i] = sd.random_number(-4 * length, 1300)
 
-        if y == 649:
+        if y == 649:  # TODO Вот только это условие непонятное осталось, остальное выполнено верно
             break
 
         sd.finish_drawing()

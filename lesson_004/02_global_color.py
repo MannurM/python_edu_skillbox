@@ -24,7 +24,7 @@ def color_number():
 
     return color_num_1
 
-
+# TODO Сюда надо перенести новый код из 01
 def poly_gon(point_1, angle=0, length=50, n=3, width=3, color_num_int=sd.COLOR_RED):
     color_vector_draw = color_num_int
 
