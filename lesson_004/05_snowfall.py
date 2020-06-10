@@ -109,7 +109,7 @@ def snow():
         factor_a_random = sd.random_number(3, 9) / 10
         factor_a_list.append(factor_a_random)
 
-        factor_b_random = sd.random_number(1, 15) / 10
+        factor_b_random = sd.random_number(1, 10) / 10
         factor_b_list.append(factor_b_random)
 
         step_x = sd.random_number(-10, 10)
@@ -159,3 +159,4 @@ def snow():
 
 snow()
 sd.pause()
+#зачет!

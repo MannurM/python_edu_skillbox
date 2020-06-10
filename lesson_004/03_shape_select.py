@@ -11,7 +11,7 @@ import simple_draw as sd
 # Результат решения см lesson_004/results/exercise_03_shape_select.jpg
 
 def color_number():
-    color_num = 9
+    color_num = 9  # TODO Внутри функций названия должны отличаться от названий снаружи
 
     while not color_num in colors:
         color_num = input('Введите желаемый номер цвета:')
@@ -20,7 +20,7 @@ def color_number():
 
 
 def poly_gon_input():
-    poly_gon_in = 2
+    poly_gon_in = 2  # TODO Внутри функций названия должны отличаться от названий снаружи
 
     while not poly_gon_in in gon_choice:
         poly_gon_in = input('Введите номер фигуры от 3 до 8 включительно:')
@@ -43,7 +43,7 @@ def poly_gon(start_point, start_angle, length=50, n=3, width=3, color=sd.COLOR_R
 
     sd.resolution = 1200, 600
 
-    # if n < 3:
+    # if n < 3:  # TODO Лишний код удаляем
     #     print('мало углов')
     #     return
 
@@ -59,8 +59,8 @@ def poly_gon(start_point, start_angle, length=50, n=3, width=3, color=sd.COLOR_R
 
     sd.line(start_point=vn.end_point, end_point=start_point, width=3, color=color_vector_draw)
 
-    return
-    sd.pause()
+    return  # TODO Эта операция тут не нужна
+    sd.pause()  # TODO Эта операция тут не нужна
 
 
 color_vector_draw = 0
@@ -69,6 +69,9 @@ n = 0
 i = 3
 
 gon_choice = {
+    # TODO в этот модуль надо перенести функции обертки
+    # TODO И добавить их названия сюда, вместо poly_gon
+    # TODO Чтобы пользователь выбирал номер и по номеру была выбрана и запущена нужная функция, а не одна и та же)
     '3': {'gon_name': 'Треугольник', 'func': poly_gon},
     '4': {'gon_name': 'Квадрат', 'func': poly_gon},
     '5': {'gon_name': 'Пятиугольник', 'func': poly_gon},

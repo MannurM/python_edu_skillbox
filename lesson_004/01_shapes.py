@@ -125,13 +125,10 @@ def poly_gon(point, start_angle, length=100, n=3):
     angle_step = 360 // n
     point_n = point
     vn = None
-
     for angle in range(0, 360 - angle_step, angle_step):
         vn = sd.get_vector(start_point=point_n, angle=start_angle + angle, length=length, width=3)
         vn.draw()
-
         point_n = vn.end_point
-
     sd.line(start_point=vn.end_point, end_point=point, width=3)
 
 
@@ -177,3 +174,4 @@ hexagon(point=sd.get_point(900, 250), angle=0, length=120)
 
 
 sd.pause()
+#зачет!

@@ -46,20 +46,6 @@ def poly_gon(start_point, start_angle, length=50, n=3, width=3, color_num_int=sd
 
     sd.line(start_point=vn.end_point, end_point=start_point, width=3)
 
-    # i = 0
-    # angle_step = 360 // n
-    # point_n = point
-    # vn = None
-    #
-    # while i < n - 1:
-    #     vn = sd.get_vector(start_point=point_n, angle=angle + angle_step * i, length=length)
-    #     sd.line(start_point=point_n, end_point=vn.end_point, color=color_vector_draw, width=width)
-    #
-    #     point_n = vn.end_point
-    #     i += 1
-    #
-    # sd.line(start_point=vn.end_point, end_point=point_1, color=color_vector_draw, width=width)
-
     sd.pause()
 
 
@@ -83,3 +69,4 @@ point = sd.get_point(600, 250)
 
 poly_gon(point, start_angle=0, length=50, n=12, width=4, color_num_int=colors[color_num]['sd_name'])
 # работает до n = 25, при длине вектора length < 50 дальше накапливается ошибка в углах поворота вектора
+#зачет!
