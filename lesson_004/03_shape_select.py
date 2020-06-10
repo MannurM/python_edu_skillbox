@@ -22,8 +22,8 @@ def color_number():
 def poly_gon_input():
     poly_gon_in = 2
 
-    while not poly_gon_in in gon_choice.values():
-        poly_gon_in = input('Введите желаемое количество углов у фигуры от 3 до 8 включительно:')
+    while not poly_gon_in in gon_choice:
+        poly_gon_in = input('Введите номер фигуры от 3 до 8 включительно:')
 
         n_digit = poly_gon_in
         if not n_digit.isdigit():
@@ -37,48 +37,44 @@ def poly_gon_input():
         else:
             return poly_gon_in
 
-# TODO Сюда надо будет перенести новый код!
-def poly_gon(point, angle=0, length=50, n=3, width=3, color_num_int=sd.COLOR_RED):
-    color_draw = color_num_int
 
-    if n < 3:
-        print('мало углов')
-        return
-
-    i = 0
-    angle_n = 360 // n
-    point_n = point
+def poly_gon(start_point, start_angle, length=50, n=3, width=3, color=sd.COLOR_RED):
+    color_vector_draw = color
 
     sd.resolution = 1200, 600
+
+    # if n < 3:
+    #     print('мало углов')
+    #     return
+
+    angle_step = 360 // n
+    point_n = start_point
     vn = None
 
-    while i < n - 1:
-        vn = sd.get_vector(start_point=point_n, angle=angle + angle_n * i, length=length)
-        sd.line(start_point=point_n, end_point=vn.end_point, color=color_draw, width=width)
+    for angle in range(0, 360 - angle_step, angle_step):
+        vn = sd.get_vector(start_point=point_n, angle=start_angle + angle, length=length, width=3)
+        vn.draw(color_vector_draw)
 
         point_n = vn.end_point
-        i += 1
 
-    sd.line(start_point=vn.end_point, end_point=point, color=color_draw, width=width)
+    sd.line(start_point=vn.end_point, end_point=start_point, width=3, color=color_vector_draw)
+
+    return
+    sd.pause()
 
 
-color_draw = 0
+color_vector_draw = 0
 poly_gon_in = 0
 n = 0
 i = 3
-# TODO Нам надо реализовать выбор функции пользователем
-# TODO Для этого мы выбираем тот же путь, что в 02 с выбором цвета.
-# TODO Берем ту же структуру данных. Чтобы хранить функции в словаре - надо указать их без скобок, только имя
-# TODO Запустить её можно будет следующим образом:
-# TODO функция = словарь[юзер_выбор]['func']
-# TODO функция(параметры)
+
 gon_choice = {
-    'треугольник': '3',
-    'квадрат': '4',
-    'пятиугольник': '5',
-    'гайка': '6',
-    'семиугольник': '7',
-    'восьмиугольник': '8',
+    '3': {'gon_name': 'Треугольник', 'func': poly_gon},
+    '4': {'gon_name': 'Квадрат', 'func': poly_gon},
+    '5': {'gon_name': 'Пятиугольник', 'func': poly_gon},
+    '6': {'gon_name': 'Шестиугольник', 'func': poly_gon},
+    '7': {'gon_name': 'Семиугольник', 'func': poly_gon},
+    '8': {'gon_name': 'Восьмиугольник', 'func': poly_gon},
 }
 
 colors = {
@@ -96,25 +92,32 @@ for x in range(150, 900, 300):
     for y in range(100, 600, 300):
         n = i
 
-        poly_gon(point=sd.get_point(x, y), angle=0, length=50, n=n, width=4, color_num_int=sd.COLOR_YELLOW)
+        poly_gon(start_point=sd.get_point(x, y), start_angle=0, length=50, n=n, width=4, color=sd.COLOR_YELLOW)
 
         i += 1
 
 print("Рисуем Вашу фигуру")
+print('Выберите цвет по номеру')
+for number, color_name in colors.items():
+    print(number, ':', colors[number]['color_name'])
 
 color_num = color_number()  # выбор цвета
+print('Выберите фигуру:')
+for user_input, name in gon_choice.items():
+    print('    если хотите', gon_choice[user_input]['gon_name'], '- введите цифру -', user_input)
 
-for user_input, func in gon_choice.items():
-    print('выберите фигуру - ', user_input, 'введите - ', gon_choice[user_input])
-
-poly_gon_in = int(poly_gon_input())  # выбираем количество углов
+poly_gon_in = poly_gon_input()  # выбираем количество углов
 
 x = 600
 y = 200
 
 sd.clear_screen()
 
-poly_gon(point=sd.get_point(x, y), angle=0, length=100, n=poly_gon_in, width=5,
-         color_num_int=colors[color_num]['sd_name'])
+func = gon_choice[poly_gon_in]['func']
 
+func(start_point=sd.get_point(x, y), start_angle=0, length=100, n=int(poly_gon_in), width=5,
+     color=colors[color_num]['sd_name'])
+
+# poly_gon(start_point=sd.get_point(x, y), start_angle=0, length=100, n=n, width=5, color=colors[color_num]['sd_name'])
+print('Готово!')
 sd.pause()

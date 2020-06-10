@@ -24,8 +24,8 @@ def color_number():
 
     return color_num_1
 
-# TODO Сюда надо перенести новый код из 01
-def poly_gon(point_1, angle=0, length=50, n=3, width=3, color_num_int=sd.COLOR_RED):
+
+def poly_gon(start_point, start_angle, length=50, n=3, width=3, color_num_int=sd.COLOR_RED):
     color_vector_draw = color_num_int
 
     sd.resolution = 1200, 600
@@ -34,19 +34,31 @@ def poly_gon(point_1, angle=0, length=50, n=3, width=3, color_num_int=sd.COLOR_R
         print('мало углов')
         return
 
-    i = 0
     angle_step = 360 // n
-    point_n = point_1
+    point_n = start_point
     vn = None
 
-    while i < n - 1:
-        vn = sd.get_vector(start_point=point_n, angle=angle + angle_step * i, length=length)
-        sd.line(start_point=point_n, end_point=vn.end_point, color=color_vector_draw, width=width)
+    for angle in range(0, 360 - angle_step, angle_step):
+        vn = sd.get_vector(start_point=point_n, angle=start_angle + angle, length=length, width=3)
+        vn.draw(color_vector_draw)
 
         point_n = vn.end_point
-        i += 1
 
-    sd.line(start_point=vn.end_point, end_point=point_1, color=color_vector_draw, width=width)
+    sd.line(start_point=vn.end_point, end_point=start_point, width=3)
+
+    # i = 0
+    # angle_step = 360 // n
+    # point_n = point
+    # vn = None
+    #
+    # while i < n - 1:
+    #     vn = sd.get_vector(start_point=point_n, angle=angle + angle_step * i, length=length)
+    #     sd.line(start_point=point_n, end_point=vn.end_point, color=color_vector_draw, width=width)
+    #
+    #     point_n = vn.end_point
+    #     i += 1
+    #
+    # sd.line(start_point=vn.end_point, end_point=point_1, color=color_vector_draw, width=width)
 
     sd.pause()
 
@@ -69,5 +81,5 @@ color_num = color_number()
 
 point = sd.get_point(600, 250)
 
-poly_gon(point, angle=0, length=50, n=12, width=4, color_num_int=colors[color_num]['sd_name'])
+poly_gon(point, start_angle=0, length=50, n=12, width=4, color_num_int=colors[color_num]['sd_name'])
 # работает до n = 25, при длине вектора length < 50 дальше накапливается ошибка в углах поворота вектора

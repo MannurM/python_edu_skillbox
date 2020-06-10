@@ -121,16 +121,14 @@ sd.resolution = 1200, 600
 
 # Часть 2 (делается после зачета первой части) - Эх, устал ждать когда проверят третий урок - сделал вот такую функцию.
 
-def poly_gon(point, angle, length=100, n=3):  # TODO Всё отлично, но вот этот angle из параметров
-    # TODO Не используется внутри функции, тк в цикле у нас у переменной такое же название
-    # TODO Назовите этот угол start_angle
+def poly_gon(point, start_angle, length=100, n=3):
     angle_step = 360 // n
     point_n = point
     vn = None
 
     for angle in range(0, 360 - angle_step, angle_step):
-        vn = sd.get_vector(start_point=point_n, angle=angle, length=length, width=3)
-        vn.draw()  # TODO И добавляйте его в sd.get_vector - angle=start_angle + angle
+        vn = sd.get_vector(start_point=point_n, angle=start_angle + angle, length=length, width=3)
+        vn.draw()
 
         point_n = vn.end_point
 
@@ -149,7 +147,7 @@ def pentagon(point, angle=0, length=100):
     poly_gon(point, angle, length, n=5)
 
 
-def hexagon(point, angle=0, length=100, n=6):  # TODO Тут n=6 надо убрать
+def hexagon(point, angle=0, length=100):
     poly_gon(point, angle, length, n=6)
 
 
