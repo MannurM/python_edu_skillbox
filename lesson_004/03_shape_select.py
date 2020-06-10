@@ -11,41 +11,36 @@ import simple_draw as sd
 # Результат решения см lesson_004/results/exercise_03_shape_select.jpg
 
 def color_number():
-    color_num = 9  # TODO Внутри функций названия должны отличаться от названий снаружи
+    color_n = 9
+    while not color_n in colors:
+        color_n = input('Введите желаемый номер цвета:')
 
-    while not color_num in colors:
-        color_num = input('Введите желаемый номер цвета:')
-
-    return color_num
+    return color_n
 
 
 def poly_gon_input():
-    poly_gon_in = 2  # TODO Внутри функций названия должны отличаться от названий снаружи
+    poly_gon_1 = 2
 
-    while not poly_gon_in in gon_choice:
-        poly_gon_in = input('Введите номер фигуры от 3 до 8 включительно:')
+    while not poly_gon_1 in gon_choice:
+        poly_gon_1 = input('Введите номер фигуры от 3 до 8 включительно:')
 
-        n_digit = poly_gon_in
+        n_digit = poly_gon_1
         if not n_digit.isdigit():
-            print('вы ввели не число', poly_gon_in, ',', 'попробуйте еще раз')
+            print('вы ввели не число', poly_gon_1, ',', 'попробуйте еще раз')
             continue
 
-        if int(poly_gon_in) <= 2 or int(poly_gon_in) > 8:
-            print('вы ввели некорректный номер', poly_gon_in, ',', 'попробуйте еще раз')
+        if int(poly_gon_1) <= 2 or int(poly_gon_1) > 8:
+            print('вы ввели некорректный номер', poly_gon_1, ',', 'попробуйте еще раз')
             continue
 
         else:
-            return poly_gon_in
+            return poly_gon_1
 
 
 def poly_gon(start_point, start_angle, length=50, n=3, width=3, color=sd.COLOR_RED):
     color_vector_draw = color
 
     sd.resolution = 1200, 600
-
-    # if n < 3:  # TODO Лишний код удаляем
-    #     print('мало углов')
-    #     return
 
     angle_step = 360 // n
     point_n = start_point
@@ -59,8 +54,29 @@ def poly_gon(start_point, start_angle, length=50, n=3, width=3, color=sd.COLOR_R
 
     sd.line(start_point=vn.end_point, end_point=start_point, width=3, color=color_vector_draw)
 
-    return  # TODO Эта операция тут не нужна
-    sd.pause()  # TODO Эта операция тут не нужна
+
+def triangle(start_point, start_angle, length=50, n=3, width=3, color=sd.COLOR_RED):
+    poly_gon(start_point, start_angle, length, n, width, color=color)
+
+
+def square(start_point, start_angle, length=50, n=4, width=3, color=sd.COLOR_RED):
+    poly_gon(start_point, start_angle, length, n, width, color=color)
+
+
+def pentagon(start_point, start_angle, length=50, n=5, width=3, color=sd.COLOR_RED):
+    poly_gon(start_point, start_angle, length, n, width, color=color)
+
+
+def hexagon(start_point, start_angle, length=50, n=6, width=3, color=sd.COLOR_RED):
+    poly_gon(start_point, start_angle, length, n, width, color=color)
+
+
+def heptagon(start_point, start_angle, length=50, n=7, width=3, color=sd.COLOR_RED):
+    poly_gon(start_point, start_angle, length, n, width, color=color)
+
+
+def oktagon(start_point, start_angle, length=50, n=8, width=3, color=sd.COLOR_RED):
+    poly_gon(start_point, start_angle, length=length, n=n, width=width, color=color)
 
 
 color_vector_draw = 0
@@ -69,15 +85,12 @@ n = 0
 i = 3
 
 gon_choice = {
-    # TODO в этот модуль надо перенести функции обертки
-    # TODO И добавить их названия сюда, вместо poly_gon
-    # TODO Чтобы пользователь выбирал номер и по номеру была выбрана и запущена нужная функция, а не одна и та же)
-    '3': {'gon_name': 'Треугольник', 'func': poly_gon},
-    '4': {'gon_name': 'Квадрат', 'func': poly_gon},
-    '5': {'gon_name': 'Пятиугольник', 'func': poly_gon},
-    '6': {'gon_name': 'Шестиугольник', 'func': poly_gon},
-    '7': {'gon_name': 'Семиугольник', 'func': poly_gon},
-    '8': {'gon_name': 'Восьмиугольник', 'func': poly_gon},
+    '3': {'gon_name': 'Треугольник', 'func': triangle},
+    '4': {'gon_name': 'Квадрат', 'func': square},
+    '5': {'gon_name': 'Пятиугольник', 'func': pentagon},
+    '6': {'gon_name': 'Шестиугольник', 'func': hexagon},
+    '7': {'gon_name': 'Семиугольник', 'func': heptagon},
+    '8': {'gon_name': 'Восьмиугольник', 'func': oktagon},
 }
 
 colors = {
@@ -118,9 +131,10 @@ sd.clear_screen()
 
 func = gon_choice[poly_gon_in]['func']
 
-func(start_point=sd.get_point(x, y), start_angle=0, length=100, n=int(poly_gon_in), width=5,
+func(start_point=sd.get_point(x, y), start_angle=0, length=200, n=int(poly_gon_in), width=5,
      color=colors[color_num]['sd_name'])
 
 # poly_gon(start_point=sd.get_point(x, y), start_angle=0, length=100, n=n, width=5, color=colors[color_num]['sd_name'])
 print('Готово!')
+
 sd.pause()
