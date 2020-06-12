@@ -30,7 +30,9 @@
 # from package_1.subpackage import module_2
 # module_2.function2()
 
-print('На районе живут: ', end='')
+print('На районе живут: ', end='')  # TODO Все импорты надо перенести в самый верх
+# TODO Списка названть по разному (можно добавлять к названию номера домов и комнат)
+# TODO Списки после импорта сложить (через +) и применить один Join
 
 from district.central_street.house1.room1 import folks
 
