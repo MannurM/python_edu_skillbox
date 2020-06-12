@@ -14,5 +14,28 @@
 
 # Создать рецепт своего бургера, по вашему вкусу.
 # Если не хватает инградиентов - создать соответствующие функции в модуле my_burger
+# mb.mayonnaise()
+# mb.cutlet()
+# mb.cucumber()
+# mb.tomato()
+# mb.mayonnaise()
+# mb.cheese()
+# mb.onion()
+# mb.dill()
+# mb.mustard()
+# mb.salad()
 
-# TODO здесь ваш код
+import my_burger as mb
+
+# TODO рецепт чизбургера я не знаю, пусть будет такой
+print('Рецепт:')
+mb.bun()
+mb.salad()
+mb.cutlet()
+mb.cheese()
+mb.onion()
+mb.dill()
+mb.cucumber()
+mb.tomato()
+mb.mayonnaise()
+mb.bun()

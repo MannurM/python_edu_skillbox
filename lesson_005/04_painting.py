@@ -18,7 +18,25 @@
 # пример см. lesson_005/results/04_painting.jpg
 # Приправить своей фантазией по вкусу (коты? коровы? люди? трактор? что придумается)
 
-# TODO здесь ваш код
+
+
+from morning_in_village.brick_house import brick_house
+
+brick_house(450, 50)
+
+from morning_in_village.rainbow import rainbow
+
+rainbow()
+
+from morning_in_village.three import three
+
+three()
+
+from morning_in_village.snowflake import snow
+
+snow()
+
+
 
 # Усложненное задание (делать по желанию)
 # Анимировать картину.
