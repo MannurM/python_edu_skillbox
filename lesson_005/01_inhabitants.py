@@ -13,3 +13,4 @@ print(', '.join(folks_room_1))
 
 print('В комнате room_2 живет: ', end='')
 print(folks[0])
+#зачет!

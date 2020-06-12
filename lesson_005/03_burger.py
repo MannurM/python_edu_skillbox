@@ -25,26 +25,27 @@
 # mb.mustard()
 # mb.salad()
 
-import my_burger as mb
-# рецепт чизбургера я не знаю, пусть будет такой
-# вполне себе неплохой рецепт) хотя помидоры я бы не стал в самый низ класть, булочка вся промокнет
-# как раз помидоры - то наверху, бутерброды чаще все собираются снизу вверх ))
-# ...Добавим булочку
-# Добавим лист салата
-# Добавим котлету...
-#
-print('Рецепт:')
-mb.bun()
-mb.salad()
-mb.cutlet()
-mb.cheese()
-mb.onion()
-mb.dill()
-mb.cucumber()
-mb.tomato()
-mb.mayonnaise()
-mb.bun()
+# import my_burger as mb
+# # рецепт чизбургера я не знаю, пусть будет такой
+# # вполне себе неплохой рецепт) хотя помидоры я бы не стал в самый низ класть, булочка вся промокнет
+# # как раз помидоры - то наверху, бутерброды чаще все собираются снизу вверх ))
+# # ...Добавим булочку
+# # Добавим лист салата
+# # Добавим котлету...
+# #
+# print('Рецепт:')
+# mb.bun()
+# mb.salad()
+# mb.cutlet()
+# mb.cheese()
+# mb.onion()
+# mb.dill()
+# mb.cucumber()
+# mb.tomato()
+# mb.mayonnaise()
+# mb.bun()
 
 from my_burger import bun, salad, cutlet, cheese, onion, dill, cucumber, tomato, mayonnaise
 print('Рецепт:')
 bun(), salad(), cutlet(), cheese(), onion(), dill(), cucumber(), tomato(), mayonnaise(), bun()
+#зачет!
