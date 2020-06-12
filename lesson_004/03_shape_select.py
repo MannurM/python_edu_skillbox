@@ -138,3 +138,4 @@ func(start_point=sd.get_point(x, y), start_angle=0, length=200, n=int(poly_gon_i
 print('Готово!')
 
 sd.pause()
+#зачет!
