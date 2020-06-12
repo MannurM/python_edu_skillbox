@@ -19,24 +19,19 @@
 # Приправить своей фантазией по вкусу (коты? коровы? люди? трактор? что придумается)
 
 
-# TODO И здесь все импорты в самое начало файла!
+
 from morning_in_village.brick_house import brick_house
+from morning_in_village.rainbow import rainbow
+from morning_in_village.three import three
+from morning_in_village.snowflake import snow
 
 brick_house(450, 50)
 
-from morning_in_village.rainbow import rainbow  # TODO Хм, у меня этого модуля нету, забыли запушить?
-
 rainbow()
-
-from morning_in_village.three import three
 
 three()
 
-from morning_in_village.snowflake import snow
-
 snow()
-
-
 
 # Усложненное задание (делать по желанию)
 # Анимировать картину.
