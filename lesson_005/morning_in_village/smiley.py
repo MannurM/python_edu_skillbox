@@ -9,8 +9,6 @@ sd.resolution = (600, 600)
 # Вывести 10 смайликов в произвольных точках экрана.
 
 def smiley(x, y):
-
-
     sd.resolution = (600, 600)
 
     point = sd.get_point(x, y)
@@ -34,10 +32,6 @@ def smiley(x, y):
 
     sd.lines(point_list=point_list, color=sd.COLOR_GREEN, closed=False, width=1)
 
-
     # for _ in range(10):
     #     x = sd.randint(30, 570)
     #     y = sd.randint(30, 570)
-
-
-

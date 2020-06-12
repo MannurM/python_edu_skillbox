@@ -1,7 +1,7 @@
 import simple_draw as sd
+
+
 def brick_house(x, y):
-
-
     sd.resolution = (1200, 600)
 
     start_point = sd.get_point(x, y)
@@ -23,10 +23,8 @@ def brick_house(x, y):
     sd.rectangle(left_bottom=start_point, right_top=end_point, color=color, width=width)
 
     from morning_in_village.smiley import smiley
-    smiley(x+105, y+105)
+    smiley(x + 105, y + 105)
 
-    point_list = [sd.get_point(x-10, y + 200), sd.get_point(x + 105, y + 300), sd.get_point(x + 210, y + 200), ]
+    point_list = [sd.get_point(x - 10, y + 200), sd.get_point(x + 105, y + 300), sd.get_point(x + 210, y + 200), ]
     sd.polygon(point_list=point_list, color=sd.COLOR_DARK_RED, width=1)
     sd.polygon(point_list=point_list, color=sd.COLOR_DARK_RED, width=0)
-
-

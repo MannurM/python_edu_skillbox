@@ -1,8 +1,9 @@
 import simple_draw as sd
+
+
 def wall(x, y):
     start_x = x
     start_y = y
-
 
     sd.resolution = (1200, 600)
 
@@ -12,16 +13,4 @@ def wall(x, y):
             left_bottom = sd.get_point(start_x + x, start_y + y)
             right_top = sd.get_point(start_x + x + 40, start_y + y + 20)
             sd.rectangle(left_bottom=left_bottom, right_top=right_top, color=sd.COLOR_GREEN, width=1)
-
-    # Подсказки:
-    #  Для отрисовки кирпича использовать функцию rectangle
-    #  Алгоритм должен получиться приблизительно такой:
-    #
-    #   цикл по координате Y
-    #       вычисляем сдвиг ряда кирпичей
-    #       цикл координате X
-    #           вычисляем правый нижний и левый верхний углы кирпича
-    #           рисуем кирпич
-
-
 

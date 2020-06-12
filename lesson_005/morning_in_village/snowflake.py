@@ -1,4 +1,6 @@
 import simple_draw as sd
+
+
 def snow():
     N = 20  # количество снежинок 1200/N
     length = 5
@@ -13,7 +15,6 @@ def snow():
     factor_b_list = []
     step_random_x = []
     step_random_y = []
-
 
     sd.resolution = (1200, 600)
 
