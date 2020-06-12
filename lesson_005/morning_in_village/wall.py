@@ -1,8 +1,9 @@
+import simple_draw as sd
 def wall(x, y):
     start_x = x
     start_y = y
 
-    import simple_draw as sd
+
     sd.resolution = (1200, 600)
 
     for row, y in enumerate(range(0, 200, 20)):

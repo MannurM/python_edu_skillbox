@@ -1,3 +1,4 @@
+import simple_draw as sd
 def rainbow():
     import simple_draw as sd
     sd.resolution = (600, 600)

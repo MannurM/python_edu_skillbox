@@ -1,7 +1,8 @@
+import simple_draw as sd
 def three(x=800, y=50):
     start_x = x
     start_y = y
-    import simple_draw as sd
+
 
     sd.resolution = 900, 700
     root_point = sd.get_point(start_x, start_y)

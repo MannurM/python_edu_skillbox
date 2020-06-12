@@ -1,3 +1,4 @@
+import simple_draw as sd
 def snow():
     N = 20  # количество снежинок 1200/N
     length = 5
@@ -13,7 +14,7 @@ def snow():
     step_random_x = []
     step_random_y = []
 
-    import simple_draw as sd
+
     sd.resolution = (1200, 600)
 
     central_position = sd.get_point(50, 500)

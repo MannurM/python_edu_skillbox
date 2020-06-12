@@ -1,5 +1,6 @@
+import simple_draw as sd
 def brick_house(x, y):
-    import simple_draw as sd
+
 
     sd.resolution = (1200, 600)
 

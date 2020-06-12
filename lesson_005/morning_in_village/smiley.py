@@ -9,7 +9,7 @@ sd.resolution = (600, 600)
 # Вывести 10 смайликов в произвольных точках экрана.
 
 def smiley(x, y):
-    import simple_draw as sd
+
 
     sd.resolution = (600, 600)
 
