@@ -23,13 +23,19 @@
 import random
 
 
-# global guess_number_1, guess_number_2, guess_number_3, guess_number_4
+# global guess_number_1, guess_number_2, guess_number_3, guess_number_4  TODO Эта строка тут и правда не нужна
+# TODO Но саму переменную задать нужно
+# TODO число_компьютера = None
+# TODO например, просто чтобы создать эту переменную, а в функции уже её заполнять
 
 
 def make_number():
     global guess_number_1, guess_number_2, guess_number_3, guess_number_4
+    # TODO Зачем 4 номера? Нужен 1
+    # TODO Тут ещё нужно будет очищать список перед заполнением (для повторых вызовов функций)
     number_list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
+    # TODO Попробуйте использовать цикл, добавляя по одному числу, пока не будет добавлено 4 числа
+    # TODO И в цикле проверять - если число есть в списке - не добавлять, если нету - добавлять
     guess_number_1 = random.choice(number_list[1:])
     number_list.remove(guess_number_1)
 
@@ -52,9 +58,11 @@ def make_number():
 
 
 def check_input():
+    global count  # TODO глобал должен идти первой строчкой (я уже перенес её выше)
     check_number = '0'
-    global count
     count = 1
+    # TODO Вся эта часть тут не нужна, её надо реализовать в основном модуле.
+    # TODO Здесь оставить только проверку числа на быков и коров и возврат быков и коров, без лишних принтов и тд
     while not check_number == guess_number:
         print('Ход', count)
         check_number = input('Введите ваше число:')
@@ -71,7 +79,9 @@ def check_input():
         check_number_2 = check_number[1]
         check_number_3 = check_number[2]
         check_number_4 = check_number[3]
-
+        # TODO Для проверки повторов можно использовать set()
+        # TODO Если из списка чисел сделать множество при помощи set()
+        # TODO то из него удалятся все дубли.
         if check_number_1 == check_number_2 or check_number_1 == check_number_3 or check_number_1 == check_number_4:
             print('невозможно проверить, в вашем числе повторяющиеся цифры. ', check_number)
             continue
@@ -94,7 +104,8 @@ def check_input():
                 cow += 1
             elif check_number[key] in guess_number.values():
                 cow += 1
-
+        # TODO Печатать тут ничего не нужно, просто возвращайте быков и коров
+        # TODO А уже результат считать и печатать нужно там, в 01
         print('cows -', cow, 'цифры есть в числе')
         print('bulls -', bull, 'цифры на своем месте')
         print(' ')
