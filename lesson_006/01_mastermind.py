@@ -44,4 +44,38 @@
 # Это пример применения SOLID принципа (см https://goo.gl/GFMoaI) в архитектуре программ.
 # Точнее, в этом случае важен принцип единственной ответственности - https://goo.gl/rYb3hT
 
-# TODO здесь ваш код...
+from mastermind_engine import make_number, check_input, count
+# import mastermind_engine
+# print(dir(mastermind_engine))
+make_number()
+print('Число загадано!')
+check_input()
+print('Отгадано на', count, 'ходу')
+
+answer = input('хотите еще партию y/n? ')
+
+if answer == 'y' or answer == 'Y':
+    make_number()
+    print('Число загадано!')
+    check_input()
+    print('Отгадано на', count, 'ходу')
+print('Тогда давай - до свидания!')
+
+# TODO может лучше сделать рекурсию?
+# def game_bulls_cows():
+#     from mastermind_engine import make_number, check_input, count
+#
+#     make_number()
+#     print('Число загадано!')
+
+#     check_input()
+#     print('Отгадано на', count, 'ходу')
+#
+#     answer = input('хотите еще партию? y/n')
+#
+#     if answer == 'y' or answer == 'Y':
+#         game_bulls_cows()
+#     print('Тогда давай - до свидания!')
+#
+#
+# game_bulls_cows()
