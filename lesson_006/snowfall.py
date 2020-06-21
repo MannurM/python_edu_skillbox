@@ -8,12 +8,10 @@ import simple_draw as sd
 #  номера_достигших_низа_экрана() - выдает список номеров снежинок, которые вышли за границу экрана
 #  удалить_снежинки(номера) - удаляет снежинки с номерами из списка
 # снежинки хранить в глобальных переменных модуля snowfall
-# TODO Глобальные переменные сперва создать "снаружи"
-# TODO А затем уже заполнять внутри функции
 
-def snow_make():  # TODO N нужно задавать параметром
-    # TODO Тут нужен global писать и указывать все глобальные переменные, которыми пользуетесь
-    for i in range(int(1200 / N)):  # TODO А что за странное условие?) range 1200/N? Почему не N?
+def snow_make(N):
+    global n_list_x1, n_list_y1, factor_a_list, factor_b_list, step_random_x, step_random_y, length
+    for i in range(N):
         x = sd.random_number(- length, 1200)
         n_list_x1.append(x)
 
@@ -34,7 +32,7 @@ def snow_make():  # TODO N нужно задавать параметром
 
 
 def snow_draw_background():
-    # TODO И тут тоже нужно global указывать с перечнем переменных (и ниже тоже)
+    global n_list_x1, n_list_y1, factor_a_list, factor_b_list
     for i, x in enumerate(n_list_x1):
         factor_a = factor_a_list[i]
         factor_b = factor_b_list[i]
@@ -47,13 +45,14 @@ def snow_draw_background():
 
 
 def snow_shift():
+    global n_list_x1, n_list_y1, step_random_x, step_random_y
     for i, x in enumerate(n_list_x1):
-        n_list_x1[i] = x = n_list_x1[i] + step_random_x[i]
-        # TODO Тут лишнее звено x,y можно убрать
-        n_list_y1[i] = y = n_list_y1[i] - step_random_y[i]
+        n_list_x1[i] = n_list_x1[i] + step_random_x[i]
+        n_list_y1[i] = n_list_y1[i] - step_random_y[i]
 
 
 def snow_draw_color():
+    global n_list_x1, n_list_y1, factor_a_list, factor_b_list
     for i, x in enumerate(n_list_x1):
         factor_a = factor_a_list[i]
         factor_b = factor_b_list[i]
@@ -66,25 +65,41 @@ def snow_draw_color():
 
 
 def snow_create_new(step_drift):
+    global n_list_y, n_list_x1, n_list_y1, factor_a_list, factor_b_list, step_random_x, step_random_y, N, length, count, step_count
     for i, x in enumerate(n_list_x1):
         if n_list_y1[i] <= step_drift:
-            # TODO Тут нужно заполнять список индексов - индексами упавших снежинок
             n_list_y1[i] = 650
             n_list_x1[i] = sd.random_number(-4 * length, 1300)
-    # TODO И вернуть этот список return-ом
 
-# TODO А далее использовать этот список в функции удаления снежинок
+        if n_list_y1[i] <= 0:
+            n_list_y[i] = n_list_y1[i]
+    return n_list_y
 
-N = 20  # количество снежинок 1200/N
+
+# TODO  я не понял  смысл задания? ...номера_достигших_низа_экрана() - выдает список номеров снежинок,
+# TODO которые вышли за границу экрана
+# TODO удалить_снежинки(номера) - удаляет снежинки с номерами из списка...
+# TODO или так ---> нужно убрать сугроб, ---> потом сформировать список для удаления, снежинок вышедших за пределы экрана ---
+# TODO ---> удалить номера снежинок
+# TODO но в моей программе если снежинка достигает границы сугроба - она появляется сверху экрана иначе сугроба не будет
+# TODO ---> вообщем, я не понял)
+
+def snow_del(snow_del_list):
+    for i, x in enumerate(snow_del_list):
+        if n_list_y1[i] == n_list_y[i]:
+            del n_list_y1[i]
+
+
 length = 15
 count = 0
 step_count = 250
 
-
 n_list_x1 = []
 n_list_y1 = []
-
+n_list_y = []
 factor_a_list = []
 factor_b_list = []
 step_random_x = []
 step_random_y = []
+
+# global n_list_x1, n_list_y1, factor_a_list, factor_b_list, step_random_x, step_random_y, N, length, count, step_count

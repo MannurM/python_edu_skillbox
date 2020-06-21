@@ -44,45 +44,52 @@
 # Это пример применения SOLID принципа (см https://goo.gl/GFMoaI) в архитектуре программ.
 # Точнее, в этом случае важен принцип единственной ответственности - https://goo.gl/rYb3hT
 
-from mastermind_engine import make_number, check_input, count
+from mastermind_engine import make_number, check_input
+
 # import mastermind_engine
 # print(dir(mastermind_engine))
-make_number()
-print('Число загадано!')
-check_input()
-print('Отгадано на', count, 'ходу')
-
-answer = input('хотите еще партию y/n? ')
-# TODO Тут нужен цикл, возможно даже не один,
-# TODO 1) Чтобы загадывалось число,
-# TODO 2) затем в цикле у пользователя запрашивался input до тех пор, пока он не введет правильное число
-# TODO т.е. нужно после ввода делать проверки ещё
-# TODO 3) Проверить число пользователя на наличие быков и коров
-# TODO Если угадал 4 быка - спросить, хочет ли он начать игру заново, если Да - продолжать цикл, загадав новое число
-# TODO Если не угадал - продолжить цикл с тем же числом (т.е. заново спросить ввод пользователя и тд)
+answer = input('Хотите  сыграть партию  y/n? ')
 if answer == 'y' or answer == 'Y':
-    make_number()
-    print('Число загадано!')
-    check_input()
-    print('Отгадано на', count, 'ходу')
+    while answer != 'y' or answer != 'Y':
+
+        guess_number = make_number()
+        print('Число загадано!')
+        check_number = '0'
+        count = 1
+
+        while not check_number == guess_number:
+
+            print('Ход', count)
+            check_number = input('Введите ваше число:')
+
+            n_digit = check_number
+            if not n_digit.isdigit():
+                print('Вы ввели не число', check_number, ',', 'попробуйте еще раз')
+                continue
+
+            if int(check_number) < 1023 or int(check_number) > 9876:
+                print('Вы ввели некорректное число', check_number, ',', 'попробуйте еще раз')
+                continue
+
+            check_number_set = {check_number[0], check_number[1], check_number[2], check_number[3]}
+
+            if len(check_number_set) < 4:
+                print('Вы ввели некорректное число - с одинаковыми цифрами', check_number, ',', 'попробуйте еще раз')
+                continue
+
+            cow, bull = check_input(check_number)
+            print('cows -', cow, 'цифры есть в числе')
+            print('bulls -', bull, 'цифры на своем месте')
+
+            if bull == 4 and cow == 4:
+                print('Число угадано!!!')
+                print('Отгадано на', count, 'ходу')
+            count += 1
+
+        answer = input('Хотите  еще партию  y/n? ')
+        if answer == 'y' or answer == 'Y':
+            continue
+        else:
+            break
+
 print('Тогда давай - до свидания!')
-
-# может лучше сделать рекурсию? TODO Нет, к рекурсии стоит прибегать в последнюю очередь
-# TODO Она сложнее и затратнее по ресурсам, чем цикл.
-# def game_bulls_cows():
-#     from mastermind_engine import make_number, check_input, count
-#
-#     make_number()
-#     print('Число загадано!')
-
-#     check_input()
-#     print('Отгадано на', count, 'ходу')
-#
-#     answer = input('хотите еще партию? y/n')
-#
-#     if answer == 'y' or answer == 'Y':
-#         game_bulls_cows()
-#     print('Тогда давай - до свидания!')
-#
-#
-# game_bulls_cows()
