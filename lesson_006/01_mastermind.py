@@ -49,20 +49,23 @@ from mastermind_engine import make_number, check_input
 # import mastermind_engine
 # print(dir(mastermind_engine))
 answer = input('Хотите  сыграть партию  y/n? ')
-if answer == 'y' or answer == 'Y':
-    while answer != 'y' or answer != 'Y':
+if answer == 'y' or answer == 'Y':  # TODO Эта проверка лишняя
+    while answer != 'y' or answer != 'Y':  # TODO Цикл не начнётся, пока y или Y не будет в ответе
+        # TODO кстати перебирать варианты легче таким условием answer in ('y', 'Y', 'yes', и тд)
 
         guess_number = make_number()
         print('Число загадано!')
         check_number = '0'
-        count = 1
+        count = 1  # TODO А почему с 1 отсчёт идет?
 
         while not check_number == guess_number:
-
+            # TODO Я бы советовал код получения числа и проверки этого числа
+            # TODO вынести в отдельную функцию, которая бы запускала в цикле input-ы до тех пор
+            # TODO Пока введенное число не будет соответствовать всем требованиям
             print('Ход', count)
             check_number = input('Введите ваше число:')
 
-            n_digit = check_number
+            n_digit = check_number  # TODO зачем лишняя переменная создаётся?
             if not n_digit.isdigit():
                 print('Вы ввели не число', check_number, ',', 'попробуйте еще раз')
                 continue
@@ -72,6 +75,7 @@ if answer == 'y' or answer == 'Y':
                 continue
 
             check_number_set = {check_number[0], check_number[1], check_number[2], check_number[3]}
+            # TODO можно попробовать set(list(check_number))
 
             if len(check_number_set) < 4:
                 print('Вы ввели некорректное число - с одинаковыми цифрами', check_number, ',', 'попробуйте еще раз')

@@ -42,6 +42,7 @@ def make_number():
             count_make_number += 1
 
     guess_number = guess_number_list[0] + guess_number_list[1] + guess_number_list[2] + guess_number_list[3]
+    # TODO тут лучше использовать join (или сразу в цикле строку конкатенировать без создания списка)
 
     return guess_number
 
@@ -59,4 +60,5 @@ def check_input(check_number):
 
     return cow, bull
 
-global guess_number
+global guess_number  # TODO Эта строка лишняя, объявлять переменные глобальными надо внутри функций
+# TODO Т.е. по сути вы указываете явно где искать переменную для использования внутри функции
