@@ -22,6 +22,8 @@
 # Точнее, в этом случае важен принцип единственной ответственности - https://goo.gl/rYb3hT
 import random
 
+guess_number = None  # сперва глобальную переменную надо обозначить, а затем уже на неё ссылаться в функциях
+
 
 def make_number():
     global guess_number
@@ -52,9 +54,6 @@ def check_bull_cow(check_number):
     for key, value in enumerate(guess_number):
         if check_number[key] == guess_number[key]:
             bull += 1
-            # cow += 1
-
         elif check_number[key] in guess_number:
             cow += 1
-
     return cow, bull

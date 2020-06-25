@@ -69,7 +69,7 @@ while answer in ('y', 'Y', 'yes', 'Yes'):
     guess_number = make_number()
     print('Число загадано!')
     check_number = '0'
-    count = 1  # А почему с 1 отсчёт идет? - TODO это счетчик ходов для пользователя - поэтому с 1.
+    count = 1
 
     while not check_number == guess_number:
         print('Ход', count)
@@ -94,3 +94,4 @@ while answer in ('y', 'Y', 'yes', 'Yes'):
         break
 
 print('Тогда давай - до свидания!')
+#зачёт!
