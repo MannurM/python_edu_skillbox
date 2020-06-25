@@ -39,6 +39,7 @@ step_drift = 15
 length = 15
 
 while True:
+
     sd.start_drawing()
 
     snow_draw_background()
@@ -54,8 +55,16 @@ while True:
         step_count += 200
 
     snow_del_list = snow_create_new(step_drift)
-    # print(snow_del_list)
-    snow_del(snow_del_list)
+    # print(snow_del_list, 'snow_del_list')
+
+    if snow_del_list == []:
+        sd.finish_drawing()
+        print('проверка ')
+        continue
+    else:
+        print('Условие')
+        snow_del(snow_del_list)
+
     sd.finish_drawing()
 
     sd.sleep(0.01)

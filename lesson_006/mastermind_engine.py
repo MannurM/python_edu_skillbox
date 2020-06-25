@@ -41,24 +41,20 @@ def make_number():
             guess_number_list.append(guess_number_make)
             count_make_number += 1
 
-    guess_number = guess_number_list[0] + guess_number_list[1] + guess_number_list[2] + guess_number_list[3]
-    # TODO тут лучше использовать join (или сразу в цикле строку конкатенировать без создания списка)
-
+    guess_number = ''.join(guess_number_list)
+    print(guess_number)
     return guess_number
 
 
-def check_input(check_number):
+def check_bull_cow(check_number):
     global guess_number
     bull, cow = 0, 0
     for key, value in enumerate(guess_number):
         if check_number[key] == guess_number[key]:
             bull += 1
-            cow += 1
+            # cow += 1
 
         elif check_number[key] in guess_number:
             cow += 1
 
     return cow, bull
-
-global guess_number  # TODO Эта строка лишняя, объявлять переменные глобальными надо внутри функций
-# TODO Т.е. по сути вы указываете явно где искать переменную для использования внутри функции

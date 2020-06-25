@@ -44,56 +44,53 @@
 # Это пример применения SOLID принципа (см https://goo.gl/GFMoaI) в архитектуре программ.
 # Точнее, в этом случае важен принцип единственной ответственности - https://goo.gl/rYb3hT
 
-from mastermind_engine import make_number, check_input
+from mastermind_engine import make_number, check_bull_cow
+
 
 # import mastermind_engine
 # print(dir(mastermind_engine))
+
+def check_input():
+    global check_number
+    check_number = input('Введите ваше число:')
+    check_number_set = set(list(check_number))
+
+    while not check_number.isdigit() or check_number[0] == '0' or len(check_number_set) != 4:  #
+        check_number = input('Что - то с Вашим числом не так! Введите ваше число:')
+        check_number_set = set(list(check_number))
+
+    return check_number
+
+
 answer = input('Хотите  сыграть партию  y/n? ')
-if answer == 'y' or answer == 'Y':  # TODO Эта проверка лишняя
-    while answer != 'y' or answer != 'Y':  # TODO Цикл не начнётся, пока y или Y не будет в ответе
-        # TODO кстати перебирать варианты легче таким условием answer in ('y', 'Y', 'yes', и тд)
 
-        guess_number = make_number()
-        print('Число загадано!')
-        check_number = '0'
-        count = 1  # TODO А почему с 1 отсчёт идет?
+while answer in ('y', 'Y', 'yes', 'Yes'):
 
-        while not check_number == guess_number:
-            # TODO Я бы советовал код получения числа и проверки этого числа
-            # TODO вынести в отдельную функцию, которая бы запускала в цикле input-ы до тех пор
-            # TODO Пока введенное число не будет соответствовать всем требованиям
-            print('Ход', count)
-            check_number = input('Введите ваше число:')
+    guess_number = make_number()
+    print('Число загадано!')
+    check_number = '0'
+    count = 1  # А почему с 1 отсчёт идет? - TODO это счетчик ходов для пользователя - поэтому с 1.
 
-            n_digit = check_number  # TODO зачем лишняя переменная создаётся?
-            if not n_digit.isdigit():
-                print('Вы ввели не число', check_number, ',', 'попробуйте еще раз')
-                continue
+    while not check_number == guess_number:
+        print('Ход', count)
 
-            if int(check_number) < 1023 or int(check_number) > 9876:
-                print('Вы ввели некорректное число', check_number, ',', 'попробуйте еще раз')
-                continue
+        check_input()
+        cow, bull = check_bull_cow(check_number)
 
-            check_number_set = {check_number[0], check_number[1], check_number[2], check_number[3]}
-            # TODO можно попробовать set(list(check_number))
-
-            if len(check_number_set) < 4:
-                print('Вы ввели некорректное число - с одинаковыми цифрами', check_number, ',', 'попробуйте еще раз')
-                continue
-
-            cow, bull = check_input(check_number)
-            print('cows -', cow, 'цифры есть в числе')
-            print('bulls -', bull, 'цифры на своем месте')
-
-            if bull == 4 and cow == 4:
-                print('Число угадано!!!')
-                print('Отгадано на', count, 'ходу')
-            count += 1
-
-        answer = input('Хотите  еще партию  y/n? ')
-        if answer == 'y' or answer == 'Y':
-            continue
-        else:
+        if bull == 4:
+            print('Число угадано!!!')
+            print('Отгадано на', count, 'ходу')
             break
+
+        print('cows -', cow, 'цифры есть в числе')
+        print('bulls -', bull, 'цифры на своем месте')
+
+        count += 1
+
+    answer = input('Хотите  еще партию  y/n? ')
+    if answer in ('y', 'Y', 'yes', 'Yes'):
+        continue
+    else:
+        break
 
 print('Тогда давай - до свидания!')
