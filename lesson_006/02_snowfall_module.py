@@ -39,36 +39,20 @@ step_drift = 15
 length = 15
 
 while True:
-
     sd.start_drawing()
-
     snow_draw_background()
-
     snow_shift()
-
     snow_draw_color()
-
     snow_del_list = snow_create_new(0)
-
-    # вариант удаления через set
-    # snow_del_list = set(snow_create_new(0))
-    #
-    # if len(snow_del_list) == N:
-    #     sd.finish_drawing()
-    #     snow_del(snow_del_list)
-    #     break
-    # print(snow_del_count)
-
     if snow_del_count > N:
         break
     sd.finish_drawing()
-
     if len(snow_del_list) >= N:
         snow_del_count += len(snow_del_list)
-        snow_del(snow_del_list)
-
+        snow_del()
     sd.sleep(0.05)
     if sd.user_want_exit():
         break
 
 sd.pause()
+#зачёт!
