@@ -85,6 +85,11 @@ class Man:
         cprint('{} въехал в дом'.format(self.name), color='cyan')
 
     def find_cat(self, name_cat):
+        # TODO Сюда надо передать объект-кошку
+        # TODO и изменить её атрибут-дом на свой дом
+        # TODO И ещё хорошо было бы создать у человека атрибут-список и добавлять кошку в этот список
+        # TODO вместо просто переменной, которая есть сейчас
+        # TODO тогда можно будет несколько кошек добаить в список
         self.fullness -= 10
         self.cat = name_cat
         cprint('{} нашел кота - его зовут {}'.format(self.name, self.cat), color='cyan')
@@ -179,7 +184,7 @@ citizens = [
     Man(name='Кенни'),
 ]
 # Список котов
-cats = [
+cats = [  # TODO Кошек надо создавать отдельно от людей
     Man.Cat(name_cat='Том'),
     Man.Cat(name_cat='Мурзик'),
     Man.Cat(name_cat='Рыжий'),
@@ -189,7 +194,7 @@ my_sweet_home = House()
 for citisen in citizens:
     citisen.go_to_the_house(house=my_sweet_home)
     # въезд животных
-    if citisen.cat == None:
+    if citisen.cat == None:  # TODO С объектами синглтонами(вроде None, True, False) стоит использовать "is"
         print('Нужен кот!')
         citisen.find_cat(name_cat=cats.pop(0))
 

@@ -53,22 +53,25 @@ class Snowflake:
         sd.snowflake(center=self.point, length=self.length, color=self.color, factor_a=self.factor_a,
                      factor_b=self.factor_b)
 
-    # def can_fall(self):
-    #     if self.y > 0:
-    #         self.can_fall = True
+    # def can_fall(self):  TODO Этот метод нужен и его можно за одну строчку выолнить, просто вернув
+    #     if self.y > 0:  TODO условие, которое вы используете в if
+    #         self.can_fall = True  TODO пример: return a > b
     #         print(self.can_fall)
     #     else:
     #         self.can_fall = False
     #         print('Снежинка упала!')
     #         print(self.can_fall)
 
-    def get_fallen_flakes(self):
+    def get_fallen_flakes(self):  # TODO Этот метод должен быть функцией
+        # TODO нужно получить на вход список, пройти по нему циклом и проверить есть ли там упавшие снежинки
+        # TODO если есть - собрать их индексы в список и вернуть этот список
         if self.y <= 0:
             count_fallen_flakes += 1
         return count_fallen_flakes
 
 
 def append_flakes(count):
+    # TODO тут надо получить список и добавить в него снежинки
     get_flakes(count)
 
 

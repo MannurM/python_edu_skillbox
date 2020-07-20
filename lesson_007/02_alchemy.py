@@ -64,7 +64,6 @@ class Terra:
         if isinstance(other, Fire):
             return Lava()
 
-
     def __str__(self):
         return 'Земля'
 
@@ -80,7 +79,6 @@ class Air:
             return Storm()
         if isinstance(other, Fire):
             return Lightning()
-
 
     def __str__(self):
         return 'Воздух'
@@ -164,9 +162,7 @@ print(Air(), '+', Fire(), '=', Air() + Fire())
 print(Air(), '+', Terra(), '=', Air() + Terra())
 print(Air(), '+', Water(), '=', Air() + Water())
 
-
-
-
 # Усложненное задание (делать по желанию)
 # Добавить еще элемент в игру.
 # Придумать что будет при сложении существующих элементов с новым.
+#зачёт!
