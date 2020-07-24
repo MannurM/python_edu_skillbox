@@ -2,6 +2,7 @@
 
 import simple_draw as sd
 
+
 # Шаг 1: Реализовать падение снежинки через класс. Внести в методы:
 #  - создание снежинки с нужными параметрами
 #  - отработку изменений координат
@@ -23,7 +24,6 @@ import simple_draw as sd
 #
 #     if sd.user_want_exit():
 #         break
-global count_fallen_flakes
 
 
 class Snowflake:
@@ -53,29 +53,11 @@ class Snowflake:
         sd.snowflake(center=self.point, length=self.length, color=self.color, factor_a=self.factor_a,
                      factor_b=self.factor_b)
 
-    # def can_fall(self):  TODO Этот метод нужен и его можно за одну строчку выолнить, просто вернув
-    #     if self.y > 0:  TODO условие, которое вы используете в if
-    #         self.can_fall = True  TODO пример: return a > b
-    #         print(self.can_fall)
-    #     else:
-    #         self.can_fall = False
-    #         print('Снежинка упала!')
-    #         print(self.can_fall)
-
-    def get_fallen_flakes(self):  # TODO Этот метод должен быть функцией
-        # TODO нужно получить на вход список, пройти по нему циклом и проверить есть ли там упавшие снежинки
-        # TODO если есть - собрать их индексы в список и вернуть этот список
-        if self.y <= 0:
-            count_fallen_flakes += 1
-        return count_fallen_flakes
+    def can_fall(self):
+        return self.y > 0
 
 
-def append_flakes(count):
-    # TODO тут надо получить список и добавить в него снежинки
-    get_flakes(count)
-
-
-def get_flakes(N):
+def get_flakes(N):  # Создание списка снежинок
     flakes = []
     for i in range(N):
         flake_x = sd.random_number(0, 600)
@@ -85,19 +67,35 @@ def get_flakes(N):
     return flakes
 
 
-def get_fallen_flakes():
-    global count_fallen_flakes
-    if flake.y <= 0:
-        count_fallen_flakes += 1
-        print('count_fallen_flakes', count_fallen_flakes)
-        flake.y = 650
-        flake.x = sd.random_number(0, 600)
-    return count_fallen_flakes
+def append_flakes(count):  # добавление снежинок
+    # тут надо получить список и добавить в него снежинки
+    # TODO добавить - чтобы снежинок стало больше или заменить по индексу?
+
+    for i in count:
+        flakes.pop(i)
+        flake_x = sd.random_number(0, 600)
+        flake_y = 650
+        flake = Snowflake(flake_x, flake_y, length_flake=sd.random_number(5, 15))
+        flakes.insert(i, flake)
+    return flakes
+
+
+def get_fallen_flakes(flakes):  # подсчет упавших снежинок
+    fallen_flakes = []
+    for index, value in enumerate(flakes):
+        # print(index, value)
+        # print('OB', flake)
+        # if value == flake:
+        #     print('Совпадение', index)
+        if value.y <= 0:
+            fallen_flakes.append(index)
+        # print('index, fallen_flakes, value.y  ', index, fallen_flakes, value.y)
+    return fallen_flakes
 
 
 N = 10
-count_fallen_flakes = 0
-falen_flakes = 0
+
+fallen_flakes = []
 flakes = get_flakes(N)
 # get_fallen_flakes = 0
 
@@ -107,8 +105,9 @@ while True:
         flake.clear_previous_picture()
         flake.move()
         flake.draw()
-        fallen_flakes = get_fallen_flakes()  # подчитать сколько снежинок уже упало
-    if fallen_flakes > 0:
+    fallen_flakes = get_fallen_flakes(flakes)  # подчитать сколько снежинок уже упало
+    count_fallen_flakes = len(fallen_flakes)
+    if count_fallen_flakes > 0:
         append_flakes(count=fallen_flakes)  # добавить еще сверху
     sd.finish_drawing()
     sd.sleep(0.1)

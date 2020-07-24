@@ -35,16 +35,15 @@ from termcolor import cprint
 
 
 class Man:
-
     def __init__(self, name):
         self.name = name
         self.fullness = 50
         self.house = None
         self.cat = None
+        self.cat_list = []
 
     def __str__(self):
-        return 'Я - {}, сытость {}, моего кота зовут {}'.format(
-            self.name, self.fullness, self.cat)
+        return 'Я - {}, сытость {}'.format(self.name, self.fullness)
 
     def eat(self):
         if self.house.food >= 10:
@@ -53,6 +52,9 @@ class Man:
             self.house.food -= 10
         else:
             cprint('{} нет еды'.format(self.name), color='red')
+            self.fullness -= 10
+            self.shopping()
+            self.eat()
 
     def work(self):
         cprint('{} сходил на работу'.format(self.name), color='blue')
@@ -70,6 +72,7 @@ class Man:
             self.house.food += 50
         else:
             cprint('{} деньги кончились!'.format(self.name), color='red')
+            self.work()
 
     def shopping_food_cat(self):
         if self.house.money >= 50:
@@ -78,38 +81,36 @@ class Man:
             self.house.cat_food += 50
         else:
             cprint('{} деньги кончились!'.format(self.name), color='red')
+            self.work()
 
     def go_to_the_house(self, house):
         self.house = house
         self.fullness -= 10
         cprint('{} въехал в дом'.format(self.name), color='cyan')
 
-    def find_cat(self, name_cat):
-        # TODO Сюда надо передать объект-кошку
-        # TODO и изменить её атрибут-дом на свой дом
-        # TODO И ещё хорошо было бы создать у человека атрибут-список и добавлять кошку в этот список
-        # TODO вместо просто переменной, которая есть сейчас
-        # TODO тогда можно будет несколько кошек добаить в список
+    def find_cat(self):
+        self.cat = cats.pop(0)
+        self.cat.house = my_sweet_home
+        self.cat_list.append(self.cat.name_cat)
         self.fullness -= 10
-        self.cat = name_cat
-        cprint('{} нашел кота - его зовут {}'.format(self.name, self.cat), color='cyan')
+        cprint('{} нашел себе кота - его зовут {}'.format(self.name, self.cat), color='cyan')
 
     def cleaning(self):
-        self.fullness -= 10
+        self.fullness -= 20
         self.house.dirt = 0
-        cprint('{} сделал уборкув доме'.format(self.name), color='cyan')
+        cprint('{} сделал уборку в доме'.format(self.name), color='cyan')
 
     def act(self):
         if self.fullness <= 0:
             cprint('{} умер...'.format(self.name), color='red')
             return
         dice = randint(1, 6)
-        if self.fullness < 20:
+        if self.fullness <= 20:  # если сытость '<20', то люди мрут после уборки
             self.eat()
-        elif self.house.cat_food < 30:
-            self.shopping_food_cat()
         elif self.house.food < 10:
             self.shopping()
+        elif self.house.cat_food <= 30:
+            self.shopping_food_cat()
         elif self.house.money < 50:
             self.work()
         elif self.house.dirt > 100:
@@ -121,52 +122,50 @@ class Man:
         else:
             self.watch_MTV()
 
-        # добавить выбор действий по коту - нет кошачей еды - купить
-        # если грязь -  то убрать
-        # реализовать уровень счастья? еда, работа, ТВ, кот, шоппинг, шоппинг для кота, уборка за котом?
 
-    class Cat:
-        def __init__(self, name_cat):
-            self.name_cat = name_cat
-            self.fullness = 10
-            self.house = None
+class Cat:
+    def __init__(self, name_cat):
+        self.name_cat = name_cat
+        self.fullness = 10
+        self.house = None
 
-        def __str__(self):
-            return '{}'.format(self.name_cat)
+    def __str__(self):
+        return '{}'.format(self.name_cat)
 
-        def eat_cat(self):
-            if self.house.cat_food >= 10:
-                cprint('{} поел'.format(self.name_cat), color='yellow')
-                self.fullness += 20
-                self.house.cat_food -= 10
-            else:
-                cprint('{} нет кошачей еды, МЯУУУ!!!'.format(self.name_cat), color='red')
-
-        def sleep_cat(self):
-            cprint('{} спал целый день'.format(self.name_cat), color='yellow')
+    def eat_cat(self):
+        if self.house.cat_food >= 10:
+            cprint('{} поел'.format(citisen.cat), color='yellow')
+            self.fullness += 20
+            self.house.cat_food -= 10
+        else:
+            cprint('{} нет кошачей еды, МЯУУУ!!!'.format(citisen.cat), color='red')
             self.fullness -= 10
 
-        def rips_off_Wallpaper(self):
-            cprint('{} драл обои целый день'.format(self.name_cat), color='yellow')
-            self.fullness -= 10
+    def sleep_cat(self):
+        cprint('{} спал весь день'.format(citisen.cat), color='yellow')
+        self.fullness -= 10
 
-        def act_cat(self):
-            if self.fullness <= 0:
-                cprint('{} сдох...'.format(self.name_cat), color='red')
-                return
-            dice = randint(1, 6)
-            if self.fullness < 20:
-                self.eat_cat()
-            elif dice == 1:
-                self.sleep_cat()
-            elif dice == 2:
-                self.eat_cat()
-            else:
-                self.rips_off_Wallpaper()
+    def rips_off_Wallpaper(self):
+        cprint('{} драл обои целый день'.format(citisen.cat), color='yellow')
+        self.fullness -= 10
+        self.house.dirt += 5
+
+    def act_cat(self):
+        if self.fullness <= 0:
+            cprint('{} сдох...'.format(citisen.cat), color='red')
+            return
+        dice = randint(1, 6)
+        if self.fullness < 20:
+            self.eat_cat()
+        elif dice == 1:
+            self.sleep_cat()
+        elif dice == 2:
+            self.eat_cat()
+        else:
+            self.rips_off_Wallpaper()
 
 
 class House:
-
     def __init__(self):
         self.food = 50
         self.money = 0
@@ -184,26 +183,26 @@ citizens = [
     Man(name='Кенни'),
 ]
 # Список котов
-cats = [  # TODO Кошек надо создавать отдельно от людей
-    Man.Cat(name_cat='Том'),
-    Man.Cat(name_cat='Мурзик'),
-    Man.Cat(name_cat='Рыжий'),
+cats = [
+    Cat(name_cat='Том'),
+    Cat(name_cat='Мурзик'),
+    Cat(name_cat='Рыжий'),
 ]
 
 my_sweet_home = House()
 for citisen in citizens:
     citisen.go_to_the_house(house=my_sweet_home)
     # въезд животных
-    if citisen.cat == None:  # TODO С объектами синглтонами(вроде None, True, False) стоит использовать "is"
+    if citisen.cat is None:
         print('Нужен кот!')
-        citisen.find_cat(name_cat=cats.pop(0))
+        citisen.find_cat()
 
 for day in range(1, 366):
     print('================ день {} =================='.format(day))
 
     for citisen in citizens:
         citisen.act()
-        citisen.cat.act_cat()  # действия кота, котов?
+        citisen.cat.act_cat()  # действия кота?
     print('--- в конце дня ---')
     for citisen in citizens:
         print(citisen)
