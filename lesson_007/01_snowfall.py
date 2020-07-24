@@ -69,8 +69,10 @@ def get_flakes(N):  # Создание списка снежинок
 
 def append_flakes(count):  # добавление снежинок
     # тут надо получить список и добавить в него снежинки
-    # TODO добавить - чтобы снежинок стало больше или заменить по индексу?
-
+    # добавить - чтобы снежинок стало больше или заменить по индексу?
+    # TODO Добавить, чтобы было больше.
+    #  В целом работает так, как сейчас есть, но я бы советовал передать список снежинок параметром
+    #  А не просто обращаться к внешней переменной
     for i in count:
         flakes.pop(i)
         flake_x = sd.random_number(0, 600)
@@ -87,11 +89,12 @@ def get_fallen_flakes(flakes):  # подсчет упавших снежинок
         # print('OB', flake)
         # if value == flake:
         #     print('Совпадение', index)
-        if value.y <= 0:
+        if value.y <= 0:  # TODO Тут можно использовать can_fall
             fallen_flakes.append(index)
         # print('index, fallen_flakes, value.y  ', index, fallen_flakes, value.y)
     return fallen_flakes
 
+# TODO И нужна функция, которая будет получать набор индексов и удалять по ним снежинки
 
 N = 10
 

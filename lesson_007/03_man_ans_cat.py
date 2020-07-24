@@ -88,8 +88,8 @@ class Man:
         self.fullness -= 10
         cprint('{} въехал в дом'.format(self.name), color='cyan')
 
-    def find_cat(self):
-        self.cat = cats.pop(0)
+    def find_cat(self):  # TODO Котов надо передавать параметром, а не брать из общего списка
+        self.cat = cats.pop(0)  # TODO Старайтесь реже обращаться к внешним переменным подобным образом
         self.cat.house = my_sweet_home
         self.cat_list.append(self.cat.name_cat)
         self.fullness -= 10
