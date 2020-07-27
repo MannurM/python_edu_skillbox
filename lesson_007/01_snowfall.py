@@ -53,7 +53,7 @@ class Snowflake:
         sd.snowflake(center=self.point, length=self.length, color=self.color, factor_a=self.factor_a,
                      factor_b=self.factor_b)
 
-    # def can_fall(y):
+    # def can_fall(y):  TODO Этот метод должен оставаться тут
     #     return y <= 0
 
 
@@ -76,14 +76,16 @@ def append_flakes(count=None):
     return flakes
 
 
-def can_fall(y):
+def can_fall(y):  # TODO эта функция не нужна
     return y <= 0
 
 
 def get_fallen_flakes(flakes):  # подсчет упавших снежинок
     fallen_flakes = []
     for index, value in enumerate(flakes):
-        # if value.y <= 0:
+        # if value.y <= 0:  TODO Тут надо было вызывать value.can_fall()
+        # TODO Т.к. цикл идёт по списку снежинок, то в value как раз записывается снежинка из flakes
+
         #     fallen_flakes.append(index) # получить список индексов упавших снежинок
         #     print('подcчитать сколько снежинок уже упало', fallen_flakes)
         if can_fall(value.y):
