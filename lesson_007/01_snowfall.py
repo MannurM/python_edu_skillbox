@@ -53,8 +53,8 @@ class Snowflake:
         sd.snowflake(center=self.point, length=self.length, color=self.color, factor_a=self.factor_a,
                      factor_b=self.factor_b)
 
-    def can_fall(self):
-        return self.y > 0
+    # def can_fall(y):
+    #     return y <= 0
 
 
 def get_flakes(N):  # Создание списка снежинок
@@ -67,14 +67,8 @@ def get_flakes(N):  # Создание списка снежинок
     return flakes
 
 
-def append_flakes(count):  # добавление снежинок
-    # тут надо получить список и добавить в него снежинки
-    # добавить - чтобы снежинок стало больше или заменить по индексу?
-    # TODO Добавить, чтобы было больше.
-    #  В целом работает так, как сейчас есть, но я бы советовал передать список снежинок параметром
-    #  А не просто обращаться к внешней переменной
+def append_flakes(count=None):
     for i in count:
-        flakes.pop(i)
         flake_x = sd.random_number(0, 600)
         flake_y = 650
         flake = Snowflake(flake_x, flake_y, length_flake=sd.random_number(5, 15))
@@ -82,25 +76,35 @@ def append_flakes(count):  # добавление снежинок
     return flakes
 
 
+def can_fall(y):
+    return y <= 0
+
+
 def get_fallen_flakes(flakes):  # подсчет упавших снежинок
     fallen_flakes = []
     for index, value in enumerate(flakes):
-        # print(index, value)
-        # print('OB', flake)
-        # if value == flake:
-        #     print('Совпадение', index)
-        if value.y <= 0:  # TODO Тут можно использовать can_fall
+        # if value.y <= 0:
+        #     fallen_flakes.append(index) # получить список индексов упавших снежинок
+        #     print('подcчитать сколько снежинок уже упало', fallen_flakes)
+        if can_fall(value.y):
             fallen_flakes.append(index)
-        # print('index, fallen_flakes, value.y  ', index, fallen_flakes, value.y)
     return fallen_flakes
 
-# TODO И нужна функция, которая будет получать набор индексов и удалять по ним снежинки
 
-N = 10
+def remove_flakes(fallen_flakes):
+    print('индексы упавших снежинок', fallen_flakes)
+    fallen_flakes.reverse()
+    for index, value in enumerate(fallen_flakes):
+        print('value', value)
+        del flakes[value]
+        # flakes.pop(value)
+    print('Количество снежинок после удаление', len(flakes))
+
+
+N = 50
 
 fallen_flakes = []
 flakes = get_flakes(N)
-# get_fallen_flakes = 0
 
 while True:
     sd.start_drawing()
@@ -111,7 +115,9 @@ while True:
     fallen_flakes = get_fallen_flakes(flakes)  # подчитать сколько снежинок уже упало
     count_fallen_flakes = len(fallen_flakes)
     if count_fallen_flakes > 0:
+        remove_flakes(fallen_flakes)  # удалить упавшие снежинки
         append_flakes(count=fallen_flakes)  # добавить еще сверху
+
     sd.finish_drawing()
     sd.sleep(0.1)
     if sd.user_want_exit():
