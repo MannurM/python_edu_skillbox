@@ -42,7 +42,7 @@ from random import randint
 #
 # Подвести итоги жизни за год: сколько было заработано денег, сколько сьедено еды, сколько куплено шуб.
 
-# TODO У меня ошибку выдает  -  а где искать ответ не понятно.
+# У меня ошибку выдает  -  а где искать ответ не понятно.
 #  Traceback (most recent call last):
 #   File "C:/Users/User/PycharmProjects/python_base/lesson_008/01_family.py", line 258, in <module>
 #     cprint(serge)
@@ -50,8 +50,12 @@ from random import randint
 #     print((colored(text, color, on_color, attrs)), **kwargs)
 #   File "C:\Users\User\PycharmProjects\edu\venv\lib\site-packages\termcolor.py", line 114, in colored
 #     text += RESET
-# TODO TypeError: unsupported operand type(s) for +=: 'Husband' and 'str'
-
+# TypeError: unsupported operand type(s) for +=: 'Husband' and 'str'
+# TODO Поиск стоит начинать со строки на которую указывает пайтон -- cprint(serge)
+# TODO Для ещё одной подсказки стоит попробовать использовать обычный print()
+# TODO Тогда выдаётся более понятная ошибка TypeError: __str__ returned non-string (type NoneType)
+# TODO метод __str__ который вызывается при попытки печати объекта возвращает нам не строку
+# TODO идём смотреть...
 class House:
 
     def __init__(self):
@@ -78,11 +82,21 @@ class Husband:
         self.wife = None
 
     def __str__(self):
+        # TODO ...И правда. Метод вместо возврата строки пытается сам напечатать её
+        # TODO Чтобы это исправить - отсюда надо убрать принт.
+        # TODO Этот метод должен возвращать строку.
+        # TODO Как и все, ему подобные в вашем коде
         return cprint('{} имеет: {} здоровья, {} счастья '.format(
             self.name, self.fullness, self.happiness_level), color='green')
         # super().__str__()
 
     def act(self):
+        # TODO Попробуйте разделить действия на две части, общую для всех людей и частную для каждого
+        # TODO Общие действия надо вынести в общий act
+        # TODO Там проверки должны возвращать True/False
+        # TODO В наследниках родительский act будет вызываться при помощи super
+        # TODO И, если человек жив и не выполнил никаких действий
+        #  (из super act() вернулось True), то можно сделать выбор из частных действий
         if self.fullness <= 0:
             cprint('{} умер...'.format(self.name), color='red')
             return
@@ -100,7 +114,7 @@ class Husband:
             self.eat()
         else:
             self.gaming()
-
+    # TODO Метод eat тоже подходит для общего класса. Чтобы его не писать несколько раз - можно указать его там
     def eat(self):
         if self.house.food >= 10:
             cprint('{} поел'.format(self.name), color='yellow')
