@@ -47,15 +47,16 @@ from termcolor import cprint
 class House:
 
     def __init__(self):
-        self.food = 0
+        self.food = 50
         self.dirt = 0
-        self.money = 0
+        self.money = 100
         self.cat_food = 50
         self.cat = None
         self.fur_coat_count = 0
         self.money_count = 0
         self.food_eat_count = 0
         self.mort_count = 0
+        self.mort_count_grief = 0
 
     def act(self):
         self.dirt += 5
@@ -65,36 +66,37 @@ class House:
             self.food, self.money, self.dirt)
 
     def results(self):
-        return print('у жены шуб - {} , денег за год заработано - {},{} - еды съедено, умерло - {}'. format(
-            self.fur_coat_count, self.money_count, self.food_eat_count, self.mort_count))
+        return print(
+            'у жены шуб - {} , денег за год заработано - {},{} - еды съедено, умерло - {}, умерло от горя-{}'.format(
+                self.fur_coat_count, self.money_count, self.food_eat_count, self.mort_count, self.mort_count_grief))
 
 
-class Family(House):  # TODO Наследовать семью от дома всё же не стоит
-    # TODO там нет методов или атрибутов, которые надо передать людям
+class Family:
 
     def __init__(self):
-        super().__init__()
         self.name = None
         self.husband = None
         self.wife = None
         self.child = None
         self.fullness = 0
         self.happiness_level = 0
-#  не уверен по возврату True или False при проверке здоровья, и у меня человек умирает,
-#  но все равно продолжает действия -  программа не останавливается, а потом ест, ест, ест
-#  и к концу года - живой.
+        self.house = None
 
     def act(self):
 
         if not self.happiness_level:
             print('{} умер от горя ...'.format(self.name))
-            self.house.mort_count += 1
-            return bool  # TODO Если человек умер то нужно вернуть False
+            self.house.mort_count_grief += 1
+            return False  # Если человек умер то нужно вернуть False
         elif not self.fullness:
             print('{} умер...'.format(self.name))
             self.house.mort_count += 1
-            return bool
-        # TODO если не умер, то True
+            return False
+        elif self.fullness <= 25:
+            self.eat()
+            return False
+        else:
+            return True  # если не умер, то True
 
     def eat(self):
         if self.house.food >= 10:
@@ -107,14 +109,21 @@ class Family(House):  # TODO Наследовать семью от дома в�
             cprint('{} - нет еды'.format(self.name), color='red')
             self.fullness -= 10
             self.happiness_level -= 10
+            # TODO можно ли здесь вызвать напрямую что-то типа 'self.wife.shopping' - для  покупки еды
+            # TODO т.е можно ли из родительского класса вызвать дочерний метод?
+            # TODO или запустить return  и в дочернем классе его обработать -  отправить жену за едой?
 
     def go_to_the_house(self, husband=None, house=None, wife=None):
         self.fullness -= 10
         self.happiness_level += 10
-        self.house = house  # TODO если атрибут используется в этом классе, то и создать его надо в init этого класса
+        self.house = house  # если атрибут используется в этом классе, то и создать его надо в init этого класса
         self.husband = husband
         self.wife = wife
         cprint('{} въехал в дом'.format(self.name), color='cyan')
+
+    def __str__(self):
+        return '{} имеет: {} здоровья, {} счастья '.format(
+            self.name, self.fullness, self.happiness_level)
 
 
 class Husband(Family):
@@ -127,23 +136,14 @@ class Husband(Family):
         self.house = None
 
     def __str__(self):
-        return '{} имеет: {} здоровья, {} счастья '.format(
-            self.name, self.fullness, self.happiness_level)
+        return super().__str__()
 
     def act(self):
-        if super().act():
-            # TODO Тут после проверки надо вызывать return, если из super act пришёл False
-            # TODO Как-то так:
-            #  Если не выжил -> return
-            print(super().act())
+        if not super().act():
+            return  # False
+
         dice = randint(1, 2)
-        if self.fullness <= 20:  # TODO Кстати эти два действия тоже можно вынести в родителя
-            # TODO И если человек выполняет действие (ест) то тоже возвращаем False,
-            # TODO чтобы он не выполнял действие ещё раз
-            self.eat()
-        elif self.dirt > 60:  # TODO А это условие надо вызывать отдельно
-            # TODO Ведь может быть так что и сытости мало и дом грязный
-            # TODO в таком случае человек должен и поесть и -10 к счастью получить
+        if self.house.dirt > 60:
             cprint("{} сказал:{}  - дома грязно!".format(self.name, self.wife), color='red')
             self.happiness_level -= 10
 
@@ -151,12 +151,14 @@ class Husband(Family):
             self.work()
         elif dice == 2:
             self.gaming()
+        else:
+            self.eat()
 
     def work(self):
         cprint('{} сходил на работу'.format(self.name), color='blue')
         self.house.money += 150
         self.fullness -= 10
-        self.happiness_level -= 5
+        self.happiness_level -= 10
         self.house.money_count += 150
 
     def gaming(self):
@@ -175,29 +177,28 @@ class Wife(Family):
         self.house = None
 
     def __str__(self):
-        return '{} имеет: {} здоровья, {} счастья'.format(
-            self.name, self.fullness, self.happiness_level)
-        # super().__str__()
+        return super().__str__()
 
     def act(self):
-        super().act()  # TODO Просто так super act ничего не изменит, надо сделать проверку, как выше
-        if self.fullness <= 20:
-            self.eat()
-        dice = randint(1, 6)
+        if not super().act():
+            return  # False
+        dice = randint(1, 5)
         if self.house.food <= 10:
             self.shopping()
         elif self.house.money <= 50:
             print('{}  - мало денег! {} дуй на работу'.format(self.name, self.husband.name))
             self.happiness_level -= 20
             self.husband.work()
-        elif self.dirt > 90:
+        elif self.house.dirt > 90:
             self.clean_house()
         elif dice == 1:
             self.shopping()
-        elif dice == 3:
-            self.buy_fur_coat()
         elif dice == 2:
+            self.buy_fur_coat()
+        elif dice == 3:
             self.clean_house()
+        elif dice == 4:
+            self.eat()
         else:
             self.lying_on_couch()
 
@@ -211,6 +212,7 @@ class Wife(Family):
         else:
             cprint('{}  - деньги кончились!{} иди на работу! '.format(self.name, self.husband.name), color='red')
             self.happiness_level -= 10
+            self.husband.happiness_level -= 5
             self.husband.work()
 
     def buy_fur_coat(self):
@@ -270,13 +272,16 @@ masha.go_to_the_house(house=home, husband=serge, wife=None)
 for day in range(365):
     cprint('================== День {} =================='.format(day), color='white')
     home.act()
-    serge.act()
     masha.act()
+    serge.act()
+    # if not serge.act():# TODO можно ли сюда вернуть False и перебрать весь цикл или просто 'break'
+    #     continue
+    # elif not masha.act:
+    #     continue
 
     cprint(serge, color='green')
     cprint(masha, color='green')
     cprint(home, color='green')
-
 
 cprint('+++ИТОГИ+++', color='red')
 cprint(home.results(), color='green')
