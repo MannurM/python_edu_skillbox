@@ -109,9 +109,12 @@ class Family:
             cprint('{} - нет еды'.format(self.name), color='red')
             self.fullness -= 10
             self.happiness_level -= 10
-            # TODO можно ли здесь вызвать напрямую что-то типа 'self.wife.shopping' - для  покупки еды
-            # TODO т.е можно ли из родительского класса вызвать дочерний метод?
-            # TODO или запустить return  и в дочернем классе его обработать -  отправить жену за едой?
+            # можно ли здесь вызвать напрямую что-то типа 'self.wife.shopping' - для  покупки еды
+            # т.е можно ли из родительского класса вызвать дочерний метод?
+            # или запустить return  и в дочернем классе его обработать -  отправить жену за едой?
+            # TODO Вызывать тут метод дочернего класса не стоит
+            # TODO Но можно дополнить этот метод в дочернем классе
+            # TODO т.е. можно тут вернуть False, если нет еды, а там поймать False и обработать (как с act-ом)
 
     def go_to_the_house(self, husband=None, house=None, wife=None):
         self.fullness -= 10
@@ -262,7 +265,7 @@ class Wife(Family):
 home = House()
 serge = Husband(name='Сережа')
 masha = Wife(name='Маша')
-family_name = Family()
+family_name = Family()  # TODO Этот объект создавать не обязательно
 
 cprint('{} встретил {} и они сняли дом'.format(serge.name, masha.name), color='green')
 
@@ -274,7 +277,10 @@ for day in range(365):
     home.act()
     masha.act()
     serge.act()
-    # if not serge.act():# TODO можно ли сюда вернуть False и перебрать весь цикл или просто 'break'
+    # if not serge.act(): # можно ли сюда вернуть False и перебрать весь цикл или просто 'break'
+    # TODO Можно людям просто добавить атрибут, который будет равен True пока они живы, а тут проверять
+    # TODO Если у кого-то из жителей False вылезет - прервать цикл
+    # TODO Только желательно не перебирать всех жителей вручную, а добавить объекты в список
     #     continue
     # elif not masha.act:
     #     continue
