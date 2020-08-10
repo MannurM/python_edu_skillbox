@@ -69,7 +69,8 @@ class House:
             self.fur_coat_count, self.money_count, self.food_eat_count, self.mort_count))
 
 
-class Family(House):
+class Family(House):  # TODO Наследовать семью от дома всё же не стоит
+    # TODO там нет методов или атрибутов, которые надо передать людям
 
     def __init__(self):
         super().__init__()
@@ -79,7 +80,7 @@ class Family(House):
         self.child = None
         self.fullness = 0
         self.happiness_level = 0
-# TODO не уверен по возврату True или False при проверке здоровья, и у меня человек умирает,
+#  не уверен по возврату True или False при проверке здоровья, и у меня человек умирает,
 #  но все равно продолжает действия -  программа не останавливается, а потом ест, ест, ест
 #  и к концу года - живой.
 
@@ -88,11 +89,12 @@ class Family(House):
         if not self.happiness_level:
             print('{} умер от горя ...'.format(self.name))
             self.house.mort_count += 1
-            return bool
+            return bool  # TODO Если человек умер то нужно вернуть False
         elif not self.fullness:
             print('{} умер...'.format(self.name))
             self.house.mort_count += 1
             return bool
+        # TODO если не умер, то True
 
     def eat(self):
         if self.house.food >= 10:
@@ -109,7 +111,7 @@ class Family(House):
     def go_to_the_house(self, husband=None, house=None, wife=None):
         self.fullness -= 10
         self.happiness_level += 10
-        self.house = house
+        self.house = house  # TODO если атрибут используется в этом классе, то и создать его надо в init этого класса
         self.husband = husband
         self.wife = wife
         cprint('{} въехал в дом'.format(self.name), color='cyan')
@@ -130,11 +132,18 @@ class Husband(Family):
 
     def act(self):
         if super().act():
+            # TODO Тут после проверки надо вызывать return, если из super act пришёл False
+            # TODO Как-то так:
+            #  Если не выжил -> return
             print(super().act())
         dice = randint(1, 2)
-        if self.fullness <= 20:
+        if self.fullness <= 20:  # TODO Кстати эти два действия тоже можно вынести в родителя
+            # TODO И если человек выполняет действие (ест) то тоже возвращаем False,
+            # TODO чтобы он не выполнял действие ещё раз
             self.eat()
-        elif self.dirt > 60:
+        elif self.dirt > 60:  # TODO А это условие надо вызывать отдельно
+            # TODO Ведь может быть так что и сытости мало и дом грязный
+            # TODO в таком случае человек должен и поесть и -10 к счастью получить
             cprint("{} сказал:{}  - дома грязно!".format(self.name, self.wife), color='red')
             self.happiness_level -= 10
 
@@ -171,7 +180,7 @@ class Wife(Family):
         # super().__str__()
 
     def act(self):
-        super().act()
+        super().act()  # TODO Просто так super act ничего не изменит, надо сделать проверку, как выше
         if self.fullness <= 20:
             self.eat()
         dice = randint(1, 6)
