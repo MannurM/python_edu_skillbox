@@ -66,7 +66,7 @@ class House:
             self.food, self.money, self.dirt)
 
     def results(self):
-        return print(
+        return print(  # TODO Тут попробуйте возвращать строку, как в str, иначе у вас будет печатать None в конце
             'у жены шуб - {} , денег за год заработано - {},{} - еды съедено'.format(
                 self.fur_coat_count, self.money_count, self.food_eat_count))
 
@@ -143,7 +143,8 @@ class Husband(Family):
         if not super().act():
             return
         if self.eat_index:
-            self.wife.shopping()
+            self.wife.shopping()  # Вообще это немного нарушает установленные правила (1 действие на человека в день)
+            # но логика интересная можно пока оставить
             self.eat_index = False
             return
         dice = randint(1, 2)
