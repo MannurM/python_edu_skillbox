@@ -62,8 +62,8 @@ class House:
         self.dirt += 5
 
     def __str__(self):
-        return 'В доме еды осталось {}, денег осталось {}, уровень грязи {}'.format(
-            self.food, self.money, self.dirt)
+        return 'В доме еды осталось {}, кошачей еды осталось {}, денег осталось {}, уровень грязи {}'.format(
+            self.food, self.cat_food, self.money, self.dirt)
 
     def results(self):
         return print(  # TODO Тут попробуйте возвращать строку, как в str, иначе у вас будет печатать None в конце
@@ -122,6 +122,10 @@ class Family:
         self.wife = wife
         cprint('{} въехал в дом'.format(self.name), color='cyan')
 
+    def pet_cat(self):
+        self.happiness_level += 5
+        cprint('{} гладил кота'.format(self.name), color='cyan')
+
     def __str__(self):
         return '{} имеет: {} здоровья, {} счастья '.format(
             self.name, self.fullness, self.happiness_level)
@@ -148,7 +152,7 @@ class Husband(Family):
             self.eat_index = False
             return
         dice = randint(1, 2)
-        if self.house.dirt > 60:
+        if self.house.dirt > 90:
             cprint("{} сказал:{}  - дома грязно!".format(self.name, self.wife.name), color='red')
             self.happiness_level -= 10
             self.wife.clean_house()
@@ -196,13 +200,18 @@ class Wife(Family):
         dice = randint(1, 5)
         if self.house.food <= 10:
             self.shopping()
-        elif self.house.money <= 50:
+        if self.house.cat_food >= 20:
+            print('у кота есть еда! покупать не будем!')
+        elif self.house.cat_food <= 10:
+            self.shopping_food_cat()
+            return
+        if self.house.money <= 50:
             print('{}  - мало денег! {} дуй на работу'.format(self.name, self.husband.name))
             self.happiness_level -= 20
             self.fullness -= 10
             self.husband.work()
-
-        elif self.house.dirt > 90:
+            return
+        if self.house.dirt > 70:
             self.clean_house()
         elif dice == 1:
             self.shopping()
@@ -211,9 +220,11 @@ class Wife(Family):
         elif dice == 3:
             self.clean_house()
         elif dice == 4:
-            self.eat()
-        else:
             self.lying_on_couch()
+        # elif dice == 5:
+        #     self.shopping_food_cat()
+        else:
+            self.eat()
 
     def shopping(self):
 
@@ -227,7 +238,7 @@ class Wife(Family):
         else:
             cprint('{}  - деньги кончились!{} иди на работу! '.format(self.name, self.husband.name), color='red')
             self.happiness_level -= 10
-            self.fullness -= 10
+            self.fullness -= 5
             self.husband.happiness_level -= 5
             self.husband.work()
 
@@ -242,9 +253,9 @@ class Wife(Family):
         else:
             cprint('{} : - денег на шубу нет!{} иди на работу!'.format(self.name, self.husband.name), color='red')
             self.happiness_level -= 20
+            self.fullness -= 10
             self.husband.happiness_level -= 25
             self.husband.work()
-            self.fullness -= 10
 
     def clean_house(self):
         self.fullness -= 10
@@ -257,50 +268,100 @@ class Wife(Family):
         self.happiness_level -= 5
         cprint('{} лежала на диване'.format(self.name), color='cyan')
 
-    # def shopping_food_cat(self):
-    #     if self.house.money >= 50:
-    #         cprint('{} сходил в магазин за кошачей едой'.format(self.name), color='magenta')
-    #         self.house.money -= 50
-    #         self.house.cat_food += 50
-    #     else:
-    #         cprint('{} деньги кончились!'.format(self.name), color='red')
-    #         self.work()
+    def shopping_food_cat(self):
+        if self.house.money >= 50:
+            cprint('{} сходил в магазин за кошачей едой'.format(self.name), color='magenta')
+            self.house.money -= 50
+            self.house.cat_food += 50
+            self.happiness_level += 5
+            self.fullness -= 10
+        else:
+            cprint('{} деньги кончились!'.format(self.name), color='red')
+            self.happiness_level -= 10
+            self.fullness -= 5
+            self.husband.happiness_level -= 5
+            self.husband.work()
 
-    # def make_child(self):
-    #     pass
 
-    # def find_cat(self, cat=None):
-    #     self.cat = cat
-    #     self.cat.house = self.house
-    #     # self.cat_list.append(self.cat.name_cat)
-    #     self.fullness -= 10
-    #     cprint('{} нашел себе кота - его зовут {}'.format(self.name, self.cat), color='cyan')
+class Cat:
+
+    def __init__(self, name_cat):
+        self.name_cat = name_cat
+        self.fullness = 10
+        self.house = None
+        self.wife = None
+        self.husband = None
+
+    def __str__(self):
+        return '{} имеет: {} здоровье'.format(self.name_cat, self.fullness)
+
+    def eat_cat(self):
+        if self.house.cat_food >= 10:
+            cprint('{} поел'.format(self.name_cat), color='yellow')
+            self.fullness += 20
+            self.house.cat_food -= 10
+        else:
+            cprint('{} нет кошачей еды, МЯУУУ!!!'.format(self.name_cat), color='red')
+            self.fullness -= 10
+
+    def sleep_cat(self):
+        cprint('{} спал весь день'.format(self.name_cat), color='yellow')
+        self.fullness -= 10
+
+    def rips_off_Wallpaper(self):
+        cprint('{} драл обои целый день'.format(self.name_cat), color='yellow')
+        self.fullness -= 10
+        self.house.dirt += 5
+
+    def act(self):
+        if self.fullness <= 0:
+            cprint('{} сдох...'.format(self.name_cat), color='red')
+            return
+        dice = randint(1, 3)
+
+        if self.fullness <= 20:
+            self.eat_cat()
+        elif dice == 1:
+            self.sleep_cat()
+        elif dice == 2:
+            self.eat_cat()
+        else:
+            self.rips_off_Wallpaper()
+
+    def find_cat(self, house, husband, wife):
+        self.house = house
+        self.wife = wife
+        self.husband = husband
+        self.fullness += 10
+        cprint('Я кот {}, нашел себе хозяйку {}'.format(self.name_cat, self.wife.name), color='cyan')
 
 
 home = House()
 serge = Husband(name='Сережа')
 masha = Wife(name='Маша')
+cat = Cat(name_cat='Барсик')
 family = [masha, serge]
 cprint('{} встретил {} и они сняли дом'.format(serge.name, masha.name), color='green')
 
 serge.go_to_the_house(house=home, husband=None, wife=masha)
 masha.go_to_the_house(house=home, husband=serge, wife=None)
+cat.find_cat(house=home, husband=serge, wife=masha)
+
 day_stop = False
 for day in range(1, 366):
     cprint('================== День {} =================='.format(day), color='white')
     home.act()
     serge.act()
     masha.act()
+    cat.act()
 
     cprint(serge, color='green')
     cprint(masha, color='green')
+    cprint(cat, color='green')
     cprint(home, color='green')
 
     for name in family:
-        # print(family)
-        # cprint('имя - {}, жив - {}'.format(name.name, name.life_index))
         if not name.life_index:
-            # print('Умер, остановка!')
             day_stop = True
             break
     if day_stop:
