@@ -66,9 +66,8 @@ class House:
             self.food, self.money, self.dirt)
 
     def results(self):
-        return print(  # TODO Тут попробуйте возвращать строку, как в str, иначе у вас будет печатать None в конце
-            'у жены шуб - {} , денег за год заработано - {},{} - еды съедено'.format(
-                self.fur_coat_count, self.money_count, self.food_eat_count))
+        return 'у жены шуб - {} , денег за год заработано - {},{} - еды съедено'.format(
+                self.fur_coat_count, self.money_count, self.food_eat_count)
 
 
 class Family:
@@ -76,7 +75,7 @@ class Family:
         self.name = None
         self.husband = None
         self.wife = None
-        self.child = None
+        self.children = None
         self.fullness = 0
         self.happiness_level = 0
         self.house = None
@@ -111,15 +110,15 @@ class Family:
             cprint('{} - нет еды'.format(self.name), color='red')
             self.happiness_level -= 10
             self.eat_index = True
-            print('self.eat_index_Family', self.eat_index)
             return self.eat_index
 
-    def go_to_the_house(self, husband=None, house=None, wife=None):
+    def go_to_the_house(self, husband=None, house=None, wife=None, children=None):
         self.fullness -= 10
         self.happiness_level += 10
         self.house = house
         self.husband = husband
         self.wife = wife
+        self.children = children
         cprint('{} въехал в дом'.format(self.name), color='cyan')
 
     def __str__(self):
@@ -151,8 +150,12 @@ class Husband(Family):
         if self.house.dirt > 60:
             cprint("{} сказал:{}  - дома грязно!".format(self.name, self.wife.name), color='red')
             self.happiness_level -= 10
-            self.wife.clean_house()
-        elif dice == 1:
+            if self.wife.fullness >= 20:
+                self.wife.clean_house()
+            else:
+                self.wife.eat()
+
+        if dice == 1:
             self.work()
         elif dice == 2:
             self.gaming()
@@ -193,7 +196,7 @@ class Wife(Family):
             self.eat_index = False
             return
 
-        dice = randint(1, 5)
+        dice = randint(1, 4)
         if self.house.food <= 10:
             self.shopping()
         elif self.house.money <= 50:
@@ -210,8 +213,6 @@ class Wife(Family):
             self.buy_fur_coat()
         elif dice == 3:
             self.clean_house()
-        elif dice == 4:
-            self.eat()
         else:
             self.lying_on_couch()
 
@@ -257,43 +258,88 @@ class Wife(Family):
         self.happiness_level -= 5
         cprint('{} лежала на диване'.format(self.name), color='cyan')
 
-    # def shopping_food_cat(self):
-    #     if self.house.money >= 50:
-    #         cprint('{} сходил в магазин за кошачей едой'.format(self.name), color='magenta')
-    #         self.house.money -= 50
-    #         self.house.cat_food += 50
-    #     else:
-    #         cprint('{} деньги кончились!'.format(self.name), color='red')
-    #         self.work()
 
-    # def make_child(self):
-    #     pass
+class Child(Family):
 
-    # def find_cat(self, cat=None):
-    #     self.cat = cat
-    #     self.cat.house = self.house
-    #     # self.cat_list.append(self.cat.name_cat)
-    #     self.fullness -= 10
-    #     cprint('{} нашел себе кота - его зовут {}'.format(self.name, self.cat), color='cyan')
+    def __init__(self, name):
+        super().__init__()
+        self.name = name
+        self.fullness = 50
+        self.happiness_level = 90
+        self.house = None
+
+    def __str__(self):
+        return super().__str__()
+
+    def act(self):
+
+        if not super().act():
+            return
+
+        if self.eat_index:
+            self.wife.shopping()
+            self.eat_index = False
+            return
+
+        dice = randint(1, 3)
+        if dice == 1:
+            self.eat()
+        elif dice == 2:
+            self.shit()
+        else:
+            self.sleep()
+
+    def eat(self):
+        if self.house.food >= 10:
+            cprint('{} поел'.format(self.name), color='yellow')
+            self.house.food_eat_count += 10  # счетчик съеденной еды
+            self.fullness += 10
+            self.wife.happiness_level += 10
+            self.husband.happiness_level += 10
+            self.house.food -= 10
+            self.eat_index = False
+            return self.eat_index
+        else:
+            cprint('{} - нет еды'.format(self.name), color='red')
+            self.eat_index = True
+            return self.eat_index
+
+    def sleep(self):
+        cprint('{} спал'.format(self.name), color='yellow')
+        self.fullness -= 10
+        self.wife.happiness_level += 10
+        self.husband.happiness_level += 10
+
+    def shit(self):
+        cprint('{} покакал'.format(self.name), color='yellow')
+        self.fullness -= 10
+        self.house.dirt += 5
+        self.wife.happiness_level += 10
+        self.husband.happiness_level += 10
 
 
 home = House()
 serge = Husband(name='Сережа')
 masha = Wife(name='Маша')
-family = [masha, serge]
+boris = Child(name='Борис')
+family = [masha, serge, boris]
+
 cprint('{} встретил {} и они сняли дом'.format(serge.name, masha.name), color='green')
 
-serge.go_to_the_house(house=home, husband=None, wife=masha)
-masha.go_to_the_house(house=home, husband=serge, wife=None)
+serge.go_to_the_house(house=home, husband=None, wife=masha, children=boris)
+masha.go_to_the_house(house=home, husband=serge, wife=None, children=boris)
+boris.go_to_the_house(house=home, husband=serge, wife=masha, children=None)
 day_stop = False
 for day in range(1, 366):
     cprint('================== День {} =================='.format(day), color='white')
     home.act()
     serge.act()
     masha.act()
+    boris.act()
 
     cprint(serge, color='green')
     cprint(masha, color='green')
+    cprint(boris, color='green')
     cprint(home, color='green')
 
     for name in family:
@@ -357,31 +403,7 @@ cprint(home.results(), color='green')
 #
 # ######################################################## Часть вторая бис
 # #
-# # После реализации первой части надо в ветке мастер продолжить работу над семьей - добавить ребенка
-# #
-# # Ребенок может:
-# #   есть,
-# #   спать,
-# #
-# # отличия от взрослых - кушает максимум 10 единиц еды,
-# # степень счастья  - не меняется, всегда ==100 ;)
-#
-# class Child:
-#
-#     def __init__(self):
-#         pass
-#
-#     def __str__(self):
-#         return super().__str__()
-#
-#     def act(self):
-#         pass
-#
-#     def eat(self):
-#         pass
-#
-#     def sleep(self):
-#         pass
+
 #
 #
 # # TODO после реализации второй части - отдать на проверку учителем две ветки
