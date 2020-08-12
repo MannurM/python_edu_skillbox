@@ -67,7 +67,7 @@ class House:
 
     def results(self):
         return 'у жены шуб - {} , денег за год заработано - {},{} - еды съедено'.format(
-                self.fur_coat_count, self.money_count, self.food_eat_count)
+            self.fur_coat_count, self.money_count, self.food_eat_count)
 
 
 class Family:
@@ -110,7 +110,6 @@ class Family:
             cprint('{} - нет еды'.format(self.name), color='red')
             self.happiness_level -= 10
             self.eat_index = True
-            print('self.eat_index_Family', self.eat_index)
             return self.eat_index
 
     def go_to_the_house(self, husband=None, house=None, wife=None, children=None):
@@ -208,7 +207,7 @@ class Wife(Family):
         if self.house.money <= 50:
             print('{}  - мало денег! {} дуй на работу'.format(self.name, self.husband.name))
             self.happiness_level -= 20
-            self.fullness -= 10
+            self.fullness -= 5
             self.husband.work()
 
         if self.house.dirt > 70:
@@ -251,7 +250,7 @@ class Wife(Family):
         else:
             cprint('{} : - денег на шубу нет!{} иди на работу!'.format(self.name, self.husband.name), color='red')
             self.happiness_level -= 20
-            self.fullness -= 10
+            self.fullness -= 5
             self.husband.happiness_level -= 25
             self.husband.work()
             self.fullness -= 10
@@ -294,6 +293,20 @@ class Cat:
     def __str__(self):
         return '{} имеет: {} здоровье'.format(self.name_cat, self.fullness)
 
+    def act(self):
+        if self.fullness <= 0:
+            cprint('{} сдох...'.format(self.name_cat), color='red')
+            return
+        dice = randint(1, 3)
+        if self.fullness <= 20:
+            self.eat_cat()
+        elif dice == 1:
+            self.sleep_cat()
+        elif dice == 2:
+            self.eat_cat()
+        else:
+            self.rips_off_Wallpaper()
+
     def eat_cat(self):
         if self.house.cat_food >= 10:
             cprint('{} поел'.format(self.name_cat), color='yellow')
@@ -311,6 +324,14 @@ class Cat:
         cprint('{} драл обои целый день'.format(self.name_cat), color='yellow')
         self.fullness -= 10
         self.house.dirt += 5
+
+    def find_cat(self, house, husband, wife):
+        self.house = house
+        self.wife = wife
+        self.husband = husband
+        self.fullness += 10
+        cprint('Я кот {}, нашел себе хозяйку {}'.format(self.name_cat, self.wife.name), color='cyan')
+
 
 class Child(Family):
 
@@ -342,11 +363,6 @@ class Child(Family):
         else:
             self.sleep()
 
-    def act(self):
-        if self.fullness <= 0:
-            cprint('{} сдох...'.format(self.name_cat), color='red')
-            return
-        dice = randint(1, 3)
     def eat(self):
         if self.house.food >= 10:
             cprint('{} поел'.format(self.name), color='yellow')
@@ -362,21 +378,6 @@ class Child(Family):
             self.eat_index = True
             return self.eat_index
 
-        if self.fullness <= 20:
-            self.eat_cat()
-        elif dice == 1:
-            self.sleep_cat()
-        elif dice == 2:
-            self.eat_cat()
-        else:
-            self.rips_off_Wallpaper()
-
-    def find_cat(self, house, husband, wife):
-        self.house = house
-        self.wife = wife
-        self.husband = husband
-        self.fullness += 10
-        cprint('Я кот {}, нашел себе хозяйку {}'.format(self.name_cat, self.wife.name), color='cyan')
     def sleep(self):
         cprint('{} спал'.format(self.name), color='yellow')
         self.fullness -= 10
@@ -395,7 +396,6 @@ home = House()
 serge = Husband(name='Сережа')
 masha = Wife(name='Маша')
 cat = Cat(name_cat='Барсик')
-family = [masha, serge]
 boris = Child(name='Борис')
 family = [masha, serge, boris]
 
@@ -403,19 +403,16 @@ cprint('{} встретил {} и они сняли дом'.format(serge.name, m
 
 serge.go_to_the_house(house=home, husband=None, wife=masha)
 masha.go_to_the_house(house=home, husband=serge, wife=None)
-cat.find_cat(house=home, husband=serge, wife=masha)
-
-serge.go_to_the_house(house=home, husband=None, wife=masha, children=boris)
-masha.go_to_the_house(house=home, husband=serge, wife=None, children=boris)
 boris.go_to_the_house(house=home, husband=serge, wife=masha, children=None)
+cat.find_cat(house=home, husband=serge, wife=masha)
 day_stop = False
 for day in range(1, 366):
     cprint('================== День {} =================='.format(day), color='white')
     home.act()
     serge.act()
     masha.act()
-    cat.act()
     boris.act()
+    cat.act()
 
     cprint(serge, color='green')
     cprint(masha, color='green')
