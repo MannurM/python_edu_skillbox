@@ -55,7 +55,11 @@ with open(file_name, mode='r', encoding='cp1251') as file:
         for symbol in line:
             if not symbol.isalpha():
                 continue
-            key = ord(symbol)
+            key = ord(symbol)  # TODO Эти операции пайтон внутри себя проведет при необходимости
+            # TODO вы можете просто использовать symbol как ключ в словаре
+            # TODO словарь[символ] = 1
+            # TODO или если символ уже создан (или если используете defaultdict)
+            # TODO то словарь[символ] = +1
             list_symbols.append(key)
 
             # list_symbols.append(symbol)
@@ -79,8 +83,10 @@ with open(file_name, mode='r', encoding='cp1251') as file:
         print(dict_symbols)
     print(len(dict_symbols_old))
     print(dict_symbols_old)
-# TODO не получается сложить словари - ключи вроде бы добавляет,  а значения не суммирует. есть варианты это исправить?
-#
+# не получается сложить словари - ключи вроде бы добавляет,  а значения не суммирует. есть варианты это исправить?
+# TODO Выше я написал вариант, который попроще в реализации
+# TODO Сложить же массив словарей можно другим способом, почти эталонное решение этой проблемы тут:
+# TODO https://www.geeksforgeeks.org/python-sum-list-of-dictionaries-with-same-key/
 # with open(file_name, mode='r', encoding='cp1251') as file:
 #     for line in file:
 #         print(line)
@@ -101,6 +107,8 @@ with open(file_name, mode='r', encoding='cp1251') as file:
 #         break
 #
 # print(line)
+# TODO Советую сразу все действия закидывать в макет класса
+# TODO Чтобы можно было их отдельно выполнить при желании
 print('+----------+-----------+')
 print('|  буква   |  частота  |')
 print('+----------+-----------+')
