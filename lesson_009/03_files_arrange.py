@@ -92,7 +92,13 @@ class SorteredFiles:
                 secs = os.path.getmtime(full_file_path)
                 file_time = time.gmtime(secs)
                 time_sorted_list = sorted(full_list, key=os.path.getmtime)
-                # TODO что-то как-то я криво сортирую), "толкните" в правильном направлении!
+                # что-то как-то я криво сортирую), "толкните" в правильном направлении!
+                # TODO Сортировать в целом не нужно, особенно внутри цикла
+                # TODO Общий алгоритм примерно такой:
+                # TODO Запускаем цикл по источнику - обращаемся к файлу - смотрим дату - формируем новый путь
+                # TODO создаем этот путь (makedirs с параметром exist_ok=True поможет)
+                # TODO далее в этот путь переносим этот файл
+                # TODO И приступаем к следующему файлу
                 print(time_sorted_list, file_time)
         print(time_sorted_list)
 

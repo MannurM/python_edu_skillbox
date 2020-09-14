@@ -55,15 +55,21 @@ class Reader:
             for line in self.file:
                 pass
             print('file open!')
+        # TODO Открывать файл можно просто через open
+        # TODO через with он закрывается после выполнения кода внутри with
+        # TODO сейчас этот метод по сути ничего не делает
 
     def prepare(self):  # расчеты
         with open(self.file_name, mode='r', encoding='utf8') as self.file:
             for line in self.file:
                 if line[-4:-3] == 'N':
-                    line = line[1:17]
+                    line = line[1:17]  # TODO стоит разные имена придумывать для переменных
+                    # TODO Попробуйте, как и в 01, считать в словаре количество повторов
+                    # TODO среза, хранящегося в line[1:17]
                     self.file_new.append(line)
                     # self.file_new[line] =
-                    self.file_new.sort()
+                    self.file_new.sort()  # TODO сортировать данные на каждом шагу - очень затратно
+                    # TODO так поступать не стоит
             print(self.file_new)
             for index in range(len(self.file_new) - 1):
                 self.a = self.file_new[index][:16]

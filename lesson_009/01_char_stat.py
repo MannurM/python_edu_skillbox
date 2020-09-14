@@ -26,7 +26,9 @@
 #   и https://gitlab.skillbox.ru/vadim_shandrinov/python_base_snippets/snippets/4
 import zipfile
 from collections import defaultdict
+
 'voyna-i-mir.txt'
+
 
 class Inspector:
 
@@ -34,13 +36,14 @@ class Inspector:
         self.dict_symbols = defaultdict(int)
         self.file_name = file_name
         self.sum_all_symbol = 0
-    # TODO выдает ошибку при распаковке
-    # def unzip(self):
-    #     zfile = zipfile.ZipFile(self.file_name, 'r')
-    #     for filename in zfile.namelist():
-    #         zfile.extract(filename)
-    #     self.file_name = filename
 
+    #  выдает ошибку при распаковке
+    # TODO Какую? сейчас всё нормально
+    def unzip(self):
+        zfile = zipfile.ZipFile(self.file_name, 'r')
+        for filename in zfile.namelist():
+            zfile.extract(filename)
+        self.file_name = filename
 
 
     def prepare(self):
@@ -48,7 +51,9 @@ class Inspector:
             for line in file:
                 line = line[:-1]
                 for symbol in line:
-                    if not symbol.isalpha():
+                    if not symbol.isalpha():  # TODO попробуйте изменить условия
+                        # TODO и выполнять действие если они выполняются
+                        # TODO тогда должно быть меньше кода (2 строки вместо 5)
                         continue
                     if not line:
                         continue
@@ -57,8 +62,8 @@ class Inspector:
     def collating(self):
         pass
 
-
-    def __str__(self):
+    def __str__(self):  # TODO Этот метод создан для того, чтобы возвращать строку с информацией об объекте
+        # TODO её не стоит использовать для печати данные, собранных из текста
         print('+----------+-----------+')
         print('|  буква   |  частота  |')
         print('+----------+-----------+')
@@ -71,12 +76,13 @@ class Inspector:
         print('+----------+-----------+')
         return
 
+
 # inspector = Inspector(file_name='voyna-i-mir.txt.zip')
-inspector = Inspector(file_name='voyna-i-mir.txt')
+# TODO Вероятно вы указали неверный путь до файла(его надо строить относительно рабочей директории)
+inspector = Inspector(file_name='python_snippets/voyna-i-mir.txt.zip')
 inspector.prepare()
 
 print(inspector)
-
 
 # После зачета первого этапа нужно сделать упорядочивание статистики
 #  - по частоте по возрастанию
