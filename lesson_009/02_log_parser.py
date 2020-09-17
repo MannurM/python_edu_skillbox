@@ -69,12 +69,13 @@ class Reader:
     def sorted_result(self):
         pass
 
+    # TODO Нужен один метод, который запустит все остальные в правильном порядке
 
 reader = Reader()
 reader.prepare(file_name='events.txt')
 reader.create_result_file()
 reader.open_file()
-
+# TODO И надо реализовать вторую часть с минимумом дублирования кода
 # После зачета первого этапа нужно сделать группировку событий
 #  - по часам
 #  - по месяцу

@@ -45,7 +45,9 @@ class Inspector:
 
     def prepare(self):
         # with open(self.file_name, mode='r') as file:  # , encoding='utf-8'  , encoding='cp1251'
-        # TODO я пробовал оба варианта, может начинать считывать побайтно как-то?
+        # я пробовал оба варианта, может начинать считывать побайтно как-то?
+        print(self.file_name)  # TODO voyna-i-mir.txt.zip -- вы пытаетесь читать архив, а не сам txt файл
+        # TODO (unzip нигде не вызывается же)
         with open(self.file_name, mode='r', encoding='cp1251') as file:
             for line in file:
                 line = line[:-1]

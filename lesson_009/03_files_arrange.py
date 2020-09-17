@@ -105,7 +105,7 @@ class SorteredFiles:
                 print(self.new_path_file)
 
                 # переносим файл
-
+                # TODO Нужно указать полное имя к исходному файлу (директория + файл)
                 shutil.copy2(file, self.new_path_file, follow_symlinks=False)
 
                 #  Сортировать в целом не нужно, особенно внутри цикла
