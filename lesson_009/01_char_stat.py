@@ -37,33 +37,35 @@ class Inspector:
         self.file_name = file_name
         self.sum_all_symbol = 0
 
-    #  выдает ошибку при распаковке
-    # TODO Какую? сейчас всё нормально
     def unzip(self):
         zfile = zipfile.ZipFile(self.file_name, 'r')
         for filename in zfile.namelist():
             zfile.extract(filename)
         self.file_name = filename
 
-
     def prepare(self):
+        # with open(self.file_name, mode='r') as file:  # , encoding='utf-8'  , encoding='cp1251'
+        # TODO я пробовал оба варианта, может начинать считывать побайтно как-то?
         with open(self.file_name, mode='r', encoding='cp1251') as file:
             for line in file:
                 line = line[:-1]
                 for symbol in line:
-                    if not symbol.isalpha():  # TODO попробуйте изменить условия
-                        # TODO и выполнять действие если они выполняются
-                        # TODO тогда должно быть меньше кода (2 строки вместо 5)
-                        continue
-                    if not line:
-                        continue
-                    self.dict_symbols[symbol] += 1
+                    if symbol.isalpha():
+                        self.dict_symbols[symbol] += 1
+
+    # TODO Traceback (most recent call last):
+    # TODO  File "C:/Users/User/PycharmProjects/python_base/lesson_009/01_char_stat.py", line 75, in <module>
+    # TODO inspector.prepare()
+    # TODO File "C:/Users/User/PycharmProjects/python_base/lesson_009/01_char_stat.py", line 49, in prepare
+    # TODO for line in file:
+    # TODO File "C:\Program Files\Python37\Lib\encodings\cp1251.py", line 23, in decode
+    # TODO  return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+    # TODO UnicodeDecodeError: 'charmap' codec can't decode byte 0x98 in position 141: character maps to <undefined>
 
     def collating(self):
         pass
 
-    def __str__(self):  # TODO Этот метод создан для того, чтобы возвращать строку с информацией об объекте
-        # TODO её не стоит использовать для печати данные, собранных из текста
+    def printed_result(self):
         print('+----------+-----------+')
         print('|  буква   |  частота  |')
         print('+----------+-----------+')
@@ -74,15 +76,14 @@ class Inspector:
         print('+----------+-----------+')
         print('|  итого   |', self.sum_all_symbol, ' |')
         print('+----------+-----------+')
-        return
+
+    def __str__(self):
+        pass
 
 
-# inspector = Inspector(file_name='voyna-i-mir.txt.zip')
-# TODO Вероятно вы указали неверный путь до файла(его надо строить относительно рабочей директории)
-inspector = Inspector(file_name='python_snippets/voyna-i-mir.txt.zip')
+inspector = Inspector(file_name='voyna-i-mir.txt.zip') # файл расположен в одной папке с программой 01_char_stat
 inspector.prepare()
-
-print(inspector)
+inspector.printed_result()
 
 # После зачета первого этапа нужно сделать упорядочивание статистики
 #  - по частоте по возрастанию

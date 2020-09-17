@@ -2,6 +2,7 @@
 
 import os
 import time
+import shutil
 
 
 # Нужно написать скрипт для упорядочивания фотографий (вообще любых файлов)
@@ -66,6 +67,7 @@ class SorteredFiles:
         self.name_new_folder = None
         self.year_time_file = None
         self.mount_time_file = None
+        self.new_path_file = None
 
     def __str__(self):
         pass
@@ -73,39 +75,48 @@ class SorteredFiles:
     def reader_files(self, name_old_folder):
         self.name_old_folder = name_old_folder
         for dirpath, dirnames, filenames in os.walk(self.name_old_folder):
-            # print(dirpath, dirnames, filenames)
             for file in filenames:
                 full_file_path = os.path.join(dirpath, file)
                 secs = os.path.getmtime(full_file_path)
                 file_time = time.gmtime(secs)
                 print(full_file_path)
-                print(file_time)
+                print(file_time.tm_year, file_time.tm_mon, file_time.tm_mday)
                 print('')
 
-    def sorted_time_files(self):
+    def sorted_time_files(self, name_new_folder, name_old_folder):
+        self.name_new_folder = name_new_folder
+        self.name_old_folder = name_old_folder
+
         for dirpath, dirnames, filenames in os.walk(self.name_old_folder):
             for file in filenames:
                 full_file_path = os.path.join(dirpath, file)
-                # print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
-                file_list = os.listdir(dirpath)  # нужно указать все папки для просмотра
-                full_list = [os.path.join(dirpath, file) for file in file_list]
                 secs = os.path.getmtime(full_file_path)
                 file_time = time.gmtime(secs)
-                time_sorted_list = sorted(full_list, key=os.path.getmtime)
-                # что-то как-то я криво сортирую), "толкните" в правильном направлении!
-                # TODO Сортировать в целом не нужно, особенно внутри цикла
-                # TODO Общий алгоритм примерно такой:
-                # TODO Запускаем цикл по источнику - обращаемся к файлу - смотрим дату - формируем новый путь
-                # TODO создаем этот путь (makedirs с параметром exist_ok=True поможет)
-                # TODO далее в этот путь переносим этот файл
-                # TODO И приступаем к следующему файлу
-                print(time_sorted_list, file_time)
-        print(time_sorted_list)
+                # print(os.getcwd())
+                # смотрим дату
+                file_time_year = str(file_time.tm_year)
+                file_time_mon = str(file_time.tm_mon)  # file_time_day = file_time.tm_mday
+
+                # формируем новый путь
+                self.new_path_file = self.name_new_folder + '/' + file_time_year + '/' + file_time_mon
+
+                # создаем путь
+                os.makedirs(self.new_path_file, exist_ok=True)  # self.name_new_folder??
+                print(self.new_path_file)
+
+                # переносим файл
+
+                shutil.copy2(file, self.new_path_file, follow_symlinks=False)
+
+                #  Сортировать в целом не нужно, особенно внутри цикла
+                #  Общий алгоритм примерно такой:
+                #  Запускаем цикл по источнику - обращаемся к файлу - смотрим дату - формируем новый путь
+                #  создаем этот путь (makedirs с параметром exist_ok=True поможет)
+                #  далее в этот путь переносим этот файл
+                #  И приступаем к следующему файлу
 
     def create_new_folder(self, name_new_folder):
-        self.name_new_folder = name_new_folder
-        self.year_time_file = os.path.getmtime
-        self.mount_time_file = None
+        pass
 
     def unpack_archive(self):
         pass
@@ -113,7 +124,7 @@ class SorteredFiles:
 
 sort_files = SorteredFiles()
 sort_files.reader_files(name_old_folder='icons')
-sort_files.sorted_time_files()
+sort_files.sorted_time_files(name_old_folder='icons', name_new_folder='icons_by_year')
 
 # sort_files.create_new_folder(name_new_folder='icons_by_year')
 
