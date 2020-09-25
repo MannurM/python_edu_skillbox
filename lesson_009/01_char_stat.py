@@ -54,6 +54,10 @@ class Inspector:
                         self.dict_symbols[symbol] += 1
 
     def sorting_alf(self):
+        # TODO Здесь везде можно использовать sorted(self.dict_symbols.items(), key..., reverse=...)
+        # TODO Тогда везде будет одинаковый тип по итогу
+        # TODO я бы даже предложил сделать один метод сортировки тут, а в наследниках переопределить его
+        # TODO изменяя key и reverse
         self.list_symbol = list(self.dict_symbols)
         self.list_symbol.sort()
         self.printed_value = self.list_symbol
@@ -73,6 +77,8 @@ class Inspector:
         print('+----------+-----------+')
         print('|  буква   |  частота  |')
         print('+----------+-----------+')
+        # TODO вот тут странно начинается,
+        # TODO сделайте в самом принте просто один вариант печати из конкретного атрибута self.printed_value например
         if isinstance(self.printed_value, list):
             for key in self.list_symbol:
                 value_dict = self.dict_symbols[key]
@@ -91,7 +97,7 @@ class Inspector:
         print('|  итого   |', self.sum_all_symbol, '  |')
         print('+----------+-----------+')
 
-    def __str__(self):
+    def __str__(self):  # TODO Если ничего не задаете в этом методе - то не стоит его переопределять
         pass
 
 

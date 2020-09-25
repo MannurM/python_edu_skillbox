@@ -67,6 +67,10 @@ class Reader:
         for line in self.file:
             if line[-4:-3] == 'N':
                 different_symbol = line[1:17]
+                # TODO попробуйте 17 сделать атрибутом класса
+                # TODO Тогда для того, чтобы выполнить группировку по часам - надо будет просто заменить 17 на 14
+                # TODO для дней - на 11, для месяцев на 7 и тд
+                # TODO можно создать наследников и в каждом наследнике изменить только атрибут
                 self.dict_symbols[different_symbol] += 1
         self.file.close()
 
@@ -75,8 +79,10 @@ class Reader:
             key_sorted = key[11:13]
             # self.dict_symbols_sorted.update({key_sorted: self.dict_symbols_new.update({key: value})})
             # self.dict_symbols_sorted.update({key_sorted: self.dict_symbols.setdefault(key, value)})
-            # TODO как добавить все ключи и значения словаря self.dict_symbols в новый словарь self.dict_symbols_sorted
+            # как добавить все ключи и значения словаря self.dict_symbols в новый словарь self.dict_symbols_sorted
             #  или есть способ проще?
+            # TODO Как объединить словари можно глянуть тут, там даже замеры по времени для разных методов:
+            # TODO https://stackoverflow.com/questions/1781571/how-to-concatenate-two-dictionaries-to-create-a-new-one-in-python
         print(self.dict_symbols_sorted)
 
     def run_programm(self, file_name):
