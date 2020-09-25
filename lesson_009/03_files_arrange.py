@@ -53,13 +53,6 @@ import shutil
 # прочитать директорию с файлами, создать список имен файлов, отсортировать файлы по времени создания
 # создать новую директорию - скопировать в неё файлы в отдельные папки за определенный месяц, год
 
-
-# current_dir = pathlib.Path.cwd()
-# home_dir = pathlib.Path.home()
-#
-# print(current_dir)
-# print(home_dir)
-
 class SorteredFiles:
 
     def __init__(self):
@@ -72,62 +65,36 @@ class SorteredFiles:
     def __str__(self):
         pass
 
-    def reader_files(self, name_old_folder):
-        self.name_old_folder = name_old_folder
-        for dirpath, dirnames, filenames in os.walk(self.name_old_folder):
-            for file in filenames:
-                full_file_path = os.path.join(dirpath, file)
-                secs = os.path.getmtime(full_file_path)
-                file_time = time.gmtime(secs)
-                print(full_file_path)
-                print(file_time.tm_year, file_time.tm_mon, file_time.tm_mday)
-                print('')
-
     def sorted_time_files(self, name_new_folder, name_old_folder):
         self.name_new_folder = name_new_folder
         self.name_old_folder = name_old_folder
-
         for dirpath, dirnames, filenames in os.walk(self.name_old_folder):
             for file in filenames:
                 full_file_path = os.path.join(dirpath, file)
                 secs = os.path.getmtime(full_file_path)
                 file_time = time.gmtime(secs)
-                # print(os.getcwd())
+
                 # смотрим дату
                 file_time_year = str(file_time.tm_year)
-                file_time_mon = str(file_time.tm_mon)  # file_time_day = file_time.tm_mday
+                file_time_mon = str(file_time.tm_mon)
 
                 # формируем новый путь
                 self.new_path_file = self.name_new_folder + '/' + file_time_year + '/' + file_time_mon
 
                 # создаем путь
-                os.makedirs(self.new_path_file, exist_ok=True)  # self.name_new_folder??
+                os.makedirs(self.new_path_file, exist_ok=True)
                 print(self.new_path_file)
 
                 # переносим файл
-                # TODO Нужно указать полное имя к исходному файлу (директория + файл)
-                shutil.copy2(file, self.new_path_file, follow_symlinks=False)
-
-                #  Сортировать в целом не нужно, особенно внутри цикла
-                #  Общий алгоритм примерно такой:
-                #  Запускаем цикл по источнику - обращаемся к файлу - смотрим дату - формируем новый путь
-                #  создаем этот путь (makedirs с параметром exist_ok=True поможет)
-                #  далее в этот путь переносим этот файл
-                #  И приступаем к следующему файлу
-
-    def create_new_folder(self, name_new_folder):
-        pass
+                file_path = dirpath + '\\' + file
+                shutil.copy2(file_path, self.new_path_file, follow_symlinks=False)
 
     def unpack_archive(self):
         pass
 
 
 sort_files = SorteredFiles()
-sort_files.reader_files(name_old_folder='icons')
 sort_files.sorted_time_files(name_old_folder='icons', name_new_folder='icons_by_year')
-
-# sort_files.create_new_folder(name_new_folder='icons_by_year')
-
 
 # Усложненное задание (делать по желанию)
 # Нужно обрабатывать zip-файл, содержащий фотографии, без предварительного извлечения файлов в папку.

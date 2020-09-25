@@ -37,6 +37,10 @@ class Reader:
         self.file_name = None
         self.file_name_result = None
         self.dict_symbols = defaultdict(int)
+        self.dict_symbols_new = {}
+        self.dict_symbols_sorted = {}
+        self.time_name = None
+
 
     def __str__(self):
         pass
@@ -66,16 +70,30 @@ class Reader:
                 self.dict_symbols[different_symbol] += 1
         self.file.close()
 
-    def sorted_result(self):
-        pass
+    def sorted_result(self):  # 11:13-Часы, 8:11 день, 5:7 месяц, 0:4 Года
+        for key, value in self.dict_symbols.items():
+            key_sorted = key[11:13]
+            # self.dict_symbols_sorted.update({key_sorted: self.dict_symbols_new.update({key: value})})
+            # self.dict_symbols_sorted.update({key_sorted: self.dict_symbols.setdefault(key, value)})
+            # TODO как добавить все ключи и значения словаря self.dict_symbols в новый словарь self.dict_symbols_sorted
+            #  или есть способ проще?
+        print(self.dict_symbols_sorted)
 
-    # TODO Нужен один метод, который запустит все остальные в правильном порядке
+    def run_programm(self, file_name):
+        self.prepare(file_name)
+        self.sorted_result()
+        # self.create_result_file()
+        # self.open_file()
+
 
 reader = Reader()
-reader.prepare(file_name='events.txt')
-reader.create_result_file()
-reader.open_file()
-# TODO И надо реализовать вторую часть с минимумом дублирования кода
+reader.run_programm(file_name='events.txt',)
+
+
+
+
+#  И надо реализовать вторую часть с минимумом дублирования кода
+
 # После зачета первого этапа нужно сделать группировку событий
 #  - по часам
 #  - по месяцу

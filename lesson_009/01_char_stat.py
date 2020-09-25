@@ -27,27 +27,25 @@
 import zipfile
 from collections import defaultdict
 
-'voyna-i-mir.txt'
-
 
 class Inspector:
 
-    def __init__(self, file_name):
+    def __init__(self):
         self.dict_symbols = defaultdict(int)
-        self.file_name = file_name
+        self.file_name = None
         self.sum_all_symbol = 0
+        self.counter = None
+        self.list_symbol = []
+        self.printed_value = None
 
-    def unzip(self):
+    def unzip(self, file_name):
+        self.file_name = file_name
         zfile = zipfile.ZipFile(self.file_name, 'r')
         for filename in zfile.namelist():
-            zfile.extract(filename)
-        self.file_name = filename
+            self.file_name = zfile.extract(filename)
+        return
 
     def prepare(self):
-        # with open(self.file_name, mode='r') as file:  # , encoding='utf-8'  , encoding='cp1251'
-        # я пробовал оба варианта, может начинать считывать побайтно как-то?
-        print(self.file_name)  # TODO voyna-i-mir.txt.zip -- вы пытаетесь читать архив, а не сам txt файл
-        # TODO (unzip нигде не вызывается же)
         with open(self.file_name, mode='r', encoding='cp1251') as file:
             for line in file:
                 line = line[:-1]
@@ -55,39 +53,59 @@ class Inspector:
                     if symbol.isalpha():
                         self.dict_symbols[symbol] += 1
 
-    # TODO Traceback (most recent call last):
-    # TODO  File "C:/Users/User/PycharmProjects/python_base/lesson_009/01_char_stat.py", line 75, in <module>
-    # TODO inspector.prepare()
-    # TODO File "C:/Users/User/PycharmProjects/python_base/lesson_009/01_char_stat.py", line 49, in prepare
-    # TODO for line in file:
-    # TODO File "C:\Program Files\Python37\Lib\encodings\cp1251.py", line 23, in decode
-    # TODO  return codecs.charmap_decode(input,self.errors,decoding_table)[0]
-    # TODO UnicodeDecodeError: 'charmap' codec can't decode byte 0x98 in position 141: character maps to <undefined>
+    def sorting_alf(self):
+        self.list_symbol = list(self.dict_symbols)
+        self.list_symbol.sort()
+        self.printed_value = self.list_symbol
 
-    def collating(self):
-        pass
+    def sorting_alf_revers(self):
+        self.list_symbol = list(self.dict_symbols)
+        self.list_symbol.sort()
+        self.list_symbol.reverse()
+        self.printed_value = self.list_symbol
+
+    def sorting_value(self):
+        self.list_symbol = list(self.dict_symbols.items())
+        self.list_symbol.sort(key=lambda i: i[1])
+        self.printed_value = self.dict_symbols.items()
 
     def printed_result(self):
         print('+----------+-----------+')
         print('|  буква   |  частота  |')
         print('+----------+-----------+')
-        for key in self.dict_symbols:
-            value_dict = self.dict_symbols[key]
-            print('| ', key, '    |    ', value_dict, '    |')
-            self.sum_all_symbol += value_dict
+        if isinstance(self.printed_value, list):
+            for key in self.list_symbol:
+                value_dict = self.dict_symbols[key]
+                len_rezault_symbol = len(str(value_dict))
+                len_backspace = ' ' * (8 - int(len_rezault_symbol))
+                print('|   ', key, '    |', value_dict, len_backspace, '|')
+                self.sum_all_symbol += self.dict_symbols[key]
+        else:
+            for key in self.list_symbol:
+                len_rezault_symbol = len(str(key[1]))
+                len_backspace = ' ' * (8 - int(len_rezault_symbol))
+                print('|   ', key[0], '    |', key[1], len_backspace, '|')
+                self.sum_all_symbol += key[1]
+
         print('+----------+-----------+')
-        print('|  итого   |', self.sum_all_symbol, ' |')
+        print('|  итого   |', self.sum_all_symbol, '  |')
         print('+----------+-----------+')
 
     def __str__(self):
         pass
 
 
-inspector = Inspector(file_name='voyna-i-mir.txt.zip') # файл расположен в одной папке с программой 01_char_stat
+inspector = Inspector()
+inspector.unzip(file_name='voyna-i-mir.txt.zip')
 inspector.prepare()
+# inspector.sorting_alf()
+# inspector.sorting_alf_revers()
+inspector.sorting_value()
 inspector.printed_result()
 
 # После зачета первого этапа нужно сделать упорядочивание статистики
 #  - по частоте по возрастанию
 #  - по алфавиту по возрастанию
 #  - по алфавиту по убыванию
+
+#  сделать красоту - распечатка ровными столбцами, общий блок для распечатки
