@@ -72,7 +72,8 @@ class Reader:
         self.open_file()
 
 
-class SorteredHour:
+class SorteredHour:  # TODO тут была идея в том, чтобы унаследовать эти классы от основного сверху
+    # TODO и там уже использовать этот end_segment
 
     def __init__(self):
         super().__init__()
@@ -101,12 +102,13 @@ class SorteredYear:
 
 
 reader = Reader()
+# TODO тогда и не нужно будет передавать параметром отдельный класс)
 reader.run_programm(file_name='events.txt', sort_order=SorteredHour())
 reader.run_programm(file_name='events.txt', sort_order=SorteredDay())
 reader.run_programm(file_name='events.txt', sort_order=SorteredMount())
 reader.run_programm(file_name='events.txt', sort_order=SorteredYear())
 
-# TODO Все как-то коряво с вызовом класса в качестве параметра?? или так бывает?
+# Все как-то коряво с вызовом класса в качестве параметра?? или так бывает?
 
 #  И надо реализовать вторую часть с минимумом дублирования кода
 

@@ -73,6 +73,7 @@ class Inspector:
         print('+----------+-----------+')
         print('|  итого   |', self.sum_all_symbol, '  |')
         print('+----------+-----------+')
+    # TODO нужно тут сделать один общий метод, который вызовет остальные в правильном порядке
 
 
 class Sorting(Inspector):
@@ -98,7 +99,7 @@ class SortingAlfRevers(Sorting):
     def __init__(self):
         super(Sorting, self).__init__()
         self.sorted_key = lambda i: i[0]
-        self.sorted_reverse = False
+        self.sorted_reverse = True  # тут видимо True должен быть
 
 
 class SortingValue(Sorting):
