@@ -37,10 +37,7 @@ class Reader:
         self.file_name = None
         self.file_name_result = None
         self.dict_symbols = defaultdict(int)
-        self.dict_symbols_new = {}
-        self.dict_symbols_sorted = {}
-        self.time_name = None
-
+        self.end_segment = None
 
     def __str__(self):
         pass
@@ -56,47 +53,60 @@ class Reader:
     def open_file(self):  # открытие  файла с результатами
         self.file_name = self.file_name_result
         self.file = open(self.file_name, mode='r', encoding='utf8')
-        print('file open!')
         for line in self.file:
             print(line)
         self.file.close()
 
-    def prepare(self, file_name):  # подготовка и расчеты
+    def prepare(self, file_name, sort_order):  # подготовка и расчеты
         self.file_name = file_name
         self.file = open(self.file_name, mode='r', encoding='utf8')
         for line in self.file:
             if line[-4:-3] == 'N':
-                different_symbol = line[1:17]
-                # TODO попробуйте 17 сделать атрибутом класса
-                # TODO Тогда для того, чтобы выполнить группировку по часам - надо будет просто заменить 17 на 14
-                # TODO для дней - на 11, для месяцев на 7 и тд
-                # TODO можно создать наследников и в каждом наследнике изменить только атрибут
+                different_symbol = line[1:sort_order.end_segment]
                 self.dict_symbols[different_symbol] += 1
         self.file.close()
 
-    def sorted_result(self):  # 11:13-Часы, 8:11 день, 5:7 месяц, 0:4 Года
-        for key, value in self.dict_symbols.items():
-            key_sorted = key[11:13]
-            # self.dict_symbols_sorted.update({key_sorted: self.dict_symbols_new.update({key: value})})
-            # self.dict_symbols_sorted.update({key_sorted: self.dict_symbols.setdefault(key, value)})
-            # как добавить все ключи и значения словаря self.dict_symbols в новый словарь self.dict_symbols_sorted
-            #  или есть способ проще?
-            # TODO Как объединить словари можно глянуть тут, там даже замеры по времени для разных методов:
-            # TODO https://stackoverflow.com/questions/1781571/how-to-concatenate-two-dictionaries-to-create-a-new-one-in-python
-        print(self.dict_symbols_sorted)
+    def run_programm(self, file_name, sort_order):
+        self.prepare(file_name, sort_order)
+        self.create_result_file()
+        self.open_file()
 
-    def run_programm(self, file_name):
-        self.prepare(file_name)
-        self.sorted_result()
-        # self.create_result_file()
-        # self.open_file()
+
+class SorteredHour:
+
+    def __init__(self):
+        super().__init__()
+        self.end_segment = 14
+
+
+class SorteredDay:
+
+    def __init__(self):
+        super().__init__()
+        self.end_segment = 12
+
+
+class SorteredMount:
+
+    def __init__(self):
+        super().__init__()
+        self.end_segment = 8
+
+
+class SorteredYear:
+
+    def __init__(self):
+        super().__init__()
+        self.end_segment = 5
 
 
 reader = Reader()
-reader.run_programm(file_name='events.txt',)
+reader.run_programm(file_name='events.txt', sort_order=SorteredHour())
+reader.run_programm(file_name='events.txt', sort_order=SorteredDay())
+reader.run_programm(file_name='events.txt', sort_order=SorteredMount())
+reader.run_programm(file_name='events.txt', sort_order=SorteredYear())
 
-
-
+# TODO Все как-то коряво с вызовом класса в качестве параметра?? или так бывает?
 
 #  И надо реализовать вторую часть с минимумом дублирования кода
 

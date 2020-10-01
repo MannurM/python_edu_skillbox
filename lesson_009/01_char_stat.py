@@ -31,6 +31,7 @@ from collections import defaultdict
 class Inspector:
 
     def __init__(self):
+        self.sorted_key = None
         self.dict_symbols = defaultdict(int)
         self.file_name = None
         self.sum_all_symbol = 0
@@ -52,62 +53,67 @@ class Inspector:
                 for symbol in line:
                     if symbol.isalpha():
                         self.dict_symbols[symbol] += 1
+                self.sum_all_symbol += self.dict_symbols[symbol]
 
-    def sorting_alf(self):
-        # TODO Здесь везде можно использовать sorted(self.dict_symbols.items(), key..., reverse=...)
-        # TODO Тогда везде будет одинаковый тип по итогу
-        # TODO я бы даже предложил сделать один метод сортировки тут, а в наследниках переопределить его
-        # TODO изменяя key и reverse
-        self.list_symbol = list(self.dict_symbols)
-        self.list_symbol.sort()
+    def sorting_value(self, key):
+        self.list_symbol = sorted(self.dict_symbols.items(), key=key().sorted_key, reverse=False)
         self.printed_value = self.list_symbol
-
-    def sorting_alf_revers(self):
-        self.list_symbol = list(self.dict_symbols)
-        self.list_symbol.sort()
-        self.list_symbol.reverse()
-        self.printed_value = self.list_symbol
-
-    def sorting_value(self):
-        self.list_symbol = list(self.dict_symbols.items())
-        self.list_symbol.sort(key=lambda i: i[1])
-        self.printed_value = self.dict_symbols.items()
 
     def printed_result(self):
         print('+----------+-----------+')
         print('|  буква   |  частота  |')
         print('+----------+-----------+')
-        # TODO вот тут странно начинается,
-        # TODO сделайте в самом принте просто один вариант печати из конкретного атрибута self.printed_value например
-        if isinstance(self.printed_value, list):
-            for key in self.list_symbol:
-                value_dict = self.dict_symbols[key]
-                len_rezault_symbol = len(str(value_dict))
-                len_backspace = ' ' * (8 - int(len_rezault_symbol))
-                print('|   ', key, '    |', value_dict, len_backspace, '|')
-                self.sum_all_symbol += self.dict_symbols[key]
-        else:
-            for key in self.list_symbol:
+
+        for key in self.printed_value:
+            if key[0].isalpha():
                 len_rezault_symbol = len(str(key[1]))
                 len_backspace = ' ' * (8 - int(len_rezault_symbol))
                 print('|   ', key[0], '    |', key[1], len_backspace, '|')
-                self.sum_all_symbol += key[1]
 
         print('+----------+-----------+')
         print('|  итого   |', self.sum_all_symbol, '  |')
         print('+----------+-----------+')
 
-    def __str__(self):  # TODO Если ничего не задаете в этом методе - то не стоит его переопределять
-        pass
+
+class Sorting(Inspector):
+
+    def __init__(self):
+        super().__init__()
+        self.list_symbol = None
+        self.printed_value = None
+        self.sorted_key = None
+        self.sorted_reverse = None
+
+
+class SortingAlf(Sorting):
+
+    def __init__(self):
+        super().__init__()
+        self.sorted_key = lambda i: i[0]
+        self.sorted_reverse = False
+
+
+class SortingAlfRevers(Sorting):
+
+    def __init__(self):
+        super(Sorting, self).__init__()
+        self.sorted_key = lambda i: i[0]
+        self.sorted_reverse = False
+
+
+class SortingValue(Sorting):
+    def __init__(self):
+        super(Sorting, self).__init__()
+        self.sorted_key = lambda i: i[1]
+        self.sorted_reverse = False
 
 
 inspector = Inspector()
 inspector.unzip(file_name='voyna-i-mir.txt.zip')
 inspector.prepare()
-# inspector.sorting_alf()
-# inspector.sorting_alf_revers()
-inspector.sorting_value()
+inspector.sorting_value(key=SortingAlf)  # SortingAlfRevers, SortingAlf
 inspector.printed_result()
+
 
 # После зачета первого этапа нужно сделать упорядочивание статистики
 #  - по частоте по возрастанию
