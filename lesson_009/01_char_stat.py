@@ -56,7 +56,7 @@ class Inspector:
                 self.sum_all_symbol += self.dict_symbols[symbol]
 
     def sorting_value(self, key):
-        self.list_symbol = sorted(self.dict_symbols.items(), key=key().sorted_key, reverse=False)
+        self.list_symbol = sorted(self.dict_symbols.items(), key=key().sorted_key, reverse=key().sorted_reverse)
         self.printed_value = self.list_symbol
 
     def printed_result(self):
@@ -73,7 +73,12 @@ class Inspector:
         print('+----------+-----------+')
         print('|  итого   |', self.sum_all_symbol, '  |')
         print('+----------+-----------+')
-    # TODO нужно тут сделать один общий метод, который вызовет остальные в правильном порядке
+
+    def run_programm(self, file_name, key):
+        self.unzip(file_name)
+        self.prepare()
+        self.sorting_value(key)
+        self.printed_result()
 
 
 class Sorting(Inspector):
@@ -110,10 +115,13 @@ class SortingValue(Sorting):
 
 
 inspector = Inspector()
-inspector.unzip(file_name='voyna-i-mir.txt.zip')
-inspector.prepare()
-inspector.sorting_value(key=SortingAlf)  # SortingAlfRevers, SortingAlf
-inspector.printed_result()
+
+inspector.run_programm(file_name='voyna-i-mir.txt.zip', key=SortingAlf)  # ключи SortingAlfRevers, SortingValue
+
+# inspector.unzip(file_name='voyna-i-mir.txt.zip')
+# inspector.prepare()
+# inspector.sorting_value(key=SortingAlf)
+# inspector.printed_result()
 
 
 # После зачета первого этапа нужно сделать упорядочивание статистики

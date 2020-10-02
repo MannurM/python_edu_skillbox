@@ -62,7 +62,7 @@ class Reader:
         self.file = open(self.file_name, mode='r', encoding='utf8')
         for line in self.file:
             if line[-4:-3] == 'N':
-                different_symbol = line[1:sort_order.end_segment]
+                different_symbol = line[1:sort_order().end_segment]
                 self.dict_symbols[different_symbol] += 1
         self.file.close()
 
@@ -72,29 +72,28 @@ class Reader:
         self.open_file()
 
 
-class SorteredHour:  # TODO тут была идея в том, чтобы унаследовать эти классы от основного сверху
-    # TODO и там уже использовать этот end_segment
+class SorteredHour(Reader):
 
     def __init__(self):
         super().__init__()
         self.end_segment = 14
 
 
-class SorteredDay:
+class SorteredDay(Reader):
 
     def __init__(self):
         super().__init__()
         self.end_segment = 12
 
 
-class SorteredMount:
+class SorteredMount(Reader):
 
     def __init__(self):
         super().__init__()
         self.end_segment = 8
 
 
-class SorteredYear:
+class SorteredYear(Reader):
 
     def __init__(self):
         super().__init__()
@@ -102,13 +101,11 @@ class SorteredYear:
 
 
 reader = Reader()
-# TODO тогда и не нужно будет передавать параметром отдельный класс)
-reader.run_programm(file_name='events.txt', sort_order=SorteredHour())
-reader.run_programm(file_name='events.txt', sort_order=SorteredDay())
-reader.run_programm(file_name='events.txt', sort_order=SorteredMount())
-reader.run_programm(file_name='events.txt', sort_order=SorteredYear())
 
-# Все как-то коряво с вызовом класса в качестве параметра?? или так бывает?
+reader.run_programm(file_name='events.txt', sort_order=SorteredHour)
+# reader.run_programm(file_name='events.txt', sort_order=SorteredDay)
+# reader.run_programm(file_name='events.txt', sort_order=SorteredMount)
+# reader.run_programm(file_name='events.txt', sort_order=SorteredYear)
 
 #  И надо реализовать вторую часть с минимумом дублирования кода
 
