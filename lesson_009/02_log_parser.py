@@ -37,7 +37,7 @@ class Reader:
         self.file_name = None
         self.file_name_result = None
         self.dict_symbols = defaultdict(int)
-        self.end_segment = None
+        self.end_segment = None  # TODO вот тут указываем вместо None 17
 
     def __str__(self):
         pass
@@ -62,12 +62,13 @@ class Reader:
         self.file = open(self.file_name, mode='r', encoding='utf8')
         for line in self.file:
             if line[-4:-3] == 'N':
-                different_symbol = line[1:sort_order().end_segment]
+                different_symbol = line[1:sort_order().end_segment]  # TODO self.end_segment тут используем
+                # TODO вместо сегмента из параметра
                 self.dict_symbols[different_symbol] += 1
         self.file.close()
 
     def run_programm(self, file_name, sort_order):
-        self.prepare(file_name, sort_order)
+        self.prepare(file_name, sort_order)  # TODO тут сорт_ордер просто удаляем
         self.create_result_file()
         self.open_file()
 
@@ -103,6 +104,12 @@ class SorteredYear(Reader):
 reader = Reader()
 
 reader.run_programm(file_name='events.txt', sort_order=SorteredHour)
+# TODO Далее мы просто создаем один из классов
+# TODO если Reader() - то end_segment будет 17
+# TODO если SorteredYear() - то end_segment будет 5
+# TODO и будем писать
+reader = SorteredYear()
+reader.run_programm(file_name='events.txt')
 # reader.run_programm(file_name='events.txt', sort_order=SorteredDay)
 # reader.run_programm(file_name='events.txt', sort_order=SorteredMount)
 # reader.run_programm(file_name='events.txt', sort_order=SorteredYear)
