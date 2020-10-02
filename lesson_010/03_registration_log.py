@@ -47,22 +47,24 @@ class Cleaner:
         with open(self.file_name, mode='r', encoding='utf-8') as file:
             for line in file:
                 line = line[:-1]
-                valid_data = line
+                valid_data = line  # TODO лишняя переменная, разве нет? можно обойтись без неё
                 # print(line)
                 try:
                     if not valid_data:
                         # print('ошибка - Нет данных в строке', valid_data)
                         raise IndexError('ошибка -  Нет данных в строке')
                     line = line.split()
-                    name = line[0]
+                    name = line[0]  # TODO разделение на 3 элемента надо провести после проверки длины line
                     email = line[1]
                     age = line[2]
-                    if not len(age):  # TODO Вот здесь не находит ошибку - что-то не так?
-                        # TODO хочу проверить на наличие символов в переменной
-
+                    if not len(age):  # TODO len - это проверка длины
+                        # TODO она сработает, только если длина будет равна 0
+                        # TODO лучше проверять "если длина != 3"
+                        # Вот здесь не находит ошибку - что-то не так?
+                        # хочу проверить на наличие символов в переменной
                         print('ошибка - Неполные данные', 'valid_data', valid_data)
                         raise ValueError('ошибка - Неполные данные')
-
+                    # TODO цикл тут не нужен, можно просто name.isalpha() проверить
                     for symbol in name:
                         if symbol.isalpha():
                             continue
@@ -71,6 +73,8 @@ class Cleaner:
                             raise NotNameError('ошибка - В имени пользователя не только буквы!')
 
                     if not chr(64) or not chr(46) in email:
+                        # TODO Подобная проверка проверит только наличие точки в email
+                        # TODO А '@' будет отдельной проверкой, которая всегда равна True
                         # print('ошибка - Поле email не содержит "@" и  "." ', email, valid_data)
                         raise NotEmailError('ошибка - Поле email не содержит "@" и  "." ')
                     if not age.isdigit():
@@ -81,7 +85,7 @@ class Cleaner:
                         self.registrations_good.append(valid_data)
                     else:
                         raise ValueError('ошибка - Возраст выходит за пределы диапазона')
-
+                # TODO и тут ошибки можно собрать как в 02
                 except IndexError:
                     self.registrations_bad.append(valid_data)
 

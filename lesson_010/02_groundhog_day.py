@@ -46,12 +46,16 @@ class SuicideError(Exception):
 
 
 def one_day():
+    # TODO отсюда цикл можно убрать
     while ENLIGHTENMENT_CARMA_LEVEL >= 7:
         random_exception = randint(1, 13)
 
         if random_exception == 7:
+            # TODO наоборот, если выпадает 7, то карму возвращать не нужно
+            # TODO тут надо вызвать случайное исключение
             carma_level = randint(1, 7)
             # print(carma_level, 'carma_level')
+            # TODO кстати исключения можно собрать в список или словарь и вызывать их оттуда по индексу/ключу
             if carma_level == 1:
                 raise IamGodError('IamGodError')
             elif carma_level == 2:
@@ -67,12 +71,17 @@ def one_day():
             else:
                 print('Good day!')
             return carma_level
+        # TODO тут нужен else и в нём возвращать карму от 1 до 7
 
-
+# TODO тут нужна будет переменная для хранения кармы
+# TODO чтобы было while результат <= ENLIGHTENMENT_CARMA_LEVEL
 while ENLIGHTENMENT_CARMA_LEVEL >= 7:
     try:
         one_day()
 
+    # TODO Тут нужно будет перечислить все типы ошибок в except
+    # TODO Их можно объединять подобным образом
+    #  except (ValueError, Exception ...) as exc
     except IamGodError as exc:
         print(f' ошибка  - {exc}')
     except DrunkError as exc:
