@@ -45,56 +45,45 @@ class SuicideError(Exception):
     pass
 
 
+dict_exception = {1: IamGodError, 2: DrunkError, 3: CarCrashError, 4: GluttonyError, 5: SuicideError, 6: SuicideError, }
+carma_level = 0
+
+
 def one_day():
-    # TODO отсюда цикл можно убрать
-    while ENLIGHTENMENT_CARMA_LEVEL >= 7:
-        random_exception = randint(1, 13)
+    global carma_level
+    carma = randint(1, 13)
+    if carma == 7:
+        random_exp = randint(1, 6)
+        print('Bad Day!')
+        print(carma_level, 'carma_level')
+        carma_level -= random_exp  # карма должна уменьшаться за плохие поступки))
+        raise dict_exception[random_exp]
+    else:
+        # print('Good day!')
+        # print(carma_level, 'carma_level')
+        carma_level += carma
+        return carma_level
 
-        if random_exception == 7:
-            # TODO наоборот, если выпадает 7, то карму возвращать не нужно
-            # TODO тут надо вызвать случайное исключение
-            carma_level = randint(1, 7)
-            # print(carma_level, 'carma_level')
-            # TODO кстати исключения можно собрать в список или словарь и вызывать их оттуда по индексу/ключу
-            if carma_level == 1:
-                raise IamGodError('IamGodError')
-            elif carma_level == 2:
-                raise DrunkError('DrunkError')
-            elif carma_level == 3:
-                raise CarCrashError('CarCrashError')
-            elif carma_level == 4:
-                raise GluttonyError('GluttonyError')
-            elif carma_level == 5:
-                raise GluttonyError('GluttonyError')
-            elif carma_level == 6:
-                raise SuicideError('SuicideError')
-            else:
-                print('Good day!')
-            return carma_level
-        # TODO тут нужен else и в нём возвращать карму от 1 до 7
 
-# TODO тут нужна будет переменная для хранения кармы
-# TODO чтобы было while результат <= ENLIGHTENMENT_CARMA_LEVEL
-while ENLIGHTENMENT_CARMA_LEVEL >= 7:
+while ENLIGHTENMENT_CARMA_LEVEL >= carma_level:
     try:
         one_day()
 
-    # TODO Тут нужно будет перечислить все типы ошибок в except
-    # TODO Их можно объединять подобным образом
-    #  except (ValueError, Exception ...) as exc
-    except IamGodError as exc:
-        print(f' ошибка  - {exc}')
-    except DrunkError as exc:
-        print(f' ошибка  - {exc}')
-    except CarCrashError as exc:
-        print(f' ошибка  - {exc}')
-    except GluttonyError as exc:
-        print(f' ошибка  - {exc}')
-    except DepressionError as exc:
-        print(f' ошибка  - {exc}')
-    except SuicideError as exc:
-        print(f' ошибка  - {exc}')
-    # except:
-    #     print('Другая ошибка!')
+    # except IamGodError as exc1:
+    #     print('ошибка1 - ', exc1)
+    # except DrunkError as exc2:
+    #     print('ошибка2 - ', exc2)
+    # except CarCrashError as exc3:
+    #     print('ошибка3 - ', exc3)
+    # except GluttonyError as exc4:
+    #     print('ошибка4 - ', exc4)
+    # except DepressionError as exc5:
+    #     print('ошибка5 - ', exc5)
+    # except SuicideError as exc6:
+    #     print('ошибка6 - ', exc6)
+    except (IamGodError, DrunkError, CarCrashError, GluttonyError, DepressionError, SuicideError) as exc:
+        print(f' ошибка  - {exc}')  # TODO что - то не так  - не выводит вид ошибки
+
+print('Congratulations! A new day has come!')
 
 # https://goo.gl/JnsDqu
