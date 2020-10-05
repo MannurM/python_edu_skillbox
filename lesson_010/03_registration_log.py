@@ -51,7 +51,8 @@ class Cleaner:
                     if not line:
                         # print('ошибка - Нет данных в строке', line)
                         raise IndexError('ошибка -  Нет данных в строке')
-                    if len != 3:
+                    if len != 3:  # TODO len - это функция, которая не имеет отношения к line
+                        # TODO нужно проверять размер списка, полученного line.split()
                         line = line.split()
                         name = line[0]
                         email = line[1]
@@ -64,7 +65,13 @@ class Cleaner:
                         # print('ошибка - В имени пользователя не только буквы!', name, line)
                         raise NotNameError('ошибка - В имени пользователя не только буквы!')
 
-                    if chr(64) is email:
+                    if chr(64) is email:  # TODO с этой проверкой что-то не так
+                        # TODO 1) символы можно просто записать как "@" и "."
+                        # TODO 2) у вас первая проверка это символ is email
+                        # TODO она сработает только если email будет из одного единственного символа
+                        # TODO и то не факт.
+                        # TODO нужно запись сделать в одну строку и использовать Or
+                        # TODO (not in) OR (not in)
                         if not chr(46) in email:
                             # print('ошибка - Поле email не содержит "@" и  "." ', email, line)
                             raise NotEmailError('ошибка - Поле email не содержит "@" и  "." ')

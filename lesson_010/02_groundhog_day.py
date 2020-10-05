@@ -44,7 +44,7 @@ class DepressionError(Exception):
 class SuicideError(Exception):
     pass
 
-
+# TODO хранить стоит объекты класса, а не классы, + им можно передавать уточняющие сообщения
 dict_exception = {1: IamGodError, 2: DrunkError, 3: CarCrashError, 4: GluttonyError, 5: SuicideError, 6: SuicideError, }
 carma_level = 0
 
@@ -61,7 +61,7 @@ def one_day():
     else:
         # print('Good day!')
         # print(carma_level, 'carma_level')
-        carma_level += carma
+        carma_level += carma  # TODO кармы надо возвращать от 1 до 7
         return carma_level
 
 
@@ -82,8 +82,9 @@ while ENLIGHTENMENT_CARMA_LEVEL >= carma_level:
     # except SuicideError as exc6:
     #     print('ошибка6 - ', exc6)
     except (IamGodError, DrunkError, CarCrashError, GluttonyError, DepressionError, SuicideError) as exc:
-        print(f' ошибка  - {exc}')  # TODO что - то не так  - не выводит вид ошибки
-
+        print(f' ошибка  - {repr(exc)}')  # что - то не так  - не выводит вид ошибки
+        # TODO можно использовать функцию repr()
+        # TODO только запись надо вести в файл
 print('Congratulations! A new day has come!')
 
 # https://goo.gl/JnsDqu
