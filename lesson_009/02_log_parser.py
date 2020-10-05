@@ -101,10 +101,11 @@ class SorteredYear(Reader):
 
 
 reader = Reader()
-reader.run_programm(file_name='events.txt')
+# reader.run_programm(file_name='events.txt')
 
 # reader = SorteredYear()
-reader = SorteredDay()
+# reader = SorteredDay()
+reader.run_programm(file_name='events.txt')
 # reader = SorteredHour()
 # reader = SorteredMount()
 
@@ -115,3 +116,4 @@ reader = SorteredDay()
 #  - по часам
 #  - по месяцу
 #  - по году
+#зачёт!
