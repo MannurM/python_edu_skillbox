@@ -62,6 +62,8 @@ class Cleaner:
                     if not name.isalpha():
                         raise NotNameError('ошибка - В имени пользователя не только буквы!')
                     elif not ('@' and '.' in email):
+                        # TODO Подобная проверка проверит только наличие точки в email
+                        # TODO А '@' будет отдельной проверкой, которая всегда равна True
                         raise NotEmailError('ошибка - Поле email не содержит "@" и  "." ')
                     elif not age.isdigit():
                         raise ValueError('ошибка - Возраст не является числом')

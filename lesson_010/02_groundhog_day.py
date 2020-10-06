@@ -58,7 +58,9 @@ carma = 0
 
 
 def one_day():
-    global carma_level, carma
+    global carma_level, carma  # TODO глобалы использовать стоит в редких случаях
+    # TODO идея то хорошая, я её понял и реализация верная, но очень советую избавляться от привычки
+    # TODO использовать глобалы
     carma = randint(1, 13)
     if carma == 7:
         random_exp = randint(1, 6)
@@ -79,6 +81,7 @@ while ENLIGHTENMENT_CARMA_LEVEL >= carma_level:
         one_day()
         carma_level += carma
     except (IamGodError, DrunkError, CarCrashError, GluttonyError, DepressionError, SuicideError) as exc:
+        # TODO открывать файл в цикле не стоит, это будет добавлять много лишних тяжелых действий пайтону
         with open(file_name, mode='a') as file:
             file.write(repr(exc))
 
