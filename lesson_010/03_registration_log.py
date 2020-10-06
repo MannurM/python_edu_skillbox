@@ -22,6 +22,8 @@
 # - поле возраст НЕ является числом от 10 до 99: ValueError
 # Вызов метода обернуть в try-except.
 
+import re
+
 
 class NotNameError(Exception):
     pass
@@ -50,21 +52,22 @@ class Cleaner:
                 try:
                     if not line:
                         raise IndexError('ошибка -  Нет данных в строке')
-
                     line = line.split()
-                    if len(line) != 3:
+                    if len(line) == 3:  # если с !=, то все отправляет в else
                         name = line[0]
                         email = line[1]
                         age = line[2]
+                        # print("line after split", line, name, email, age)
                     else:
-                        raise ValueError('ошибка - Неполные данные')
-
+                        # print('Error', line)
+                        raise ValueError('ошибка - Не хватает данных')
                     if not name.isalpha():
                         raise NotNameError('ошибка - В имени пользователя не только буквы!')
-                    elif not ('@' and '.' in email):
-                        # TODO Подобная проверка проверит только наличие точки в email
-                        # TODO А '@' будет отдельной проверкой, которая всегда равна True
-                        raise NotEmailError('ошибка - Поле email не содержит "@" и  "." ')
+
+                    email_check = re.search(r"[\w.-]+@[\w.-]+\.?[\w]+?", email)
+                    if not email_check:
+                        # print('ОШИБКА', email)
+                        raise NotEmailError('ошибка - Поле email не содержит "@" и(или)  "." ')
                     elif not age.isdigit():
                         raise ValueError('ошибка - Возраст не является числом')
                     elif 99 > int(age) > 10:
@@ -72,7 +75,8 @@ class Cleaner:
                     else:
                         raise ValueError('ошибка - Возраст выходит за пределы диапазона')
 
-                except (IndexError, ValueError, NotNameError, NotEmailError):
+                except (IndexError, ValueError, NotNameError, NotEmailError) as exc:
+                    line = str(line) + '       ' + repr(exc)
                     self.registrations_bad.append(line)
 
     def create_result_files(self, file_result_bad, file_result_good):

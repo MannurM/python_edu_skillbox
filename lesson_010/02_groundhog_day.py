@@ -19,6 +19,7 @@
 from random import randint
 
 ENLIGHTENMENT_CARMA_LEVEL = 777
+carma_error_list = []
 
 
 class IamGodError(Exception):
@@ -54,37 +55,30 @@ depression = DepressionError()
 
 dict_exception = {1: iamgod, 2: drunk, 3: carcrash, 4: gluttony, 5: depression, 6: suicide}
 carma_level = 0
-carma = 0
 
 
 def one_day():
-    global carma_level, carma  # TODO глобалы использовать стоит в редких случаях
-    # TODO идея то хорошая, я её понял и реализация верная, но очень советую избавляться от привычки
-    # TODO использовать глобалы
     carma = randint(1, 13)
     if carma == 7:
         random_exp = randint(1, 6)
-        print('Bad Day!')
-        print(carma_level, 'carma_level')
-        carma_level -= random_exp  # карма должна уменьшаться за плохие поступки))
         raise dict_exception[random_exp]
     else:
-        # print('Good day!')
-        # print(carma_level, 'carma_level')
-        return carma_level
+        return carma
 
-
-file_name = 'carma_error.log'
 
 while ENLIGHTENMENT_CARMA_LEVEL >= carma_level:
     try:
-        one_day()
-        carma_level += carma
+        carma_level += one_day()
     except (IamGodError, DrunkError, CarCrashError, GluttonyError, DepressionError, SuicideError) as exc:
-        # TODO открывать файл в цикле не стоит, это будет добавлять много лишних тяжелых действий пайтону
-        with open(file_name, mode='a') as file:
-            file.write(repr(exc))
+        carma_error_list.append(repr(exc))
+        carma_level -= 7  # карма должна уменьшаться за плохие поступки))
 
+file_name = 'carma_error.log'
+file = open(file_name, mode='w')
+for line in carma_error_list:
+    line = str(line) + '\n'
+    file.write(line)
+file.close()
 
 print('Congratulations! A new day has come!')
 
