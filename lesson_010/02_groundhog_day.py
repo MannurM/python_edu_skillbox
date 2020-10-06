@@ -83,3 +83,4 @@ file.close()
 print('Congratulations! A new day has come!')
 
 # https://goo.gl/JnsDqu
+#зачёт!

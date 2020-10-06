@@ -103,3 +103,4 @@ class Cleaner:
 cleaner = Cleaner()
 cleaner.run_programm(file_name='registrations.txt',
                      file_result_bad='registrations_bad.log', file_result_good='registrations_good.log')
+#зачёт!
