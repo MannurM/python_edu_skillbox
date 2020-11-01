@@ -33,6 +33,7 @@ class PrimeNumbers:
         return self
 
     def __next__(self):
+        # TODO обязательно ли этот цикл каждый раз начинать с 2?
         for self.number in range(2, self.n + 1):
             print(self.number, 'self.number')
             for prime in self.prime_numbers:
@@ -40,6 +41,9 @@ class PrimeNumbers:
                 if self.i % prime == 0:
                     break
             else:
+                # TODO возвращать нужно одно число
+                # TODO А список с prime_numbers надо пополнять
+                # TODO т.е. здесь надо сперва добавить число в список, затем это число вернуть
                 return self.prime_numbers
 
         raise StopIteration()

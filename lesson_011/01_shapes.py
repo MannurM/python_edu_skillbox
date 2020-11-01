@@ -34,3 +34,4 @@ poly_gon(n=6)
 
 
 sd.pause()
+#зачёт!
