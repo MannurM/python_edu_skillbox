@@ -27,33 +27,30 @@ class PrimeNumbers:
         self.n = n
         self.i = 0
         self.prime_numbers = []
+        self.prime = None
 
     def __iter__(self):
-        self.i = 0
+        self.i = 2
         return self
 
     def __next__(self):
-        # TODO обязательно ли этот цикл каждый раз начинать с 2?
-        for self.number in range(2, self.n + 1):
-            print(self.number, 'self.number')
-            for prime in self.prime_numbers:
-                print('prime', prime)
-                if self.i % prime == 0:
+        for self.i in range(self.i, self.n + 1):
+            for self.prime in self.prime_numbers:
+                # print(self.i, self.prime)
+                if self.i % self.prime == 0:  # Если число делится без остатка, то следующее число, иначе
                     break
             else:
-                # TODO возвращать нужно одно число
-                # TODO А список с prime_numbers надо пополнять
-                # TODO т.е. здесь надо сперва добавить число в список, затем это число вернуть
-                return self.prime_numbers
+                self.prime_numbers.append(self.i)  # добавить это число
+                return self.i
 
         raise StopIteration()
 
 
-prime_number_iterator = PrimeNumbers(n=10)
+prime_number_iterator = PrimeNumbers(n=10000)
 
 for number in prime_number_iterator:
-    print('number', number)
-    # print(prime_number_iterator)
+    print('prime number', number)
+
 
 
 # TODO после подтверждения части 1 преподователем, можно делать
