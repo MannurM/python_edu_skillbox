@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # На основе своего кода из lesson_009/02_log_parser.py напишите итератор (или генератор)
-# котрый читает исходный файл events.txt и выдает число событий NOK за каждую минуту
+# который читает исходный файл events.txt и выдает число событий NOK за каждую минуту
 # <время> <число повторений>
 #
 # пример использования:
@@ -13,84 +13,54 @@
 # на консоли должно появится что-то вроде
 #
 # [2018-05-17 01:57] 1234
+#
+# from collections import defaultdict
 
-from collections import defaultdict
 
-
-class Reader:
+class ReaderGenerator:
 
     def __init__(self):
         self.file = None
         self.file_name = None
-        self.file_name_result = None
-        self.dict_symbols = defaultdict(int)
+        self.group_time = None
+        self.event_count = 1
         self.end_segment = 17
+        self.old_line = None
 
     def __str__(self):
         pass
 
-    def create_result_file(self):  # Создание результирующего файла, открытие файла, добавление результатов, закрытие
-        self.file_name_result = 'result_' + self.file_name
-        self.file = open(self.file_name_result, mode='w')
-        for key, value in self.dict_symbols.items():
-            key_value = key + ' ' + str(value) + '\n'
-            self.file.write(key_value)
-        self.file.close()
-
-    def open_file(self):  # открытие  файла с результатами
-        self.file_name = self.file_name_result
-        self.file = open(self.file_name, mode='r', encoding='utf8')
-        for line in self.file:
-            print(line)
-        self.file.close()
-
-    def prepare(self, file_name):  # подготовка и расчеты
+    def get_read(self, file_name):
         self.file_name = file_name
-        self.file = open(self.file_name, mode='r', encoding='utf8')
-        for line in self.file:
-            if line[-4:-3] == 'N':
-                different_symbol = line[1:self.end_segment]
-                self.dict_symbols[different_symbol] += 1
-        self.file.close()
+        with open(self.file_name, 'r', encoding='utf8') as self.file:
+            for line in self.file:
+                if not line:
+                    continue
+                if not line[-4:-3] == 'N':
+                    continue
+                else:
+                    self.group_time = line[1:self.end_segment]
+                    if self.group_time == self.old_line:
+                        self.event_count += 1
+                        print(self.group_time, self.old_line, self.event_count)
+                        # yield self.group_time, self.event_count
+                        # continue
+                    else:
+                        self.old_line = self.group_time
+                        self.event_count = 1
+                        # print(self.group_time, self.old_line, self.event_count)
 
-    def run_programm(self, file_name):
-        self.prepare(file_name)
-        self.create_result_file()
-        self.open_file()
-
-
-class SorteredHour(Reader):
-
-    def __init__(self):
-        super().__init__()
-        self.end_segment = 14
-
-
-class SorteredDay(Reader):
-
-    def __init__(self):
-        super().__init__()
-        self.end_segment = 12
+                yield self.group_time, self.event_count
 
 
-class SorteredMount(Reader):
+grouped_events = ReaderGenerator()
+for group_time, event_count in grouped_events.get_read(file_name='events.txt'):
+    # print(' ')
+    print(f'[{group_time}] {event_count}')
+# TODO не могу понять - как вывести только сумму строк с определенным временем?
+# TODO сейчас выводит каждую строку, хотя и суммирует одинаковые строки
 
-    def __init__(self):
-        super().__init__()
-        self.end_segment = 8
-
-
-class SorteredYear(Reader):
-
-    def __init__(self):
-        super().__init__()
-        self.end_segment = 5
-
-
-reader = Reader()
-
-reader.run_programm(file_name='events.txt')
-# TODO здесь пока нету ни генератора, ни итератора
-# TODO Я бы кстати рекомендовал делать это задание через функцию-генератор
-# TODO Нужно чтобы при обращении к ней генератор читал файл ровно до следующей минуты (не полностью!)
-# TODO и возвращал результат за текущую минуту через Yield
+# здесь пока нету ни генератора, ни итератора
+# Я бы кстати рекомендовал делать это задание через функцию-генератор
+# Нужно чтобы при обращении к ней генератор читал файл ровно до следующей минуты (не полностью!)
+# и возвращал результат за текущую минуту через Yield
