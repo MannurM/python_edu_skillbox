@@ -13,8 +13,6 @@
 # на консоли должно появится что-то вроде
 #
 # [2018-05-17 01:57] 1234
-#
-# from collections import defaultdict
 
 
 class ReaderGenerator:
@@ -42,27 +40,21 @@ class ReaderGenerator:
                     self.group_time = line[1:self.end_segment]
                     if self.group_time == self.old_line:
                         self.event_count += 1
-                        print(self.group_time, self.old_line, self.event_count)
-                        # yield self.group_time, self.event_count
-                        # continue
                     else:
-                        # TODO возвращать данные yield-ом надо вот здесь
-                        # TODO когда вы находите новую минуту
-                        # TODO вернули старую минуту и счётчик -- заменили и по новой
+                        if self.old_line is None:
+                            self.old_line = self.group_time
+                            continue
+                        yield self.old_line, self.event_count
                         self.old_line = self.group_time
                         self.event_count = 1
-                        # print(self.group_time, self.old_line, self.event_count)
-
-                yield self.group_time, self.event_count
 
 
 grouped_events = ReaderGenerator()
 for group_time, event_count in grouped_events.get_read(file_name='events.txt'):
-    # print(' ')
     print(f'[{group_time}] {event_count}')
+
 # не могу понять - как вывести только сумму строк с определенным временем?
 # сейчас выводит каждую строку, хотя и суммирует одинаковые строки
-
 # здесь пока нету ни генератора, ни итератора
 # Я бы кстати рекомендовал делать это задание через функцию-генератор
 # Нужно чтобы при обращении к ней генератор читал файл ровно до следующей минуты (не полностью!)
