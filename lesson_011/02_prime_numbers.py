@@ -21,32 +21,32 @@
 # Распечатать все простые числа до 10000 в столбик
 
 
-# class PrimeNumbers:
-#
-#     def __init__(self, n):
-#         self.n = n
-#         self.i = 0
-#         self.prime_numbers = []
-#         self.prime = None
-#
-#     def __iter__(self):
-#         self.i = 2
-#         return self
-#
-#     def __next__(self):
-#         for self.i in range(self.i, self.n + 1):
-#             for self.prime in self.prime_numbers:
-#                 # print(self.i, self.prime)
-#                 if self.i % self.prime == 0:  # Если число делится без остатка, то следующее число, иначе
-#                     break
-#             else:
-#                 self.prime_numbers.append(self.i)  # добавить это число
-#                 return self.i
-#
-#         raise StopIteration()
-#
-#
-# prime_number_iterator = PrimeNumbers(n=10000)
+class PrimeNumbers:
+
+    def __init__(self, n):
+        self.n = n
+        self.i = 0
+        self.prime_numbers = []
+        self.prime = None
+
+    def __iter__(self):
+        self.i = 2
+        return self
+
+    def __next__(self):
+        for self.i in range(self.i, self.n + 1):
+            for self.prime in self.prime_numbers:
+                # print(self.i, self.prime)
+                if self.i % self.prime == 0:  # Если число делится без остатка, то следующее число, иначе
+                    break
+            else:
+                self.prime_numbers.append(self.i)  # добавить это число
+                return self.i
+
+        raise StopIteration()
+
+
+prime_number_iterator = PrimeNumbers(n=10000)
 #
 # for number in prime_number_iterator:
 #     print('prime number', number)
@@ -76,7 +76,12 @@ def prime_numbers_generator(n):
             # if lucky_number(number=i):
             #     if palindrome_number(number=i):
             #         yield i
-
+            # TODO просто так указывать функции - не очень хорошо
+            # TODO попробуйте передавать их параметром
+            # TODO (можно передать список функций)
+            # TODO А здесь, чтобы не ограничивать фильтры двумя, подумайте
+            # TODO можно ли как-то собрать результаты проверки всех функций (не важно сколько их передали)
+            # TODO и проверить все эти результаты перед отправкой числа
             if lucky_number(number=i) and palindrome_number(number=i):
                 yield i
 
@@ -127,11 +132,13 @@ for number in prime_numbers_generator(n=10000):
     # if number is False:
     #     continue
     # print('Число счастливое и палиндромное', number)
-
+    print(number)
     if number:
         print('Число счастливое и палиндромное', number)
-# TODO "голову сломал" - третью функцию не придумал.
-
+# "голову сломал" - третью функцию не придумал.
+# TODO Можно любое условие проверить
+# TODO Например равна ли сумма чётных чисел сумме нечетных
+# TODO 123456 --> 1 + 3 + 5 == 2 + 4 + 6 ?
 # Часть 3
 # Написать несколько функций-фильтров, которые выдает True, если число:
 # 1) "счастливое" в обыденном пониманиии - сумма первых цифр равна сумме последних

@@ -47,6 +47,8 @@ class ReaderGenerator:
                         yield self.old_line, self.event_count
                         self.old_line = self.group_time
                         self.event_count = 1
+            # TODO нужно вернуть отдельно последний результат
+            # TODO 11:34 в нашем случае
 
 
 grouped_events = ReaderGenerator()
