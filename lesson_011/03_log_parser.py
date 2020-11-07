@@ -53,3 +53,4 @@ class ReaderGenerator:
 grouped_events = ReaderGenerator()
 for group_time, event_count in grouped_events.get_read(file_name='events.txt'):
     print(f'[{group_time}] {event_count}')
+#зачёт!

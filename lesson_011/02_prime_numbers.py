@@ -75,20 +75,25 @@ def prime_numbers_generator(n, func):
             # func_dict_rezult = {i: {func: None}}
             for func_num in func:
                 func_num_rez = func_num(number=i)
-                # TODO я попытался сделать словарь словарей - но что-то пошло не так...))
-                # TODO идея была (простое число: ключ имя функции: Истина или Ложь) - это реально?
+                # я попытался сделать словарь словарей - но что-то пошло не так...))
+                #  идея была (простое число: ключ имя функции: Истина или Ложь) - это реально?
                 # func_dict_rezult[i][func_num] = func_num_rez
                 # if func_num_rez:
                 #     yield i
+                print(func_num.__name__, func_num_rez)
+                # TODO попробуйте использовать эти переменные
+                # TODO Не знаю правда насколько это нужно - собирать такой словарь)
+                # TODO Как вариант можно собрать True/False в список
+                # TODO а затем использовать all(список_ответов)
+                # TODO и если проверка проходит -> делать yield
 
                 if func_num_rez:
                     func_dict_rezult[func_num] = func_num_rez
                     # print(func_dict_rezult)
-                    # TODO смущает только, что ключ словаря  - это функция... может правильнее
-                    # TODO как - то вытащить имя фукции??
+                    # смущает только, что ключ словаря  - это функция... может правильнее
+                    # как - то вытащить имя фукции??
+                    # TODO выше ответил
                     yield i
-
-
 
             # просто так указывать функции - не очень хорошо
             # попробуйте передавать их параметром
@@ -133,7 +138,6 @@ func_list = [lucky_number, palindrome_number, square_number]
 for number in prime_numbers_generator(n=10000, func=func_list):
     if number:
         print('Число счастливое и палиндромное', number)
-
 
 # Часть 3
 # Написать несколько функций-фильтров, которые выдает True, если число:
