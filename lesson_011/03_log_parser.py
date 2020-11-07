@@ -47,17 +47,9 @@ class ReaderGenerator:
                         yield self.old_line, self.event_count
                         self.old_line = self.group_time
                         self.event_count = 1
-            # TODO нужно вернуть отдельно последний результат
-            # TODO 11:34 в нашем случае
+            yield self.old_line, self.event_count
 
 
 grouped_events = ReaderGenerator()
 for group_time, event_count in grouped_events.get_read(file_name='events.txt'):
     print(f'[{group_time}] {event_count}')
-
-# не могу понять - как вывести только сумму строк с определенным временем?
-# сейчас выводит каждую строку, хотя и суммирует одинаковые строки
-# здесь пока нету ни генератора, ни итератора
-# Я бы кстати рекомендовал делать это задание через функцию-генератор
-# Нужно чтобы при обращении к ней генератор читал файл ровно до следующей минуты (не полностью!)
-# и возвращал результат за текущую минуту через Yield

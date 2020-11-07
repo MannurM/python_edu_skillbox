@@ -47,6 +47,8 @@ class PrimeNumbers:
 
 
 prime_number_iterator = PrimeNumbers(n=10000)
+
+
 #
 # for number in prime_number_iterator:
 #     print('prime number', number)
@@ -58,32 +60,42 @@ prime_number_iterator = PrimeNumbers(n=10000)
 # Теперь нужно создать генератор, который выдает последовательность простых чисел до n
 # Распечатать все простые числа до 10000 в столбик
 
-
-def prime_numbers_generator(n):
+# func_dict_rezult = {}
+def prime_numbers_generator(n, func):
     prime_numbers = []
+    func_dict_rezult = {}
+
     for i in range(2, n + 1):
+
         for prime in prime_numbers:
             if i % prime == 0:
                 break
         else:
             prime_numbers.append(i)
-            # if lucky_number(number=i):
-            #     yield i
+            # func_dict_rezult = {i: {func: None}}
+            for func_num in func:
+                func_num_rez = func_num(number=i)
+                # TODO я попытался сделать словарь словарей - но что-то пошло не так...))
+                # TODO идея была (простое число: ключ имя функции: Истина или Ложь) - это реально?
+                # func_dict_rezult[i][func_num] = func_num_rez
+                # if func_num_rez:
+                #     yield i
 
-            # if palindrome_number(number=i):
-            #     yield i
+                if func_num_rez:
+                    func_dict_rezult[func_num] = func_num_rez
+                    # print(func_dict_rezult)
+                    # TODO смущает только, что ключ словаря  - это функция... может правильнее
+                    # TODO как - то вытащить имя фукции??
+                    yield i
 
-            # if lucky_number(number=i):
-            #     if palindrome_number(number=i):
-            #         yield i
-            # TODO просто так указывать функции - не очень хорошо
-            # TODO попробуйте передавать их параметром
-            # TODO (можно передать список функций)
-            # TODO А здесь, чтобы не ограничивать фильтры двумя, подумайте
-            # TODO можно ли как-то собрать результаты проверки всех функций (не важно сколько их передали)
-            # TODO и проверить все эти результаты перед отправкой числа
-            if lucky_number(number=i) and palindrome_number(number=i):
-                yield i
+
+
+            # просто так указывать функции - не очень хорошо
+            # попробуйте передавать их параметром
+            # (можно передать список функций)
+            # А здесь, чтобы не ограничивать фильтры двумя, подумайте
+            # можно ли как-то собрать результаты проверки всех функций (не важно сколько их передали)
+            # и проверить все эти результаты перед отправкой числа
 
 
 def lucky_number(number):
@@ -109,36 +121,20 @@ def palindrome_number(number):
         len_number = int(len(str(number)))
         list_number = list(str(number))
         middle_number = int(str(len_number // 2))
-
-        # print('num1-', list_number[:middle_number], 'num2-', list_number[-middle_number:], number)
-        # if list_number[:middle_number] == list_number[-middle_number:]:
-        #     rezult = True
-        # else:
-        #     rezult = False
-        #
-        # return rezult
         return list_number[:middle_number] == list_number[-middle_number:]
 
 
-for number in prime_numbers_generator(n=10000):
-    # if number is False:
-    #     continue
-    # print('Число счастливое', number)
+def square_number(number):
+    return number ** 2 % 2 == 0
 
-    # if number is False:
-    #     continue
-    # print('Число палиндромное', number)
 
-    # if number is False:
-    #     continue
-    # print('Число счастливое и палиндромное', number)
-    print(number)
+func_list = [lucky_number, palindrome_number, square_number]
+
+for number in prime_numbers_generator(n=10000, func=func_list):
     if number:
         print('Число счастливое и палиндромное', number)
-# "голову сломал" - третью функцию не придумал.
-# TODO Можно любое условие проверить
-# TODO Например равна ли сумма чётных чисел сумме нечетных
-# TODO 123456 --> 1 + 3 + 5 == 2 + 4 + 6 ?
+
+
 # Часть 3
 # Написать несколько функций-фильтров, которые выдает True, если число:
 # 1) "счастливое" в обыденном пониманиии - сумма первых цифр равна сумме последних
@@ -154,4 +150,3 @@ for number in prime_numbers_generator(n=10000):
 # простых счастливых палиндромных чисел и так далее. Придумать не менее 2х способов.
 #
 # Подсказка: возможно, нужно будет добавить параметр в итератор/генератор.
-
