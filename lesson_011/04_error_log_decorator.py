@@ -7,16 +7,28 @@
 # Формат лога: <имя функции> <параметры вызова> <тип ошибки> <текст ошибки>
 # Лог файл открывать каждый раз при ошибке в режиме 'a'
 
-
-def log_errors(func,*args, **kargs):
+# TODO в снипетах есть пример хороший
+# def time_track(func):
+#     def surrogate(*args, **kwargs):
+#         started_at = time.time()  TODO структура будет такой же, а внутри surrogate вы выполняете свои действия
+#         TODO т.е. try/except блок с запуском функции и записью ошибки в except-е
+#         result = func(*args, **kwargs)
+#
+#         ended_at = time.time()
+#         elapsed = round(ended_at - started_at, 4)
+#         print(f'Функция работала {elapsed} секунд(ы)')
+#         return result
+#     return surrogate
+def log_errors(func, *args, **kargs):
     file_name = 'function_errors.txt'
     func_in = func(args, **kargs)
-    file_log = open(file_name, mode='a+', encoding='utf-8')  #  encoding='utf-8'
-    line_log = str(func.__name__) + str(func_in) + 'str(Exception.__getattribute__)' + ' текст ошибки'+'\n'
+    file_log = open(file_name, mode='a+', encoding='utf-8')  # encoding='utf-8'
+    line_log = str(func.__name__) + str(func_in) + 'str(Exception.__getattribute__)' + ' текст ошибки' + '\n'
     file_log.write(line_log)
     file_log.close()
 
-# TODO что-то я не то делаю... нужна подсказка
+
+# что-то я не то делаю... нужна подсказка
 
 # Проверить работу на следующих функциях
 @log_errors
@@ -50,7 +62,6 @@ for line in lines:
         print(f'Invalid format:{line}, {exc}')
 
 perky(param=42)
-
 
 # Усложненное задание (делать по желанию).
 # Написать декоратор с параметром - именем файла
