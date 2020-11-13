@@ -60,40 +60,33 @@ prime_number_iterator = PrimeNumbers(n=10000)
 # Теперь нужно создать генератор, который выдает последовательность простых чисел до n
 # Распечатать все простые числа до 10000 в столбик
 
-# func_dict_rezult = {}
 def prime_numbers_generator(n, func):
     prime_numbers = []
-    func_dict_rezult = {}
+
 
     for i in range(2, n + 1):
-
         for prime in prime_numbers:
             if i % prime == 0:
                 break
         else:
             prime_numbers.append(i)
-            # func_dict_rezult = {i: {func: None}}
+            # попробуйте использовать эти переменные
+            # Не знаю правда насколько это нужно - собирать такой словарь)
+            # Как вариант можно собрать True/False в список
+            # а затем использовать all(список_ответов)
+            # и если проверка проходит -> делать yield
+            # TODO да я в очередной раз стал из заданной задачи придумывать другую - свою))
+            # TODO хотел в словаре собирать типа 'досье' на каждое число что-то типа  словарь(ключ - number : значение -
+            # TODO - вложенные словари (ключ - функция фильтр1: значение True,...  и так по всем функциям.
+            # TODO Затем отдельно  выбираю число и на него выходит досье -  что оно простое, и счастливое, и палиндромное, и ...
+            # TODO вобщем, замудрил))
+            func_rezult = []
             for func_num in func:
                 func_num_rez = func_num(number=i)
-                # я попытался сделать словарь словарей - но что-то пошло не так...))
-                #  идея была (простое число: ключ имя функции: Истина или Ложь) - это реально?
-                # func_dict_rezult[i][func_num] = func_num_rez
-                # if func_num_rez:
-                #     yield i
-                print(func_num.__name__, func_num_rez)
-                # TODO попробуйте использовать эти переменные
-                # TODO Не знаю правда насколько это нужно - собирать такой словарь)
-                # TODO Как вариант можно собрать True/False в список
-                # TODO а затем использовать all(список_ответов)
-                # TODO и если проверка проходит -> делать yield
-
-                if func_num_rez:
-                    func_dict_rezult[func_num] = func_num_rez
-                    # print(func_dict_rezult)
-                    # смущает только, что ключ словаря  - это функция... может правильнее
-                    # как - то вытащить имя фукции??
-                    # TODO выше ответил
-                    yield i
+                func_rezult.append(func_num_rez)
+            # print(i, func_rezult)
+            if all(func_rezult):
+                yield i
 
             # просто так указывать функции - не очень хорошо
             # попробуйте передавать их параметром
@@ -133,11 +126,11 @@ def square_number(number):
     return number ** 2 % 2 == 0
 
 
-func_list = [lucky_number, palindrome_number, square_number]
+func_list = [lucky_number, palindrome_number]  # добавить наименование функций фильтров
 
 for number in prime_numbers_generator(n=10000, func=func_list):
     if number:
-        print('Число счастливое и палиндромное', number)
+        print('Число', number)
 
 # Часть 3
 # Написать несколько функций-фильтров, которые выдает True, если число:

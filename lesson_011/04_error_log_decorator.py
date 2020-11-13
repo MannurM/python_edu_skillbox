@@ -8,10 +8,15 @@
 # Лог файл открывать каждый раз при ошибке в режиме 'a'
 
 
-def log_errors(func):
-    pass
-    # TODO здесь ваш код
+def log_errors(func,*args, **kargs):
+    file_name = 'function_errors.txt'
+    func_in = func(args, **kargs)
+    file_log = open(file_name, mode='a+', encoding='utf-8')  #  encoding='utf-8'
+    line_log = str(func.__name__) + str(func_in) + 'str(Exception.__getattribute__)' + ' текст ошибки'+'\n'
+    file_log.write(line_log)
+    file_log.close()
 
+# TODO что-то я не то делаю... нужна подсказка
 
 # Проверить работу на следующих функциях
 @log_errors
@@ -42,7 +47,8 @@ for line in lines:
     try:
         check_line(line)
     except Exception as exc:
-        print(f'Invalid format: {exc}')
+        print(f'Invalid format:{line}, {exc}')
+
 perky(param=42)
 
 
