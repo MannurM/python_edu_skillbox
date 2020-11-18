@@ -21,6 +21,8 @@ def log_errors(func):
             if not param:  # TODO могут быть и args и kwargs, поэтому нужно и то, и другое
                 param = kwargs
             log_file_write(func=func, exc=exc, param=param)
+            # TODO после записи нужно вызывать ошибку ещё раз - делать raise
+            # TODO "# ошибки из декорируемой функции и выбрасывать их дальше."
         return func_in
     return surrogate
 
