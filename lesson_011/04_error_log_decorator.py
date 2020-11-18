@@ -18,7 +18,7 @@ def log_errors(func):
             func_in = func(*args, **kwargs)
         except Exception as exc:
             param = args
-            if not param:
+            if not param:  # TODO могут быть и args и kwargs, поэтому нужно и то, и другое
                 param = kwargs
             log_file_write(func=func, exc=exc, param=param)
         return func_in
@@ -27,7 +27,7 @@ def log_errors(func):
 
 def log_file_write(func, exc, param):  # file_name
     file_name = 'function_errors.txt'
-    file_log = open(file_name, mode='a+', encoding='utf-8')
+    file_log = open(file_name, mode='a+', encoding='utf-8')  # TODO в таком случае удобнее использовать with
     func_name = str(func.__name__) + "    "
     func_param = str(param) + "    "
     func_exc = str(exc) + "    "
