@@ -14,33 +14,31 @@ def log_errors(func):
         func_in = None
         # структура будет такой же, а внутри surrogate вы выполняете свои действия
         # т.е. try/except блок с запуском функции и записью ошибки в except-е
+        param_args = args
+        param_kwargs = kwargs
         try:
             func_in = func(*args, **kwargs)
+        except ZeroDivisionError as exc:
+            log_file_write(func=func, exc=exc, param_args=param_args, param_kwargs=param_kwargs)
+            print(f'Error - {exc}')
         except Exception as exc:
-            param = args
-            if not param:  # TODO могут быть и args и kwargs, поэтому нужно и то, и другое
-                param = kwargs
-            log_file_write(func=func, exc=exc, param=param)
-            # TODO после записи нужно вызывать ошибку ещё раз - делать raise
-            # TODO "# ошибки из декорируемой функции и выбрасывать их дальше."
+            log_file_write(func=func, exc=exc, param_args=param_args, param_kwargs=param_kwargs)
+            raise exc
+            # TODO надо ли что-то делать с 'args' и 'kwargs', чтобы в лог файле не было пустых скобок?
         return func_in
     return surrogate
 
 
-def log_file_write(func, exc, param):  # file_name
+def log_file_write(func, exc, param_args=None, param_kwargs=None):  # file_name
     file_name = 'function_errors.txt'
-    file_log = open(file_name, mode='a+', encoding='utf-8')  # TODO в таком случае удобнее использовать with
     func_name = str(func.__name__) + "    "
-    func_param = str(param) + "    "
+    func_param = str(param_args) + " " + str(param_kwargs) + "    "
     func_exc = str(exc) + "    "
     func_exc_text = str(exc.__doc__) + " "
     func_message = ''.join(func_name + func_param + func_exc + func_exc_text + '\n')
-    # print(func_message)
-    file_log.write(func_message)
-    file_log.close()
+    with open(file_name, mode='a+', encoding='utf-8') as file_log:
+        file_log.write(func_message)
 
-
-# что-то я не то делаю... нужна подсказка
 
 # Проверить работу на следующих функциях
 @log_errors
