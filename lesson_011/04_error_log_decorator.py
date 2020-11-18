@@ -7,24 +7,34 @@
 # Формат лога: <имя функции> <параметры вызова> <тип ошибки> <текст ошибки>
 # Лог файл открывать каждый раз при ошибке в режиме 'a'
 
-# TODO в снипетах есть пример хороший
-# def time_track(func):
-#     def surrogate(*args, **kwargs):
-#         started_at = time.time()  TODO структура будет такой же, а внутри surrogate вы выполняете свои действия
-#         TODO т.е. try/except блок с запуском функции и записью ошибки в except-е
-#         result = func(*args, **kwargs)
-#
-#         ended_at = time.time()
-#         elapsed = round(ended_at - started_at, 4)
-#         print(f'Функция работала {elapsed} секунд(ы)')
-#         return result
-#     return surrogate
-def log_errors(func, *args, **kargs):
+
+def log_errors(func):
+
+    def surrogate(*args, **kwargs):
+        func_in = None
+        # структура будет такой же, а внутри surrogate вы выполняете свои действия
+        # т.е. try/except блок с запуском функции и записью ошибки в except-е
+        try:
+            func_in = func(*args, **kwargs)
+        except Exception as exc:
+            param = args
+            if not param:
+                param = kwargs
+            log_file_write(func=func, exc=exc, param=param)
+        return func_in
+    return surrogate
+
+
+def log_file_write(func, exc, param):  # file_name
     file_name = 'function_errors.txt'
-    func_in = func(args, **kargs)
-    file_log = open(file_name, mode='a+', encoding='utf-8')  # encoding='utf-8'
-    line_log = str(func.__name__) + str(func_in) + 'str(Exception.__getattribute__)' + ' текст ошибки' + '\n'
-    file_log.write(line_log)
+    file_log = open(file_name, mode='a+', encoding='utf-8')
+    func_name = str(func.__name__) + "    "
+    func_param = str(param) + "    "
+    func_exc = str(exc) + "    "
+    func_exc_text = str(exc.__doc__) + " "
+    func_message = ''.join(func_name + func_param + func_exc + func_exc_text + '\n')
+    # print(func_message)
+    file_log.write(func_message)
     file_log.close()
 
 
@@ -59,7 +69,7 @@ for line in lines:
     try:
         check_line(line)
     except Exception as exc:
-        print(f'Invalid format:{line}, {exc}')
+        print(f'Invalid format: {exc}')
 
 perky(param=42)
 
