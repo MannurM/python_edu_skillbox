@@ -11,7 +11,7 @@
 def log_errors(func):
 
     def surrogate(*args, **kwargs):
-        func_in = None
+        func_in = None  # TODO создавать эти три переменные до try в целом нет нужды
         # структура будет такой же, а внутри surrogate вы выполняете свои действия
         # т.е. try/except блок с запуском функции и записью ошибки в except-е
         param_args = args
@@ -21,10 +21,15 @@ def log_errors(func):
         except ZeroDivisionError as exc:
             log_file_write(func=func, exc=exc, param_args=param_args, param_kwargs=param_kwargs)
             print(f'Error - {exc}')
+            # TODO raise нужен и тут (либо можно опустить разделение на разные типы ошибок)
         except Exception as exc:
             log_file_write(func=func, exc=exc, param_args=param_args, param_kwargs=param_kwargs)
             raise exc
-            # TODO надо ли что-то делать с 'args' и 'kwargs', чтобы в лог файле не было пустых скобок?
+            #  надо ли что-то делать с 'args' и 'kwargs', чтобы в лог файле не было пустых скобок?
+        # TODO именно тут это необязательно
+        # TODO на практике это будет зависеть от проекта
+        # TODO где-то вам нужно будет показать, что вот были позиционные аргументы, а вот именованные
+        # TODO а где-то нужно будет просто в одну кучу их скинуть и показать, аргументы были - вот они: ...
         return func_in
     return surrogate
 
