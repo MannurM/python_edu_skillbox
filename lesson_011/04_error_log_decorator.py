@@ -10,40 +10,17 @@
 
 def log_errors(func):
     def surrogate(*args, **kwargs):
-        func_in = None
         try:
             func_in = func(*args, **kwargs)
-        except ZeroDivisionError as exc:
-            log_file_write(func=func, exc=exc, param_args=args, param_kwargs=kwargs)
-            print(f'Error - {exc}')
-            # raise нужен и тут (либо можно опустить разделение на разные типы ошибок)
-            #  если нет выделения ZeroDivisionError  как отдельной ошибки или добавляю raise exc, то программа
-            # аварийно завершается, это же неверно? - программа должна логгировать дальше?
-            # Traceback (most recent call last):
-            #   File "C:/Users/User/PycharmProjects/python_base/lesson_011/04_error_log_decorator.py", line 76, in <module>
-            #     perky(param=42)
-            #   File "C:/Users/User/PycharmProjects/python_base/lesson_011/04_error_log_decorator.py", line 28, in surrogate
-            #     raise exc
-            #   File "C:/Users/User/PycharmProjects/python_base/lesson_011/04_error_log_decorator.py", line 20, in surrogate
-            #     func_in = func(*args, **kwargs)
-            #   File "C:/Users/User/PycharmProjects/python_base/lesson_011/04_error_log_decorator.py", line 48, in perky
-            #     return param / 0
-            # ZeroDivisionError: division by zero
-            # а как выполнить Ваше замечание?
-            # TODO Всё верно, ошибка быть должна
-            # TODO Мы её логгируем, но пропускаем дальше
-            # TODO Такие декораторы могут помочь, когда мы не хотим влиять на ход выполнения программы
-            # TODO ниже добавил тудушки по которым понятно почему в одном случае ошибка вылетает, а в другом нет
         except Exception as exc:
             log_file_write(func=func, exc=exc, param_args=args, param_kwargs=kwargs)
             raise exc
         return func_in
-
     return surrogate
 
 
 def log_file_write(func, exc, param_args=None, param_kwargs=None):  # file_name
-    file_name = 'function_errors.txt'
+    file_name = 'function_errors.log'
     func_name = str(func.__name__) + "    "
     func_param = str(param_args) + " " + str(param_kwargs) + "    "
     func_exc = str(exc) + "    "
@@ -79,12 +56,16 @@ lines = [
     'Равшан wmsuuzsxi@mail.ru 35',
 ]
 for line in lines:
-    try:  # TODO тут try/except есть
+    try:
         check_line(line)
     except Exception as exc:
         print(f'Invalid format: {exc}')
 
-perky(param=42)  # TODO вот тут уже нет
+try:
+    perky(param=42)
+except Exception as exc:
+    print(f'Invalid format: {exc}')
+
 
 # Усложненное задание (делать по желанию).
 # Написать декоратор с параметром - именем файла
