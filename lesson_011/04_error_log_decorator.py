@@ -11,25 +11,30 @@
 def log_errors(func):
 
     def surrogate(*args, **kwargs):
-        func_in = None  # TODO создавать эти три переменные до try в целом нет нужды
-        # структура будет такой же, а внутри surrogate вы выполняете свои действия
-        # т.е. try/except блок с запуском функции и записью ошибки в except-е
-        param_args = args
-        param_kwargs = kwargs
+        func_in = None
         try:
             func_in = func(*args, **kwargs)
         except ZeroDivisionError as exc:
-            log_file_write(func=func, exc=exc, param_args=param_args, param_kwargs=param_kwargs)
+            log_file_write(func=func, exc=exc, param_args=args, param_kwargs=kwargs)
             print(f'Error - {exc}')
-            # TODO raise нужен и тут (либо можно опустить разделение на разные типы ошибок)
+            # raise нужен и тут (либо можно опустить разделение на разные типы ошибок)
+            # TODO если нет выделения ZeroDivisionError  как отдельной ошибки или добавляю raise exc, то программа
+            # TODO аварийно завершается, это же неверно? - программа должна логгировать дальше?
+            # Traceback (most recent call last):
+            #   File "C:/Users/User/PycharmProjects/python_base/lesson_011/04_error_log_decorator.py", line 76, in <module>
+            #     perky(param=42)
+            #   File "C:/Users/User/PycharmProjects/python_base/lesson_011/04_error_log_decorator.py", line 28, in surrogate
+            #     raise exc
+            #   File "C:/Users/User/PycharmProjects/python_base/lesson_011/04_error_log_decorator.py", line 20, in surrogate
+            #     func_in = func(*args, **kwargs)
+            #   File "C:/Users/User/PycharmProjects/python_base/lesson_011/04_error_log_decorator.py", line 48, in perky
+            #     return param / 0
+            # ZeroDivisionError: division by zero
+            # TODO а как выполнить Ваше замечание?
+
         except Exception as exc:
-            log_file_write(func=func, exc=exc, param_args=param_args, param_kwargs=param_kwargs)
+            log_file_write(func=func, exc=exc, param_args=args, param_kwargs=kwargs)
             raise exc
-            #  надо ли что-то делать с 'args' и 'kwargs', чтобы в лог файле не было пустых скобок?
-        # TODO именно тут это необязательно
-        # TODO на практике это будет зависеть от проекта
-        # TODO где-то вам нужно будет показать, что вот были позиционные аргументы, а вот именованные
-        # TODO а где-то нужно будет просто в одну кучу их скинуть и показать, аргументы были - вот они: ...
         return func_in
     return surrogate
 
