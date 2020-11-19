@@ -9,7 +9,6 @@
 
 
 def log_errors(func):
-
     def surrogate(*args, **kwargs):
         func_in = None
         try:
@@ -18,8 +17,8 @@ def log_errors(func):
             log_file_write(func=func, exc=exc, param_args=args, param_kwargs=kwargs)
             print(f'Error - {exc}')
             # raise нужен и тут (либо можно опустить разделение на разные типы ошибок)
-            # TODO если нет выделения ZeroDivisionError  как отдельной ошибки или добавляю raise exc, то программа
-            # TODO аварийно завершается, это же неверно? - программа должна логгировать дальше?
+            #  если нет выделения ZeroDivisionError  как отдельной ошибки или добавляю raise exc, то программа
+            # аварийно завершается, это же неверно? - программа должна логгировать дальше?
             # Traceback (most recent call last):
             #   File "C:/Users/User/PycharmProjects/python_base/lesson_011/04_error_log_decorator.py", line 76, in <module>
             #     perky(param=42)
@@ -30,12 +29,16 @@ def log_errors(func):
             #   File "C:/Users/User/PycharmProjects/python_base/lesson_011/04_error_log_decorator.py", line 48, in perky
             #     return param / 0
             # ZeroDivisionError: division by zero
-            # TODO а как выполнить Ваше замечание?
-
+            # а как выполнить Ваше замечание?
+            # TODO Всё верно, ошибка быть должна
+            # TODO Мы её логгируем, но пропускаем дальше
+            # TODO Такие декораторы могут помочь, когда мы не хотим влиять на ход выполнения программы
+            # TODO ниже добавил тудушки по которым понятно почему в одном случае ошибка вылетает, а в другом нет
         except Exception as exc:
             log_file_write(func=func, exc=exc, param_args=args, param_kwargs=kwargs)
             raise exc
         return func_in
+
     return surrogate
 
 
@@ -76,12 +79,12 @@ lines = [
     'Равшан wmsuuzsxi@mail.ru 35',
 ]
 for line in lines:
-    try:
+    try:  # TODO тут try/except есть
         check_line(line)
     except Exception as exc:
         print(f'Invalid format: {exc}')
 
-perky(param=42)
+perky(param=42)  # TODO вот тут уже нет
 
 # Усложненное задание (делать по желанию).
 # Написать декоратор с параметром - именем файла
