@@ -16,6 +16,7 @@ def log_errors(func):
             log_file_write(func=func, exc=exc, param_args=args, param_kwargs=kwargs)
             raise exc
         return func_in
+
     return surrogate
 
 
@@ -66,10 +67,10 @@ try:
 except Exception as exc:
     print(f'Invalid format: {exc}')
 
-
 # Усложненное задание (делать по желанию).
 # Написать декоратор с параметром - именем файла
 #
 # @log_errors('function_errors.log')
 # def func():
 #     pass
+#зачёт!
