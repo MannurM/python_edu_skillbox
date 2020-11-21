@@ -65,39 +65,131 @@
 #
 # Для плавного перехода к мультипоточности, код оформить в обьектном стиле, используя следующий каркас
 #
+import csv
+import os
+
+
+# import operator
+
+
 class Volatility:
 
-    def __init__(self, param):  # <сохранение параметров>
-        self.tiker_name = None  # имя тикера
-        self.tiker_price = set()  # list or set, множество лучше?
+    def __init__(self):  # <сохранение параметров>
+        self.dir_name = None
+        self.secid = None  # имя тикера
+        self.tiker_time = None  # время тикера
+        self.tiker_quantity = None  # количество проданного
+        self.tiker_price = []
         self.file_in_folder = 0  # количества файлов в исходной папке
-        self.volatility_max = None
-        self.volatility_min = None
-        self.volatility_zero = None
-        self.half_sum = 0
-        self.difference = 0
-        self.param = param  # Путь до папки с файлами?
+        self.volatility_rezult = 0
+        self.volatility_max = []
+        self.volatility_min = []
+        self.volatility_dict = {}
+        self.volatility_zero = []
+        self.tiker_price_list = []  # список значений из файла
+        self.half_sum = 0  # полусумма
+        self.difference = 0  # разность макс и мин
+        self.value_max = 0
+        self.value_min = 0
+        self.dict_file = {}
+        self.key = None
+        # self.param_dir = param_dir  # Путь до папки с файлами?
 
-    def run(self):
+    def run(self, dir_name):  # <обработка данных>
+        self.dir_name = dir_name
+        self.file_in_folder = os.listdir(self.dir_name)
+        path = os.getcwd() + '\\' + self.dir_name
+        path = os.path.normpath(path)
+
+        for file in self.file_in_folder:
+            print(file)
+            file = path + '\\' + file
+            self.prepare(file)
+            self.tiker_price_list = self.dict_file[self.secid]
+            sorted(self.tiker_price_list)
+            self.value_max = float(max(self.tiker_price_list))
+            self.value_min = float(min(self.tiker_price_list))
+            if self.value_max == self.value_min:
+                self.volatility_zero.append(self.secid)
+            self.half_sum = (self.value_max + self.value_min) / 2
+            self.difference = (self.value_max - self.value_min)
+            self.difference = round(self.difference, 4)
+            self.volatility_rezult = (self.difference / self.half_sum) * 100
+            self.volatility_rezult = round(self.volatility_rezult, 4)
+            self.volatility_dict.update({self.secid: self.volatility_rezult})
+            print('____________', self.value_max, self.value_min, self.half_sum, self.difference,
+                  self.volatility_rezult)
+
+            self.tiker_price_list = []
+            self.value_max = 0
+            self.value_min = 0
+            self.volatility_rezult = 0
+            self.half_sum = 0
+            self.difference = 0
+
+        # print(self.volatility_dict)
+
+        # self.volatility_max = list(self.volatility_dict.items(), key=operator.itemgetter(1))
+        for i, v in self.volatility_dict.items():
+            self.volatility_max.append(v)
+        self.volatility_min = self.volatility_max
+        #  Вывод на консоль
+        self.volatility_max.sort(reverse=True)
+        print('Максимальная волатильность:')
+        for i in range(3):
+            self.get_value(dic=self.volatility_dict, value=self.volatility_max[i])
+            print(self.key, self.volatility_max[i])
+
+        self.volatility_min.sort()
+        print('Минимальная волатильность:')
+        for i in range(3):
+            self.get_value(dic=self.volatility_dict, value=self.volatility_min[i])
+            print(self.key, self.volatility_min[i])
+
+        self.volatility_zero.sort()
+        print('Нулевая волатильность:')
+        print(self.volatility_zero)
+
         # Запустил препаре
         # получил словарь из препаре
-        # взял имя тикера, значения set?
+        # взял имя тикера
         # нашел макс и мин, сравнил если одинаковые то имя тикера добавил в список зеро
         # получил полусумму, получил разность
         # высчитал волатильность - добавил в новый словарь? или заменил значение в словаре из препаре? или
         # создал 2 списка - список тикеров и список значений волатильности - как связать два списка?
-        # добавил попарные значения в списки или в defaultdict 1 и 2?
-        # сравнил значения списков нашел мин, макс, зеро
+        # или добавил попарные значения в списки или в defaultdict 1 и 2?
+        # сравнил значения списке нашел мин, макс - сет негодится он удалит одинаковые значения
 
+    def prepare(self, file):  # предобработка данных
+        with open(file, newline='', encoding='utf-8') as file:
+            reader = csv.reader(file, delimiter=',')
+            count = 0
+            for line in reader:
+                if count == 0:
+                    count = 1
+                    continue
+                self.secid, self.tiker_price = line[0], line[2]
+                self.tiker_price_list.append(self.tiker_price)
+            # return self.secid, self.tiker_price_list
 
-        pass  # <обработка данных>
+            self.dict_file.update({self.secid: self.tiker_price_list})
+        return self.dict_file
 
-    def prepare(self):  # предобработка данных
         # посчитать количество файлов в исходной папке
         # открыть файл,
-        # прочитать все строки построчно, взять name и price и добавить в словарь
-        # dict(self.tiker_name = name, self.tiker_price = self.tiker_price.append(price))
+        # прочитать все строки построчно, взять secid и price и добавить в словарь
+        # dict(self.secid = name, self.tiker_price = self.tiker_price.append(price)) (как вариант значения это список)
+        # self.dict_file.update(self.tiker_price, self.secid)
+        # dict.fromkeys(seq[, value])
         # закрыть файл
-        # вернуть словарь ( имя : список значений)
-        pass
+        # вернуть словарь (имя : список значений)
 
+    def get_value(self, dic, value):
+        for self.key in dic:
+            if dic[self.key] == value:
+                return self.key
+
+
+volatil = Volatility()
+
+volatil.run(dir_name='trades')
