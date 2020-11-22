@@ -73,8 +73,23 @@ import os
 
 
 class Volatility:
+    # TODO Класс надо заточить под обработку одного файла, а вне класса пройтись по директории
+    # TODO И для каждого файла создать по объекту для расчётов
+    # TODO Потом пройти по всем объектам и собрать результаты вместе.
+    # TODO Эти все сложности помогут легче выполнить два следующих задания)
+
+    # TODO Ещё было бы удобно выделить сортировку и печать в отдельную функцию
+    # TODO И ещё одну функцию-генератор создать, которая на вход будет получать путь к директории
+    # TODO А на выход будет выдавать путь к файлу из директории
+    # TODO Эти две функции можно будет вынести в отдельный модуль и импортировать в каждое из заданий этого модуля
+
 
     def __init__(self):  # <сохранение параметров>
+        # TODO слишком много лишних параметров
+        # TODO удалите всё, что сможете
+        # TODO Оставьте только то, что подходит под условия:
+        # TODO 1) Используется больше, чем в одном методе
+        # TODO 2) К этому нужно сохранить доступ после работы объетка
         self.dir_name = None
         self.secid = None  # имя тикера
         self.tiker_time = None  # время тикера
@@ -106,7 +121,8 @@ class Volatility:
             file = path + '\\' + file
             self.prepare(file)
             self.tiker_price_list = self.dict_file[self.secid]
-            sorted(self.tiker_price_list)
+            sorted(self.tiker_price_list)  # TODO эта строка не изменяет self.tiker_price_list
+            # TODO функция sorted возвращает копию объекта в отсортированном виде, но вы эту копию не сохраняете
             self.value_max = float(max(self.tiker_price_list))
             self.value_min = float(min(self.tiker_price_list))
             if self.value_max == self.value_min:
@@ -189,7 +205,9 @@ class Volatility:
             if dic[self.key] == value:
                 return self.key
 
-
+# TODO Старайтесь рабочий код оборачивать в if __name__ == '__main__'
+# TODO С процессами на виндоус это вообще необходимая деталь, а так это просто хороший тон
+# TODO чтобы код запускался только если модуль запускается явно
 volatil = Volatility()
 
 volatil.run(dir_name='trades')
