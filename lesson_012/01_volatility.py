@@ -89,6 +89,12 @@ class VolatilityObject:
 
     def run(self, file_path):  # <обработка данных>
         print('1', file_path)
+        # TODO так не пойдет, вам в целом не нужен тот класс
+        # TODO вам нужен отдельный независимый класс, который будет получать на вход путь до файла
+        # TODO и при запуске метода run - он будет счиывать файл и хранить волатильность
+        # TODO Независимыми они должны быть, т.к. далее с потоками и прцоессами доступ к общим ресурсам будет осложнен
+        # TODO поэтому сейчас я хочу чтобы вы максимально упростили свой код, чтобы понять все эти аспекты
+        # TODO которые надо будет реализовать в следующих 2 заданиях
         self.dict_file = prepare.PrepareObject.prepare(file_path=file_path)
         print('2')
         self.volatility_dict = self.prepare.PrepareObject.calculation(self.dict_file)
