@@ -71,6 +71,8 @@ import csv
 
 import prepare
 
+# TODO внешние переменные не нужны
+# TODO данные за каждый тикер надо хранить внутри объекта
 volatility_dict = {}
 volatility_zero = []
 
@@ -84,9 +86,10 @@ class VolatilityObject:
 
     def run(self, file_path):
         self.file_path = file_path
+        print(self.file_path)  # TODO передается не путь, а генератор
         with open(self.file_path, encoding='utf-8') as self.file:
-            # TODO  выдает вот такую ошибку. почему - то ругается на генератор.
-            #'Traceback (most recent call last):
+            # выдает вот такую ошибку. почему - то ругается на генератор.
+            # 'Traceback (most recent call last):
             # File "C:/Users/User/PycharmProjects/python_base/lesson_012/01_volatility.py", line 123, in <module>
             # volatil.run(file_path=file_path)
             # File "C:/Users/User/PycharmProjects/python_base/lesson_012/01_volatility.py", line 85, in run
@@ -130,6 +133,16 @@ volatil = VolatilityObject()
 if __name__ == '__main__':
     file_path = prepare.file_to_path(folder_name='trades')
     print('путь к файлу есть!')
+    for i in file_path:
+        print(i)  # TODO Используйте цикл подобного вида
+        # TODO и передавайте в каждый объект один из путей
+        # TODO тут надо
+        # TODO 1) создать объект с указанным путём к файлу
+        # TODO 2) добавить объект в список
+        # TODO 3) запустить run у этого объекта
+
+    # TODO далее можно будет добавить ещё один цикл, по списку объектов
+    # TODO в этом цикле можно собрать данные из каждого объекта в одном месте
     volatil.run(file_path=file_path)
     print('Результаты')
     prepare.printed_rezult(dict_value=volatility_dict, list_zero=volatility_zero)
