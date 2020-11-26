@@ -65,50 +65,71 @@
 #
 # Для плавного перехода к мультипоточности, код оформить в обьектном стиле, используя следующий каркас
 #
-import os
+# TODO не уверен, что правильно вас понял, но как - то так...
+
+import csv
+
 import prepare
 
-
-def file_to_path(folder_name):  # путь до файла
-    file_in_folder = os.listdir(folder_name)
-    path = os.getcwd() + '/' + folder_name
-    for file in file_in_folder:
-        file_path = path + '/' + file
-        file_path = os.path.normpath(file_path)
-        print('путь к файлу есть!')
-        volatil.run(file_path=file_path)
-    return
+volatility_dict = {}
+volatility_zero = []
 
 
 class VolatilityObject:
 
-    def __init__(self):  # <сохранение параметров>
+    def __init__(self):
         self.dict_file = {}
-        self.volatility_dict = {}
         self.file_path = ''
+        self.tiker_price_list = []
 
-    def run(self, file_path):  # <обработка данных>
-        print('1', file_path)
-        # TODO так не пойдет, вам в целом не нужен тот класс
-        # TODO вам нужен отдельный независимый класс, который будет получать на вход путь до файла
-        # TODO и при запуске метода run - он будет счиывать файл и хранить волатильность
-        # TODO Независимыми они должны быть, т.к. далее с потоками и прцоессами доступ к общим ресурсам будет осложнен
-        # TODO поэтому сейчас я хочу чтобы вы максимально упростили свой код, чтобы понять все эти аспекты
-        # TODO которые надо будет реализовать в следующих 2 заданиях
-        self.dict_file = prepare.PrepareObject.prepare(file_path=file_path)
-        print('2')
-        self.volatility_dict = self.prepare.PrepareObject.calculation(self.dict_file)
-        print('3')
-        self.prepare.PrepareObject.printed_rezult(self.volatility_dict)
+    def run(self, file_path):
+        self.file_path = file_path
+        with open(self.file_path, encoding='utf-8') as self.file:
+            # TODO  выдает вот такую ошибку. почему - то ругается на генератор.
+            #'Traceback (most recent call last):
+            # File "C:/Users/User/PycharmProjects/python_base/lesson_012/01_volatility.py", line 123, in <module>
+            # volatil.run(file_path=file_path)
+            # File "C:/Users/User/PycharmProjects/python_base/lesson_012/01_volatility.py", line 85, in run
+            # with open(self.file_path, encoding='utf-8') as self.file:
+            # TypeError: expected str, bytes or os.PathLike object, not generator'
+
+            reader = csv.reader(self.file, delimiter=',')
+            count = 0
+            for line in reader:
+                if count == 0:
+                    count = 1
+                    continue
+                self.secid, self.tiker_price = line[0], line[2]
+                self.tiker_price_list.append(self.tiker_price)
+            self.dict_file.update({self.secid: self.tiker_price_list})
+
+        self.value_max = float(max(self.tiker_price_list))
+        self.value_min = float(min(self.tiker_price_list))
+
+        if self.value_max == self.value_min:
+            volatility_zero.append(self.secid)
+
+        self.half_sum = (self.value_max + self.value_min) / 2
+        self.difference = (self.value_max - self.value_min)
+        self.difference = round(self.difference, 4)
+        self.volatility_rezult = (self.difference / self.half_sum) * 100
+        self.volatility_rezult = round(self.volatility_rezult, 4)
+        volatility_dict.update({self.secid: self.volatility_rezult})
+        return volatility_dict, volatility_zero
+
+        # так не пойдет, вам в целом не нужен тот класс
+        # вам нужен отдельный независимый класс, который будет получать на вход путь до файла
+        # и при запуске метода run - он будет счиывать файл и хранить волатильность
+        # Независимыми они должны быть, т.к. далее с потоками и прцоессами доступ к общим ресурсам будет осложнен
+        # поэтому сейчас я хочу чтобы вы максимально упростили свой код, чтобы понять все эти аспекты
+        # которые надо будет реализовать в следующих 2 заданиях
 
 
 volatil = VolatilityObject()
 
 if __name__ == '__main__':
-    file_path = file_to_path(folder_name='trades')
-
-    # print('путь к файлу есть!')
-    # volatil.run(file_path=file_path)
-
-# for file_path in file_to_path(folder_name='trades'):
-#     print(file_path)
+    file_path = prepare.file_to_path(folder_name='trades')
+    print('путь к файлу есть!')
+    volatil.run(file_path=file_path)
+    print('Результаты')
+    prepare.printed_rezult(dict_value=volatility_dict, list_zero=volatility_zero)
