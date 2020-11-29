@@ -22,17 +22,18 @@ def printed_rezult(dict_value, list_zero):
     print('Максимальная волатильность:')
     for i in range(3):
         key = get_value(dic=dict_value, value=volatility_max[i])
-        print(key, volatility_max[i])
+        print(key, volatility_max[i], '%')
 
     volatility_min.sort()
     print('Минимальная волатильность:')
     for i in range(3):
         key = get_value(dic=dict_value, value=volatility_min[i])
-        print(key, volatility_min[i])
+        print(key, volatility_min[i], '%')
 
     list_zero.sort()
     print('Нулевая волатильность:')
-    print(list_zero)
+    for zero in list_zero:
+        print(zero, sep=' ', end=' ')
     return
 
 

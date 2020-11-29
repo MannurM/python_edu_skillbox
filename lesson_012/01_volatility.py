@@ -79,9 +79,12 @@ class VolatilityObject:
         self.file_path = file_path
         self.tiker_price_list = []
         self.secid = None
-        self.tiker_price = []
+        self.volatility_rezult = 0
+        self.file = None
 
+    @property
     def run(self):
+
         with open(self.file_path, encoding='utf-8') as self.file:
             reader = csv.reader(self.file, delimiter=',')
             count = 0
@@ -89,22 +92,18 @@ class VolatilityObject:
                 if count == 0:
                     count = 1
                     continue
-                self.secid, self.tiker_price = line[0], line[2]
-                self.tiker_price_list.append(self.tiker_price)
-        # TODO атрибуты, если они нужны (если переменная используется в разных методах)
-        # TODO нужно сперва инициализировать в Init
-        # TODO хотя в этом случае лучше просто сделать эти атрибуты - обычными переменными (без self)
-        self.value_max = float(max(self.tiker_price_list))
-        self.value_min = float(min(self.tiker_price_list))
+                self.secid, tiker_price = line[0], line[2]
+                self.tiker_price_list.append(float(tiker_price))
 
-        if self.value_max == self.value_min:
+        value_max = max(self.tiker_price_list)
+        value_min = min(self.tiker_price_list)
+        if value_max == value_min:
             self.volatility_rezult = 0
         else:
-            self.half_sum = (self.value_max + self.value_min) / 2
-            self.difference = (self.value_max - self.value_min)
-            self.difference = round(self.difference, 4)  # TODO промежуточное округление делать не стоит
-            self.volatility_rezult = (self.difference / self.half_sum) * 100
-            self.volatility_rezult = round(self.volatility_rezult, 4)
+            half_sum = (value_max + value_min) / 2
+            difference = value_max - value_min
+            self.volatility_rezult = (difference / half_sum) * 100
+            self.volatility_rezult = round(self.volatility_rezult, 2)
         return self.secid, self.volatility_rezult
 
 
@@ -115,25 +114,14 @@ if __name__ == '__main__':
     for i in file_path:
         volatil = VolatilityObject(file_path=i)
         list_volatil.append(volatil)
-        volatil.run()
+        volatil.run  # TODO Pycharm подкрашивает зачем-то
 
     volatility_dict = {}
     volatility_zero = []
     for volatil in list_volatil:
         if volatil.volatility_rezult == 0:
             volatility_zero.append(volatil.secid)
-            # TODO тут вероятно нужно поставить continue, чтобы 0 не добавлялись в общий словарь
+            continue
         volatility_dict.update({volatil.secid: volatil.volatility_rezult})
 
     prepare.printed_rezult(dict_value=volatility_dict, list_zero=volatility_zero)
-# TODO Правильный ответ выглдит так:
-#     Максимальная волатильность:
-# SiH9   24.39 %
-# PDM9   23.20 %
-# PDH9   22.69 %
-#     Минимальная волатильность:
-# CHM9   0.95 %  TODO отрицательной волатильности быть не должно, попробуйте найти ошибку, которая к ней приводит
-# GOG9   0.97 %
-# RNU9   0.98 %
-#     Нулевая волатильность:
-# CLM9 CYH9 EDU9 EuH0 EuZ9 JPM9 MTM9 O4H9 PDU9 PTU9 RIH0 RRG9 TRH9 VIH9
