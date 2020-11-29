@@ -18,7 +18,7 @@ def printed_rezult(dict_value, list_zero):
     volatility_min = volatility_max
     #  вывод на консоль
     volatility_max.sort(reverse=True)
-
+    print('Результаты')
     print('Максимальная волатильность:')
     for i in range(3):
         key = get_value(dic=dict_value, value=volatility_max[i])

@@ -65,37 +65,24 @@
 #
 # Для плавного перехода к мультипоточности, код оформить в обьектном стиле, используя следующий каркас
 #
-# TODO не уверен, что правильно вас понял, но как - то так...
+
 
 import csv
 
 import prepare
 
-# TODO внешние переменные не нужны
-# TODO данные за каждый тикер надо хранить внутри объекта
-volatility_dict = {}
-volatility_zero = []
-
 
 class VolatilityObject:
 
-    def __init__(self):
+    def __init__(self, file_path):
         self.dict_file = {}
-        self.file_path = ''
-        self.tiker_price_list = []
-
-    def run(self, file_path):
         self.file_path = file_path
-        print(self.file_path)  # TODO передается не путь, а генератор
-        with open(self.file_path, encoding='utf-8') as self.file:
-            # выдает вот такую ошибку. почему - то ругается на генератор.
-            # 'Traceback (most recent call last):
-            # File "C:/Users/User/PycharmProjects/python_base/lesson_012/01_volatility.py", line 123, in <module>
-            # volatil.run(file_path=file_path)
-            # File "C:/Users/User/PycharmProjects/python_base/lesson_012/01_volatility.py", line 85, in run
-            # with open(self.file_path, encoding='utf-8') as self.file:
-            # TypeError: expected str, bytes or os.PathLike object, not generator'
+        self.tiker_price_list = []
+        self.secid = None
+        self.tiker_price = []
 
+    def run(self):
+        with open(self.file_path, encoding='utf-8') as self.file:
             reader = csv.reader(self.file, delimiter=',')
             count = 0
             for line in reader:
@@ -104,45 +91,35 @@ class VolatilityObject:
                     continue
                 self.secid, self.tiker_price = line[0], line[2]
                 self.tiker_price_list.append(self.tiker_price)
-            self.dict_file.update({self.secid: self.tiker_price_list})
 
         self.value_max = float(max(self.tiker_price_list))
         self.value_min = float(min(self.tiker_price_list))
 
         if self.value_max == self.value_min:
-            volatility_zero.append(self.secid)
+            self.volatility_rezult = 0
+        else:
+            self.half_sum = (self.value_max + self.value_min) / 2
+            self.difference = (self.value_max - self.value_min)
+            self.difference = round(self.difference, 4)
+            self.volatility_rezult = (self.difference / self.half_sum) * 100
+            self.volatility_rezult = round(self.volatility_rezult, 4)
+        return self.secid, self.volatility_rezult
 
-        self.half_sum = (self.value_max + self.value_min) / 2
-        self.difference = (self.value_max - self.value_min)
-        self.difference = round(self.difference, 4)
-        self.volatility_rezult = (self.difference / self.half_sum) * 100
-        self.volatility_rezult = round(self.volatility_rezult, 4)
-        volatility_dict.update({self.secid: self.volatility_rezult})
-        return volatility_dict, volatility_zero
-
-        # так не пойдет, вам в целом не нужен тот класс
-        # вам нужен отдельный независимый класс, который будет получать на вход путь до файла
-        # и при запуске метода run - он будет счиывать файл и хранить волатильность
-        # Независимыми они должны быть, т.к. далее с потоками и прцоессами доступ к общим ресурсам будет осложнен
-        # поэтому сейчас я хочу чтобы вы максимально упростили свой код, чтобы понять все эти аспекты
-        # которые надо будет реализовать в следующих 2 заданиях
-
-
-volatil = VolatilityObject()
 
 if __name__ == '__main__':
     file_path = prepare.file_to_path(folder_name='trades')
     print('путь к файлу есть!')
+    list_volatil = []
     for i in file_path:
-        print(i)  # TODO Используйте цикл подобного вида
-        # TODO и передавайте в каждый объект один из путей
-        # TODO тут надо
-        # TODO 1) создать объект с указанным путём к файлу
-        # TODO 2) добавить объект в список
-        # TODO 3) запустить run у этого объекта
+        volatil = VolatilityObject(file_path=i)
+        list_volatil.append(volatil)
+        volatil.run()
 
-    # TODO далее можно будет добавить ещё один цикл, по списку объектов
-    # TODO в этом цикле можно собрать данные из каждого объекта в одном месте
-    volatil.run(file_path=file_path)
-    print('Результаты')
+    volatility_dict = {}
+    volatility_zero = []
+    for volatil in list_volatil:
+        if volatil.volatility_rezult == 0:
+            volatility_zero.append(volatil.secid)
+        volatility_dict.update({volatil.secid: volatil.volatility_rezult})
+
     prepare.printed_rezult(dict_value=volatility_dict, list_zero=volatility_zero)
