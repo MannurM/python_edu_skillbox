@@ -82,7 +82,7 @@ class VolatilityObject:
         self.volatility_rezult = 0
         self.file = None
 
-    @property
+    #@property  # это пожалуй тут лишнее
     def run(self):
 
         with open(self.file_path, encoding='utf-8') as self.file:
@@ -114,7 +114,8 @@ if __name__ == '__main__':
     for i in file_path:
         volatil = VolatilityObject(file_path=i)
         list_volatil.append(volatil)
-        volatil.run  # TODO Pycharm подкрашивает зачем-то
+        volatil.run()  # Pycharm подкрашивает зачем-то
+        # всё из-за property, пайчарм думал, что это действие ничего не выполняет
 
     volatility_dict = {}
     volatility_zero = []
@@ -125,3 +126,4 @@ if __name__ == '__main__':
         volatility_dict.update({volatil.secid: volatil.volatility_rezult})
 
     prepare.printed_rezult(dict_value=volatility_dict, list_zero=volatility_zero)
+#зачёт!
