@@ -91,7 +91,9 @@ class VolatilityObject:
                     continue
                 self.secid, self.tiker_price = line[0], line[2]
                 self.tiker_price_list.append(self.tiker_price)
-
+        # TODO атрибуты, если они нужны (если переменная используется в разных методах)
+        # TODO нужно сперва инициализировать в Init
+        # TODO хотя в этом случае лучше просто сделать эти атрибуты - обычными переменными (без self)
         self.value_max = float(max(self.tiker_price_list))
         self.value_min = float(min(self.tiker_price_list))
 
@@ -100,7 +102,7 @@ class VolatilityObject:
         else:
             self.half_sum = (self.value_max + self.value_min) / 2
             self.difference = (self.value_max - self.value_min)
-            self.difference = round(self.difference, 4)
+            self.difference = round(self.difference, 4)  # TODO промежуточное округление делать не стоит
             self.volatility_rezult = (self.difference / self.half_sum) * 100
             self.volatility_rezult = round(self.volatility_rezult, 4)
         return self.secid, self.volatility_rezult
@@ -120,6 +122,18 @@ if __name__ == '__main__':
     for volatil in list_volatil:
         if volatil.volatility_rezult == 0:
             volatility_zero.append(volatil.secid)
+            # TODO тут вероятно нужно поставить continue, чтобы 0 не добавлялись в общий словарь
         volatility_dict.update({volatil.secid: volatil.volatility_rezult})
 
     prepare.printed_rezult(dict_value=volatility_dict, list_zero=volatility_zero)
+# TODO Правильный ответ выглдит так:
+#     Максимальная волатильность:
+# SiH9   24.39 %
+# PDM9   23.20 %
+# PDH9   22.69 %
+#     Минимальная волатильность:
+# CHM9   0.95 %  TODO отрицательной волатильности быть не должно, попробуйте найти ошибку, которая к ней приводит
+# GOG9   0.97 %
+# RNU9   0.98 %
+#     Нулевая волатильность:
+# CLM9 CYH9 EDU9 EuH0 EuZ9 JPM9 MTM9 O4H9 PDU9 PTU9 RIH0 RRG9 TRH9 VIH9
