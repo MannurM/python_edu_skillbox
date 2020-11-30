@@ -30,7 +30,7 @@ def printed_rezult(dict_value, list_zero):
         key = get_value(dic=dict_value, value=volatility_min[i])
         print(key, volatility_min[i], '%')
 
-    list_zero.sort()
+    list_zero = sorted(list_zero)
     print('Нулевая волатильность:')
     for zero in list_zero:
         print(zero, sep=' ', end=' ')
