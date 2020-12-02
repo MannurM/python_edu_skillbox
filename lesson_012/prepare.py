@@ -1,12 +1,14 @@
 import os
 
 
-def file_to_path(folder_name):  # путь до файла
+def file_to_path(folder_name, list_file_in_folder):  # путь до файла
     file_in_folder = os.listdir(folder_name)
     path = os.getcwd() + '/' + folder_name
-    for file in file_in_folder:
+    list_file_in_folder = list_file_in_folder
+    for file in list_file_in_folder:
         file_path = path + '/' + file
         file_path = os.path.normpath(file_path)
+
         yield file_path
     return
 
