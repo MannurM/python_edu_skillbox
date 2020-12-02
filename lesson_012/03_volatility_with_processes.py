@@ -19,27 +19,22 @@
 #
 
 
-import os
-from multiprocessing import Process, Pipe, Queue
-from queue import Empty
-
-
 import csv
-
+from multiprocessing import Process, Queue
 import prepare
 
 
 class VolatilityObject(Process):
 
-    def __init__(self, file_path, conn, *args, **kwargs):
-        super(Process).__init__(*args, **kwargs)
+    def __init__(self, file_path, collector, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.dict_file = {}
         self.file_path = file_path
         self.tiker_price_list = []
-        # secid = None
-        # volatility_rezult = 0
+        self.secid = None
+        self.volatility_rezult = 0
         self.file = None
-        self.conn = conn
+        self.collector = collector
 
     def run(self):
         with open(self.file_path, encoding='utf-8') as self.file:
@@ -49,79 +44,39 @@ class VolatilityObject(Process):
                 if count == 0:
                     count = 1
                     continue
-                secid, tiker_price = line[0], line[2]
+                self.secid, tiker_price = line[0], line[2]
                 self.tiker_price_list.append(float(tiker_price))
 
         value_max = max(self.tiker_price_list)
         value_min = min(self.tiker_price_list)
         if value_max == value_min:
-            volatility_rezult = 0
+            self.volatility_rezult = 0
         else:
             half_sum = (value_max + value_min) / 2
             difference = value_max - value_min
-            volatility_rezult = (difference / half_sum) * 100
-            volatility_rezult = round(volatility_rezult, 2)
-        self.conn.send(secid, volatility_rezult)
-        self.conn.close()
-        # return self.secid, self.volatility_rezult
+            self.volatility_rezult = (difference / half_sum) * 100
+            self.volatility_rezult = round(self.volatility_rezult, 2)
+        self.collector.put([self.secid, self.volatility_rezult])
 
-# Я куда-то не в ту степь уехал...))
-# Вопросы: в каком месте разбивать на процессы
-# TODO Да, что-то вы далековато зашли)
-# TODO Идея по сути точно такая же как в 02
-# TODO только нужно добавить очередь или pipe
-# TODO Нужно сформировать список объектов (один файл = один объект)
-# TODO и все объекты запустить параллельно
-# TODO пример вот тут посмотрите 06_practice_03.py
 
 if __name__ == '__main__':
     folder_name = 'trades'
-    file_in_folder = os.listdir(folder_name)
-    len_folder = len(file_in_folder)
-    count_file = int(round(len_folder / 2, 0))
-    # print(count_file)
-    list_file_folder = list(file_in_folder)
-
-    list_file_folder_1 = list_file_folder[:count_file]
-    list_file_folder_2 = list_file_folder[count_file + 1:]
-    # print(list_file_folder_1)
-    # print(list_file_folder_2)
-
-    list_volatil = []
+    collector = Queue()
+    volatils = [VolatilityObject(file_path=file_path, collector=collector)
+                for file_path in prepare.file_to_path(folder_name=folder_name)]
     volatility_dict = {}
     volatility_zero = []
-    pipes = []
-    for file in list_file_folder:
-        parent_conn, child_conn = Pipe()
-        target_1 = [VolatilityObject(file_path=file_path, conn=child_conn)for file_path in
-                            prepare.file_to_path(folder_name=folder_name, list_file_in_folder=list_file_folder_1)]
-        volatil_1 = Process(group=None, target=target_1)
-
-        target_2 = [VolatilityObject(file_path=file_path, conn=child_conn)for file_path in
-                            prepare.file_to_path(folder_name=folder_name, list_file_in_folder=list_file_folder_2)]
-        volatil_2 = Process(group=None, target=target_2)
-
-        print(volatil_1, volatil_2)
-        volatil_1.start()
-        volatil_2.start()
-        print('1')
-        for conn in pipes:
-
-            secid, volality_rezult = parent_conn.recv()
-            print(secid, volality_rezult)
-        volatil_1.join()
-        volatil_2.join()
-
-        if volatil_1.volatility_rezult == 0:
-            volatility_zero.append(volatil_1.secid)
-            continue
-        elif volatil_2.volatility_rezult == 0:
-            volatility_zero.append(volatil_2.secid)
-            continue
+    for volatil in volatils:
+        volatil.start()
+        # print(volatil)
+    for volatil in volatils:
+        volatil.join()
+        # print(volatil)
+        data_queue = collector.get()
+        if data_queue[1] == 0:
+            volatility_zero.append(data_queue[0])
         else:
-            volatility_dict.update({volatil_1.secid: volatil_1.volatility_rezult})
-            volatility_dict.update({volatil_2.secid: volatil_2.volatility_rezult})
+            volatility_dict.update({data_queue[0]: data_queue[1]})
 
-        prepare.printed_rezult(dict_value=volatility_dict, list_zero=volatility_zero)
-
-
+    prepare.printed_rezult(dict_value=volatility_dict, list_zero=volatility_zero)
+# TODO А с трубами не получилось (
