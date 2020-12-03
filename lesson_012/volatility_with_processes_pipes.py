@@ -37,7 +37,7 @@ class VolatilityObject(Process):
             self.volatility_rezult = (difference / half_sum) * 100
             self.volatility_rezult = round(self.volatility_rezult, 2)
         self.conn.send([self.secid, self.volatility_rezult])
-        self.conn.close
+        self.conn.close()  # вот тут () стоило добавить
 
 
 if __name__ == '__main__':
@@ -51,6 +51,26 @@ if __name__ == '__main__':
     for volatil in volatils:
         volatil.start()
         # print(volatil)
+
+    # И получение данных стоит тут реализовывать, до join-ов
+    # как в этом примере
+    # for fisher in self.fishers:
+    #     fisher.start()
+    # while True:
+    #     try:
+    #         # Этот метод у очереди - атомарный и блокирующий,
+    #         # Поток приостанавливается, пока нет элементов в очереди
+    #         fish = self.fish_receiver.get(timeout=1)
+    #         print(f'Садок принял {fish}', flush=True)
+    #         self.fish_tank[fish] += 1
+    #     except Empty:
+    #         print('В садке пусто в течении 1 секунды', flush=True)
+    #         if not any(fisher.is_alive() for fisher in self.fishers):
+    #             break
+    # for fisher in self.fishers:
+    #     fisher.join()
+    # print(f'Лодка возвращается домой с {self.fish_tank}', flush=True)
+
     for volatil in volatils:
         volatil.join()
         # print(volatil)
@@ -61,4 +81,4 @@ if __name__ == '__main__':
             volatility_dict.update({data_pipe[0]: data_pipe[1]})
 
     prepare.printed_rezult(dict_value=volatility_dict, list_zero=volatility_zero)
-# TODO а после очередей и трубы получились, какие ошибки?
+# а после очередей и трубы получились, какие ошибки?

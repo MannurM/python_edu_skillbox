@@ -85,6 +85,7 @@ if __name__ == '__main__':
 #   File "C:/skillbox/python_base_zajdullin_mannur/lesson_012/03_volatility_with_processes.py", line 66, in <module>
 #     for file_path in prepare.file_to_path(folder_name=folder_name)]
 # TypeError: file_to_path() missing 1 required positional argument: 'list_file_in_folder'
-# TODO здесь понял - измененнный модуль 'prepare' не запушил.
+# здесь понял - измененнный модуль 'prepare' не запушил.
 
-# TODO а с трубами в чём была проблема? можете создать ещё один файл и показать вариант с ними?
+# а с трубами в чём была проблема? можете создать ещё один файл и показать вариант с ними?
+#зачёт!
