@@ -82,9 +82,7 @@ class VolatilityObject:
         self.volatility_rezult = 0
         self.file = None
 
-    #@property  # это пожалуй тут лишнее
     def run(self):
-
         with open(self.file_path, encoding='utf-8') as self.file:
             reader = csv.reader(self.file, delimiter=',')
             count = 0
@@ -114,8 +112,7 @@ if __name__ == '__main__':
     for i in file_path:
         volatil = VolatilityObject(file_path=i)
         list_volatil.append(volatil)
-        volatil.run()  # Pycharm подкрашивает зачем-то
-        # всё из-за property, пайчарм думал, что это действие ничего не выполняет
+        volatil.run()
 
     volatility_dict = {}
     volatility_zero = []

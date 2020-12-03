@@ -8,9 +8,23 @@
 # Пример заполнения lesson_013/images/ticket_sample.png
 # Подходящий шрифт искать на сайте ofont.ru
 
+# def input_data:
+#     fio = input('Фамилия, Имя, Отчество')
+#     from_ = input('Пункт вылета')
+#     to = input('Пункт назначения')
+#     data = input('дата вылета')
+#     return fio, from_, to, data
+
+
 def make_ticket(fio, from_, to, date):
-    # TODO здесь ваш код
-    pass
+
+
+# input_data()
+make_ticket(fio='Иванов Иван Иванович', from_='Лондон', to='Париж', date='01.01.2021')
+
+
+
+
 
 # Усложненное задание (делать по желанию).
 # Написать консольный скрипт c помощью встроенного python-модуля argparse.

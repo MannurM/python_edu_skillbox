@@ -61,14 +61,12 @@ if __name__ == '__main__':
     for volatil in file_path_list:
         volatil.start()
         list_volatil.append(volatil)
-        # print(volatil)
-    # print('старт прошел успешно!')
-    # print(len(list_volatil))
+
     volatility_dict = {}
     volatility_zero = []
     for volatil in list_volatil:
         volatil.join()
-        # print(volatil.secid)
+
         if volatil.volatility_rezult == 0:
             volatility_zero.append(volatil.secid)
             continue
