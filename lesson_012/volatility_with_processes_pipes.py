@@ -1,5 +1,6 @@
 import csv
 from multiprocessing import Process, Pipe
+from queue import Empty
 
 import prepare
 
@@ -47,10 +48,38 @@ if __name__ == '__main__':
                 for file_path in prepare.file_to_path(folder_name=folder_name)]
     volatility_dict = {}
     volatility_zero = []
-
+    pipes =[]
     for volatil in volatils:
         volatil.start()
         # print(volatil)
+        pipes.append(parent_conn)
+    # TODO а так нельзя? запустили все процессы,  передали  и собрали данные по своим трубам,
+    # TODO дождались заврешения процессов.
+    # print(pipes)
+    # for _ in pipes:
+    #     data_pipe = parent_conn.recv()
+    #     # print(data_pipe)
+    #     if data_pipe[1] == 0:
+    #         volatility_zero.append(data_pipe[0])
+    #     else:
+    #         volatility_dict.update({data_pipe[0]: data_pipe[1]})
+
+
+    count = 1
+    while True:
+        try:
+            data_pipe = parent_conn.recv()
+            print('Труба работает', count, flush=True)
+            if data_pipe[1] == 0:
+                volatility_zero.append(data_pipe[0])
+            else:
+                volatility_dict.update({data_pipe[0]: data_pipe[1]})
+            count += 1
+        except Empty:
+            print('процессы мертвы', flush=True)
+            if not any(parent_conn.is_alive()):
+                break
+       # TODO а так не работает - исключение не выбрасывает
 
     # И получение данных стоит тут реализовывать, до join-ов
     # как в этом примере
@@ -73,12 +102,6 @@ if __name__ == '__main__':
 
     for volatil in volatils:
         volatil.join()
-        # print(volatil)
-        data_pipe = parent_conn.recv()
-        if data_pipe[1] == 0:
-            volatility_zero.append(data_pipe[0])
-        else:
-            volatility_dict.update({data_pipe[0]: data_pipe[1]})
+        print(volatil)
 
     prepare.printed_rezult(dict_value=volatility_dict, list_zero=volatility_zero)
-# а после очередей и трубы получились, какие ошибки?
