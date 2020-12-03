@@ -79,4 +79,10 @@ if __name__ == '__main__':
             volatility_dict.update({data_queue[0]: data_queue[1]})
 
     prepare.printed_rezult(dict_value=volatility_dict, list_zero=volatility_zero)
-# TODO А с трубами не получилось (
+# А с трубами не получилось (
+# TODO текущий код тоже не работает, вылезает ошибка:
+# Traceback (most recent call last):
+#   File "C:/skillbox/python_base_zajdullin_mannur/lesson_012/03_volatility_with_processes.py", line 66, in <module>
+#     for file_path in prepare.file_to_path(folder_name=folder_name)]
+# TypeError: file_to_path() missing 1 required positional argument: 'list_file_in_folder'
+# TODO а с трубами в чём была проблема? можете создать ещё один файл и показать вариант с ними?
