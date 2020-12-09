@@ -46,6 +46,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageColor
 def make_ticket(fio, from_, to, date, out_path=None):
     fio, from_, to, date = fio, from_, to, date
     font_path = os.path.join('fonts', 'arial.ttf')
+    # TODO собирать путь лучше через join, как вы это делаете выше
     path_teplate = os.path.normpath(os.getcwd() + '/' + 'images/ticket_template.png')
 
     image_teplate = Image.open(path_teplate)
@@ -61,6 +62,9 @@ def make_ticket(fio, from_, to, date, out_path=None):
 
     image_teplate.show()
     out_path = out_path if out_path else 'probe_ticket.png'
+    # TODO сохранять изображения лучше всего в отдельную папку
+    # TODO + эту папку сперва стоит проверить на существование
+    # TODO и создать, если её нет
     image_teplate.save(out_path)
     print(f'Post card saved az {out_path}')
 
@@ -77,9 +81,9 @@ def create_parser():
 
 if __name__ == '__main__':
     parser = create_parser()
-    args = parser.parse_args()
+    args = parser.parse_args('--fio MLV --from_ M --to T --date 20-09-2020 --save_to test.png'.split())
     make_ticket(fio=args.fio, from_=args.from_, to=args.to, date=args.date, out_path=args.save_to)
-# TODO не знаю где ошибка.
+# не знаю где ошибка.
 
 # Усложненное задание (делать по желанию).
 # Написать консольный скрипт c помощью встроенного python-модуля argparse.
