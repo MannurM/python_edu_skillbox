@@ -32,7 +32,7 @@ def get_score(game_result):
     game_result = game_result
     result_len = len(game_result)
     result_count = 0
-    s = 0
+    s = 0  # TODO 's' плохой пример нэйминга
     while s <= result_len - 1:  # for s in range(result_len):
         print(f' счетчик {result_count}')
         try:
@@ -105,6 +105,8 @@ class TenThrows(Exception):
     pass
 
 
+# TODO когда код становится объёмным - очень помогают его читать докстринги
+# TODO (небольшие описания к классам/методам/функциям (скину пример в ЛМС)
 class CounterBowling:
 
     def __init__(self, game_result):
@@ -142,15 +144,14 @@ class CounterBowling:
 
         except Exception as exc:
             print(f'Входные данные некорретны! Ошибка - {exc}')
-        return self.game_result    
+        return self.game_result
 
     def get_store(self, game_result):
-        CounterBowling.start_cleaning()
+        CounterBowling.start_cleaning()  # TODO при запуске тут тоже вылезает ошибка
         CounterStraike.requests(game_result)
         CounterSpare.requests(game_result)
         CounterOnesum.requests(game_result)
         CounterNsum.requests(game_result)
-
 
 
 class CounterStraike(CounterBowling):  # условие работы счетчика 1 символ в  значении  и равно Х
@@ -159,7 +160,7 @@ class CounterStraike(CounterBowling):  # условие работы счетч�
         self.game_result = self.game_result
 
     def requests(self):
-        for d in self.game_result:
+        for d in self.game_result:  # TODO 'd' - опять же, плохой пример нэйминга
             if self.game_result[d] == 'X':
                 self.result_counter += 20
                 self.game_result.replace(self.game_result[d], 0)
