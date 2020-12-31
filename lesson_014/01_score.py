@@ -33,7 +33,6 @@
 #   Количество очков для результатов ХХХ - УУУ.
 
 
-
 import argparse
 import bowling
 
@@ -48,12 +47,9 @@ if __name__ == '__main__':
     parser = create_parser()
     args = parser.parse_args('--result X2/-353XX9/-7-523'.split())
     # args = parser.parse_args()
-    # res = bowling.get_score(game_result=args)
-    print(args, args.result)  # TODO что именно из этого вы хотите передать дальше?
-    res = bowling.CounterBowling.get_store(game_result=args)
-    # TODO сейчас код не запускается
-    # TODO 1) не создан объект класса, у которого вы вызываете метод
-    # TODO 2) __init__(self, game_result) -- объекту класса тоже нужен game_result
+    # res = bowling.get_score(game_result=args.result)
+    res_one = bowling.CounterBowling(game_result=args)
+    res = res_one.get_store(game_result=args.result)
     print(f'Количество очков - {res}!')
 
 # При написании кода помнить, что заказчик может захотеть доработок и новых возможностей...
