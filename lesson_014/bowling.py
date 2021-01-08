@@ -92,7 +92,7 @@
 # res = get_score(game_result='X22/-353XX99/.-7--523')  # лишние данные 2 9 . -
 # print(f'Итого очков - {res}')
 
-# 2 вариант через классы, что-то типа патернов состояния счетчика очков
+# 2 вариант через классы, что-то типа паттернов состояния счетчика очков
 class ExtraneousCharacters(Exception):
     pass
 
@@ -105,115 +105,170 @@ class TenThrows(Exception):
     pass
 
 
-# TODO когда код становится объёмным - очень помогают его читать докстринги
-# TODO (небольшие описания к классам/методам/функциям (скину пример в ЛМС)
-class CounterBowling:
-    """
-    Общий класс боулинг
-    Принимает значения игры в виде строки,
-    Проверяет строку на соответствие и
-    Возвращает количество очков
-    """
+# class CounterBowling:
+#     """
+#     Общий класс боулинг
+#     Принимает значения игры в виде строки,
+#     Проверяет строку на соответствие и
+#     Возвращает количество очков
+#     """
+#
+#     def __init__(self, game_result):
+#         self.game_result = game_result
+#         self.result_counter = 0
+#         self.len_data = 0
+#
+#     def start_cleaning(self, game_result):  # проверка на лишние и неправильные элементы и 10 бросков
+#         self.game_result = game_result
+#         try:
+#             for date, value in enumerate(self.game_result):
+#                 if not value.isdigit() and value != 'X' and value != '/' and value != '-':
+#                     raise ExtraneousCharacters('Во фрейме посторонние символы')
+#                 elif value == '/' and self.game_result[date + 1] == '/':
+#                     raise BadData('Некорректные данные во фрейме!')
+#                 elif value == '-' and self.game_result[date + 1] == '-':
+#                     raise BadData('Некорректные данные во фрейме!')
+#                 elif date == 0 and value == '/':
+#                     raise BadData('Некорректные данные во фрейме !')
+#                 elif date == len(self.game_result) - 1 and value == '-':
+#                     raise BadData('Некорректные данные во фрейме !')
+#                 elif value == '-' and self.game_result[date + 1] == '/':
+#                     raise BadData('Некорректные данные во фрейме !')
+#
+#             ten_counter = 0  # проверка на количество страйков
+#             self.len_data = len(self.game_result)
+#             for data, value in enumerate(self.game_result):
+#                 if self.game_result[data] == 'X':
+#                     ten_counter += 1
+#
+#             rest_ten_counter = self.len_data - ten_counter  # проверка на 10 бросков
+#             if rest_ten_counter <= 18 or rest_ten_counter >= 2:
+#                 if rest_ten_counter % 2 == 0:
+#                     if rest_ten_counter / 2 + ten_counter == self.len_data:
+#                         print('Бросков 10!')
+#             else:
+#                 raise TenThrows('Число бросков неверно!')
+#             return self.game_result
+#         except (ExtraneousCharacters, BadData, TenThrows) as exc:
+#             print(f'Входные данные некорректны! Ошибка - тип {type(exc)}, наименование - {exc}')
+#
+#     def get_store(self, game_result):
+#         CounterBowling.start_cleaning(self, game_result=game_result)
+#         CounterStraike.requests(self, game_result=game_result)
+#         CounterSpare.requests(self, game_result=game_result)
+#         CounterOnesum.requests(self, game_result=game_result)
+#         CounterNsum.requests(self, game_result=game_result)
+#         return self.result_counter
+#
+#
+# class CounterStraike(CounterBowling):  # условие работы счетчика 1 символ в  значении  и равно Х
+#     def __init__(self, game_result):
+#         super().__init__()
+#         self.game_result = game_result
+#
+#     def requests(self, game_result):
+#         self.game_result = game_result
+#         for data, value in enumerate(self.game_result):
+#             if self.game_result[data] == 'X':
+#                 self.result_counter += 20
+#                 self.game_result = self.game_result.replace(self.game_result[data], '0', 1)
+#         return self.result_counter, self.game_result
+#
+#
+# class CounterSpare(CounterBowling):  # условие работы счетчика 2 символа: 1значание всегда - , второе число от 1 до 9
+#     def __init__(self, game_result):
+#         super().__init__()
+#         self.game_result = self.game_result
+#
+#     def requests(self, game_result):
+#         for data, value in enumerate(self.game_result):
+#             if self.game_result[data] == '-' and self.game_result[data + 1].isdigit():
+#                 self.result_counter += int(self.game_result[data + 1])
+#                 self.game_result = self.game_result.replace(self.game_result[data], '0', 1)
+#                 self.game_result = self.game_result.replace(self.game_result[data + 1], '0', 1)
+#         return self.result_counter, self.game_result
+#
+#
+# class CounterOnesum(CounterBowling):  # условие счетчика 2 символа:1значение от 1 до 9 2значение всегда /
+#     def __init__(self, game_result):
+#         super().__init__()
+#         self.game_result = game_result
+#
+#     def requests(self, game_result):
+#         for data, value in enumerate(self.game_result):
+#             if self.game_result[data] == '/' and self.game_result[data - 1].isdigit():
+#                 self.result_counter += 15
+#                 self.game_result = self.game_result.replace(self.game_result[data], '0', 1)
+#                 self.game_result = self.game_result.replace(self.game_result[data - 1], '0', 1)
+#         return self.result_counter, self.game_result
+#
+#
+# class CounterNsum(CounterBowling):  # условие работы счетчика 2 символа - 2 числа
+#     def __init__(self, game_result):
+#         super().__init__()
+#         self.game_result = game_result
+#
+#     def requests(self, game_result):
+#         for data, value in enumerate(self.game_result):
+#             if value.isdigit() and self.game_result[data - 1].isdigit():
+#                 self.result_counter += int(self.game_result[data]) + int(self.game_result[data - 1])
+#                 self.game_result = self.game_result.replace(self.game_result[data], '0', 1)
+#                 self.game_result = self.game_result.replace(self.game_result[data - 1], '0', 1)
+#         return self.result_counter, self.game_result
+#
 
+
+# Вариант с бросками на основе примера из LMS
+class GameBowling:
     def __init__(self, game_result):
         self.game_result = game_result
         self.result_counter = 0
-        self.len_data = 0
 
-    def start_cleaning(self, game_result):  # проверка на лишние и неправильные элементы и 10 бросков
+    def count_hit(self, game_result):
         self.game_result = game_result
-        try:
-            for date, value in enumerate(self.game_result):
-                if not value.isdigit() and value != 'X' and value != '/' and value != '-':
-                    raise ExtraneousCharacters('Во фрейме посторонние символы')
-                elif value == '/' and self.game_result[date + 1] == '/':
-                    raise BadData('Некорректные данные во фрейме!')
-                elif value == '-' and self.game_result[date + 1] == '-':
-                    raise BadData('Некорректные данные во фрейме!')
-                elif date == 0 and value == '/':
-                    raise BadData('Некорректные данные во фрейме !')
-                elif date == len(self.game_result) - 1 and value == '-':
-                    raise BadData('Некорректные данные во фрейме !')
-                elif value == '-' and self.game_result[date + 1] == '/':
-                    raise BadData('Некорректные данные во фрейме !')
-
-            ten_counter = 0  # проверка на количество страйков
-            self.len_data = len(self.game_result)
-            for data, value in enumerate(self.game_result):
-                if self.game_result[data] == 'X':
-                    ten_counter += 1
-
-            rest_ten_counter = self.len_data - ten_counter  # проверка на 10 бросков
-            if rest_ten_counter <= 18 or rest_ten_counter >= 2:
-                if rest_ten_counter % 2 == 0:
-                    if rest_ten_counter / 2 + ten_counter == self.len_data:
-                        print('Бросков 10!')
-            else:
-                raise TenThrows('Число бросков неверно!')
-            return self.game_result
-        except (ExtraneousCharacters, BadData, TenThrows) as exc:
-            print(f'Входные данные некорректны! Ошибка - тип {type(exc)}, наименование - {exc}')
-
-    def get_store(self, game_result):
-        CounterBowling.start_cleaning(self, game_result=game_result)
-        CounterStraike.requests(self, game_result=game_result)
-        CounterSpare.requests(self, game_result=game_result)
-        CounterOnesum.requests(self, game_result=game_result)
-        CounterNsum.requests(self, game_result=game_result)
+        while self.game_result:
+            Hit1.count_hit(self, self.game_result)
         return self.result_counter
 
 
-class CounterStraike(CounterBowling):  # условие работы счетчика 1 символ в  значении  и равно Х
+class Hit1(GameBowling):
     def __init__(self, game_result):
         super().__init__()
         self.game_result = game_result
 
-    def requests(self, game_result):
-        self.game_result = game_result
-        for data, value in enumerate(self.game_result):
-            if self.game_result[data] == 'X':
-                self.result_counter += 20
-                self.game_result = self.game_result.replace(self.game_result[data], '0', 1)
-        return self.result_counter, self.game_result
-
-
-class CounterSpare(CounterBowling):  # условие работы счетчика 2 символа: 1значание всегда - , второе число от 1 до 9
-    def __init__(self, game_result):
-        super().__init__()
+    def count_hit(self, game_result):
         self.game_result = self.game_result
-
-    def requests(self, game_result):
-        for data, value in enumerate(self.game_result):
-            if self.game_result[data] == '-' and self.game_result[data + 1].isdigit():
-                self.result_counter += int(self.game_result[data + 1])
-                self.game_result = self.game_result.replace(self.game_result[data], '0', 1)
-                self.game_result = self.game_result.replace(self.game_result[data + 1], '0', 1)
-        return self.result_counter, self.game_result
-
-
-class CounterOnesum(CounterBowling):  # условие счетчика 2 символа:1значение от 1 до 9 2значение всегда /
-    def __init__(self, game_result):
-        super().__init__()
-        self.game_result = game_result
-
-    def requests(self, game_result):
-        for data, value in enumerate(self.game_result):
-            if self.game_result[data] == '/' and self.game_result[data - 1].isdigit():
+        current_hit = self.game_result[:1]
+        if current_hit == 'X':
+            self.result_counter += 20
+        if current_hit.isdigit():
+            current_hit_next = self.game_result[1:2]
+            if current_hit_next == '/':
                 self.result_counter += 15
-                self.game_result = self.game_result.replace(self.game_result[data], '0', 1)
-                self.game_result = self.game_result.replace(self.game_result[data - 1], '0', 1)
-        return self.result_counter, self.game_result
+                self.game_result = self.game_result[1:]
+            else:
+                self.result_counter += int(current_hit)
+        if current_hit == '-':
+            Hit2.count_hit(self, self.game_result)
+        self.game_result = self.game_result[1:]
 
 
-class CounterNsum(CounterBowling):  # условие работы счетчика 2 символа - 2 числа
+class Hit2(GameBowling):
     def __init__(self, game_result):
         super().__init__()
         self.game_result = game_result
 
-    def requests(self, game_result):
-        for data, value in enumerate(self.game_result):
-            if value.isdigit() and self.game_result[data - 1].isdigit():
-                self.result_counter += int(self.game_result[data]) + int(self.game_result[data - 1])
-                self.game_result = self.game_result.replace(self.game_result[data], '0', 1)
-                self.game_result = self.game_result.replace(self.game_result[data - 1], '0', 1)
-        return self.result_counter, self.game_result
+    def count_hit(self, game_result):
+        self.game_result = game_result
+        current_hit = self.game_result[:1]
+        if current_hit == 'X' or current_hit == '/':
+            raise BadData('Некорректные данные во фрейме !')
+        if current_hit == '-':
+            current_hit_next = self.game_result[1:2]
+            if current_hit_next.isdigit():
+                self.result_counter += int(current_hit_next)
+            else:
+                raise BadData('Некорректные данные во фрейме !')
+        if current_hit.isdigit():
+            self.result_counter += int(current_hit)
+        self.game_result = self.game_result[1:]

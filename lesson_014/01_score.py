@@ -43,14 +43,24 @@ def create_parser():
     return parser
 
 
+# if __name__ == '__main__':
+#     parser = create_parser()
+#     args = parser.parse_args('--result X2/-353XX9/-7-523'.split())
+#     # args = parser.parse_args()
+#     # res = bowling.get_score(game_result=args.result)
+#     res_one = bowling.CounterBowling(game_result=args)
+#     res = res_one.get_store(game_result=args.result)
+#     print(f'Количество очков - {res}!')
+
 if __name__ == '__main__':
     parser = create_parser()
     args = parser.parse_args('--result X2/-353XX9/-7-523'.split())
     # args = parser.parse_args()
     # res = bowling.get_score(game_result=args.result)
-    res_one = bowling.CounterBowling(game_result=args)
-    res = res_one.get_store(game_result=args.result)
+    res_one = bowling.GameBowling(game_result=args)
+    res = res_one.count_hit(game_result=args.result)
     print(f'Количество очков - {res}!')
+
 
 # При написании кода помнить, что заказчик может захотеть доработок и новых возможностей...
 # И, возможно, вам пригодится паттерн проектирования "Состояние",
