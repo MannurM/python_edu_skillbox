@@ -57,8 +57,8 @@ if __name__ == '__main__':
     args = parser.parse_args('--result X2/-353XX9/-7-523'.split())
     # args = parser.parse_args()
     # res = bowling.get_score(game_result=args.result)
-    res_one = bowling.GameBowling(game_result=args)
-    res = res_one.count_hit(game_result=args.result)
+    res_one = bowling.Game(game_result=args)
+    res = res_one.run_game(game_result=args.result)
     print(f'Количество очков - {res}!')
 
 

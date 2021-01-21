@@ -219,29 +219,32 @@ class TenThrows(Exception):
 
 
 # Вариант с бросками на основе примера из LMS
+
+
 class GameBowling:
     def __init__(self, game_result):
         self.game_result = game_result
         self.result_counter = 0
+        self.game_status = None
 
     def count_hit(self, game_result):
         self.game_result = game_result
-        while self.game_result:
-            # TODO почему вы работаете напрямую с классом, а не с объектом класса?
-            Hit1.count_hit(self, self.game_result)
-        return self.result_counter
 
 
 class Hit1(GameBowling):
     def __init__(self, game_result):
-        super().__init__()  # TODO этот супер_инит ждёт параметр, который указан в родителе
+        super().__init__(game_result)
         self.game_result = game_result
 
     def count_hit(self, game_result):
-        self.game_result = self.game_result
+        self.game_result = game_result
         current_hit = self.game_result[:1]
         if current_hit == 'X':
             self.result_counter += 20
+        if current_hit == '/':
+            raise BadData('Некорректные данные во фрейме !')
+        if current_hit == '-':
+            self.game_status = Hit2(game_result)  # !!!
         if current_hit.isdigit():
             current_hit_next = self.game_result[1:2]
             if current_hit_next == '/':
@@ -249,43 +252,39 @@ class Hit1(GameBowling):
                 self.game_result = self.game_result[1:]
             else:
                 self.result_counter += int(current_hit)
-        if current_hit == '-':  # TODO а если тут будет например число, второй бросок не нужно вызывать?
-            Hit2.count_hit(self, self.game_result)
         self.game_result = self.game_result[1:]
+        return self.game_result, self.result_counter
 
 
 class Hit2(GameBowling):
     def __init__(self, game_result):
-        super().__init__()
+        super().__init__(game_result)
         self.game_result = game_result
 
     def count_hit(self, game_result):
         self.game_result = game_result
         current_hit = self.game_result[:1]
-        if current_hit == 'X' or current_hit == '/':
-            raise BadData('Некорректные данные во фрейме !')
         if current_hit == '-':
             current_hit_next = self.game_result[1:2]
             if current_hit_next.isdigit():
                 self.result_counter += int(current_hit_next)
+                self.game_result = self.game_result[1:]
             else:
                 raise BadData('Некорректные данные во фрейме !')
         if current_hit.isdigit():
             self.result_counter += int(current_hit)
-        self.game_result = self.game_result[1:]
+        return self.game_result, self.result_counter
 
 
-# TODO в целом вы близки к реализации "состояния", но упускаете суть
-# TODO у вас должен быть ещё один класс, в котором будет сама игра производится
-# TODO в этом классе должен быть атрибут, который в начале будет равен Hit1()
-# TODO Далее будет запуск цикла по результату,
-# TODO для расчётов каждого элемента будет вызван инструмент из атрибута (изначально Hit1())
-# TODO внутри Hit1() должен сделать 2 вещи
-# TODO 1) посчитать очки за текущий элемент
-# TODO 2) изменить атрибут основного класса на Hit2() при необходимости
+class Game:
+    def __init__(self, game_result):
+        self.game_result = game_result
+        self.result_counter = 0
+        self.game_status = None
 
-# TODO пример
-# TODO цикл по строке
-# TODO     self.инструмент.count_hit(элемент_строки)
-
-# TODO и внутри каждый count_hit будет при необходимости менять self.инструмент между Hit1() и Hit2()
+    def run_game(self, game_result):
+        self.game_result = game_result
+        self.game_status = Hit1(game_result)
+        while self.game_result:
+            self.game_result, self.result_counter = self.game_status.count_hit(self.game_result)
+        return self.result_counter
