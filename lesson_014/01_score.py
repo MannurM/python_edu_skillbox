@@ -54,7 +54,12 @@ def create_parser():
 
 if __name__ == '__main__':
     parser = create_parser()
-    args = parser.parse_args('--result X2/-353XX9/-7-523'.split())
+    args = parser.parse_args('--result X2/-353XX9/0055'.split())
+    # TODO в текущем фрейме 3 ошибки
+    # TODO 1) длина меньше 10 (должна быть ровно 10 фреймов)
+    # TODO 2) есть нули 00 (должны быть --, нули должны вызывать ошибку)
+    # TODO 3) сумма цифр во фреме больше 9 (55 - 5+5=10, по сути тут должен был быть 5/)
+    # TODO каждая из этих ошибок должны вызывать исключение
     # args = parser.parse_args()
     # res = bowling.get_score(game_result=args.result)
     res_one = bowling.Game(game_result=args)
