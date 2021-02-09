@@ -129,11 +129,11 @@ class TenThrows(Exception):
 #                 elif value == '-' and self.game_result[date + 1] == '-':
 #                     raise BadData('Некорректные данные во фрейме!')
 #                 elif date == 0 and value == '/':
-#                     raise BadData('Некорректные данные во фрейме !')
+#                     raise BadData('Некорректные данные во фрейме!')
 #                 elif date == len(self.game_result) - 1 and value == '-':
-#                     raise BadData('Некорректные данные во фрейме !')
+#                     raise BadData('Некорректные данные во фрейме!')
 #                 elif value == '-' and self.game_result[date + 1] == '/':
-#                     raise BadData('Некорректные данные во фрейме !')
+#                     raise BadData('Некорректные данные во фрейме!')
 #
 #             ten_counter = 0  # проверка на количество страйков
 #             self.len_data = len(self.game_result)
@@ -222,64 +222,69 @@ class TenThrows(Exception):
 
 
 class GameBowling:
-    def __init__(self, game_result):
-        self.game_result = game_result
-        self.result_counter = 0
+    def __init__(self, game_result, result_counter):
+        self.game_result = None
+        self.result_counter = None
         self.game_status = None
 
-    def count_hit(self, game_result):
+    def count_hit(self, game_result, result_counter):
         self.game_result = game_result
 
 
 class Hit1(GameBowling):
-    def __init__(self, game_result):
-        super().__init__(game_result)
+    def __init__(self, game_result, result_counter):
+        super().__init__(game_result, result_counter)
         self.game_result = game_result
+        self.result_counter = result_counter
 
-    def count_hit(self, game_result):
+    def count_hit(self, game_result, result_counter):
         self.game_result = game_result
         current_hit = self.game_result[:1]
+        self.result_counter = result_counter
         if current_hit == 'X':
             self.result_counter += 20
         else:
             if current_hit == '/':
-                raise BadData('Некорректные данные во фрейме !')
+                raise BadData('Некорректные данные во фрейме!')
             current_hit_next = self.game_result[1:2]
             if current_hit == '0' or current_hit_next == '0':
-                raise BadData('Некорректные данные во фрейме !')
-            print(current_hit, current_hit_next, type(current_hit), type(current_hit_next))
+                raise BadData('Некорректные данные во фрейме!')
             if current_hit.isdigit():
                 if current_hit_next == '/':
                     self.result_counter += 15
                     self.game_result = self.game_result[1:]
             if current_hit == '-':
-                self.game_status = Hit2(game_result)  # !!!
+                self.game_status = Hit2(game_result, self.result_counter)
+                self.game_result, self.result_counter = self.game_status.count_hit(game_result, result_counter)
             if current_hit.isdigit() and current_hit_next.isdigit():
                 if (int(current_hit) + int(current_hit_next)) > 9:
-                    raise BadData('Некорректные данные во фрейме !')
+                    raise BadData('Некорректные данные во фрейме!')
                 else:
-                    self.game_status = Hit2(game_result)
+                    self.game_status = Hit2(game_result, self.result_counter)
+                    self.game_result, self.result_counter = self.game_status.count_hit(game_result, result_counter)
         self.game_result = self.game_result[1:]
         return self.game_result, self.result_counter
 
 
 class Hit2(GameBowling):
-    def __init__(self, game_result):
-        super().__init__(game_result)
+    def __init__(self, game_result, result_counter):
+        super().__init__(game_result, result_counter)
         self.game_result = game_result
+        self.result_counter = result_counter
 
-    def count_hit(self, game_result):
+    def count_hit(self, game_result, result_counter):
         self.game_result = game_result
+        self.result_counter = result_counter
         current_hit = self.game_result[:1]
         current_hit_next = self.game_result[1:2]
         if current_hit == '-':
             if current_hit_next == '-':
                 self.game_result = self.game_result[1:]
-            if current_hit_next.isdigit():
+            elif current_hit_next.isdigit():
                 self.result_counter += int(current_hit_next)
                 self.game_result = self.game_result[1:]
             else:
-                raise BadData('Некорректные данные во фрейме !')
+                raise BadData('Некорректные данные во фрейме!')
         if current_hit.isdigit():
             self.result_counter += int(current_hit) + int(current_hit_next)
             self.game_result = self.game_result[1:]
@@ -295,10 +300,10 @@ class Game:
 
     def run_game(self, game_result):
         self.game_result = game_result
-        self.game_status = Hit1(game_result)
+        self.game_status = Hit1(game_result, self.result_counter)
         while self.game_result:
-            self.game_result, self.result_counter = self.game_status.count_hit(self.game_result)
+            self.game_result, self.result_counter = self.game_status.count_hit(self.game_result, self.result_counter)
             self.count_frame += 1
         if self.count_frame != 10:
-            raise BadData('Некорректные данные во фрейме !')
+            raise TenThrows(f'{self.count_frame} - неверное  количество попыток во фрейме!')
         return self.result_counter
