@@ -50,7 +50,10 @@ class MyTestCase(unittest.TestCase):
         # game_result = ''
         # self.test_game_run = self.test_game.run_game(game_result=game_result)
         # self.assertEqual(self.test_game_run, )
-
+    # TODO Помимо правильных результатов надо добавить ещё и ошибочные
+    # TODO Для проверки на ошибку - можно использовать специальный ассерт - assertRaises
+    # with self.assertRaises(TypeError): -- тут указывается тип ошибки, который мы ожидаем получить
+    #     действие()
 
 if __name__ == '__main__':
     unittest.main()
