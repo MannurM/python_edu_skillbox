@@ -1,17 +1,17 @@
 
 
-# TODO Пути старайтесь указывать относительно рабочей директории (той, в которой лежит главный запускаемый файл)
-# TODO т.к. здесь у нас проект состоит из нескольких "мини"-проектов, то можно выполнить хитрый приём, явно указав
-# TODO на рабочую директорию.
-# TODO Сделать это можно либо в Run - Edit configurations
-# TODO Либо можно просто выделить нужную папку как source root
-# TODO для этого надо нажать на неё правой кнопкой - mark directory as - source root
-# TODO Либо, если запуск идёт через терминал - нужно в самом терминале отркыть рабочую директорию
-# TODO (путь указанный в терминале - используется как рабочая директория)
-# TODO Сделать это можно 2 способами
-# TODO 1) использовать команду терминала cd (change directory)
-# TODO 2) ПКМ на нужной папке в пайчарме - open in terminal
-from bowling import Game
+# Пути старайтесь указывать относительно рабочей директории (той, в которой лежит главный запускаемый файл)
+# т.к. здесь у нас проект состоит из нескольких "мини"-проектов, то можно выполнить хитрый приём, явно указав
+# на рабочую директорию.
+# Сделать это можно либо в Run - Edit configurations
+# Либо можно просто выделить нужную папку как source root
+# для этого надо нажать на неё правой кнопкой - mark directory as - source root
+# Либо, если запуск идёт через терминал - нужно в самом терминале отркыть рабочую директорию
+# (путь указанный в терминале - используется как рабочая директория)
+# Сделать это можно 2 способами
+# 1) использовать команду терминала cd (change directory)
+# 2) ПКМ на нужной папке в пайчарме - open in terminal
+from bowling import Game, TenThrows, BadData
 import unittest
 
 
@@ -45,15 +45,56 @@ class MyTestCase(unittest.TestCase):
         self.test_game_run = self.test_game.run_game(game_result=game_result)
         self.assertEqual(self.test_game_run, 148)
 
-    def test_(self):
-        pass
+    def test_more_numbers(self):
+        """Лишние броски"""
+        game_result = 'XXXXX2/-724--1234'
+        self.test_game_run = self.test_game.run_game(game_result=game_result)
+        with self.assertRaises(TenThrows):
+            raise TenThrows
+
+    def test_less_numbers(self):
+        """Не хватает бросков!"""
+        game_result = 'XXXXX2/-724--'
+        self.test_game_run = self.test_game.run_game(game_result=game_result)
+        with self.assertRaises(TenThrows):
+            raise TenThrows
+
+    def test_bad_slash(self):
+        """Неверная запись данных! - двойной слеш!"""
+        game_result = 'XXXXX2//-724--X'
+        self.test_game_run = self.test_game.run_game(game_result=game_result)
+        with self.assertRaises(BadData):
+            raise BadData
+
+    def test_bad_zero(self):
+        """Неверная запись данных! - нули во фрейме!"""
+        game_result = 'X0XXX2/-724--X'
+        self.test_game_run = self.test_game.run_game(game_result=game_result)
+        with self.assertRaises(BadData):
+            raise BadData
+
+    def test_bad_letter(self):
+        """Неверная запись данных! - буквы во фрейме!"""
+        game_result = 'XOXXX2/-724--X'
+        self.test_game_run = self.test_game.run_game(game_result=game_result)
+        with self.assertRaises(BadData):
+            raise BadData
+
+    def test_bad_summ_number(self):
+        """Неверная запись данных! - неправильная запись суммы бросков!"""
+        game_result = 'X46XX2/-724--23X'
+        self.test_game_run = self.test_game.run_game(game_result=game_result)
+        with self.assertRaises(BadData):
+           raise BadData
+
         # game_result = ''
         # self.test_game_run = self.test_game.run_game(game_result=game_result)
         # self.assertEqual(self.test_game_run, )
-    # TODO Помимо правильных результатов надо добавить ещё и ошибочные
-    # TODO Для проверки на ошибку - можно использовать специальный ассерт - assertRaises
+    # Помимо правильных результатов надо добавить ещё и ошибочные
+    # Для проверки на ошибку - можно использовать специальный ассерт - assertRaises
     # with self.assertRaises(TypeError): -- тут указывается тип ошибки, который мы ожидаем получить
     #     действие()
+
 
 if __name__ == '__main__':
     unittest.main()

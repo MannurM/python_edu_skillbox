@@ -34,6 +34,7 @@
 
 
 import argparse
+
 import bowling
 
 
@@ -54,8 +55,8 @@ def create_parser():
 
 if __name__ == '__main__':
     parser = create_parser()
-    args = parser.parse_args('--result X2/-353XX9/0055'.split())
-    # args = parser.parse_args('--result X2/-353XX9/--45'.split())
+    # args = parser.parse_args('--result X2/-353XX9/0055'.split())
+    args = parser.parse_args('--result X2/-353XX9/--45X'.split())
     #  в текущем фрейме 3 ошибки
     # 1) длина меньше 10 (должна быть ровно 10 фреймов)
     # 2) есть нули 00 (должны быть --, нули должны вызывать ошибку)
