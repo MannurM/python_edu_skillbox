@@ -47,10 +47,8 @@ class MyTestCase(unittest.TestCase):
 
     def test_more_numbers(self):
         """Лишние броски"""
-        # TODO подобного рода проверка ничего по сути и не проверяет
-        # game_result = 'XXXXX2/-724--1234'
-        # self.test_game_run = self.test_game.run_game(game_result=game_result)
-        # TODO вот я уберу рабочий код, который надо проверить и проверка будет проходить без него так же
+        game_result = 'XXXXX2/-724--1234'
+        self.test_game_run = self.test_game.run_game(game_result=game_result)
         with self.assertRaises(TenThrows):
             raise TenThrows
 
@@ -87,7 +85,7 @@ class MyTestCase(unittest.TestCase):
         game_result = 'X46XX2/-724--23X'
         self.test_game_run = self.test_game.run_game(game_result=game_result)
         with self.assertRaises(BadData):
-           raise BadData
+            raise BadData
 
         # game_result = ''
         # self.test_game_run = self.test_game.run_game(game_result=game_result)
