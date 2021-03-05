@@ -46,9 +46,6 @@ def open_file_tour(file_input, file_output):
     file_name = file_input
     file_output = file_output
     list_tour = []
-    tour_name_old = 1
-    # print(f'{tour_name_old} ТУР')
-    write_result_tour(file_output=file_output, tour_name=1)
     with open(file_name, mode='r', encoding='utf8') as file:
         for line in file:
             if line == '\n':
@@ -56,18 +53,12 @@ def open_file_tour(file_input, file_output):
             line = line[:-1]
             if line[:3] == '###':
                 tour_name = int(line[9:12])
+                write_result_tour(file_output=file_output, tour_name=tour_name)
                 continue
-            if tour_name_old == 100 and line[:9] == 'winner is':
-                list_tour.sort(reverse=True)
-                name_winner = list_tour[0][1]
-                write_result_tour(file_output=file_output, name_winner=name_winner)
-            if line[:9] == 'winner is':
-                continue
-            line_list_1 = line.split(sep='\t', maxsplit=1)
-            name_gamer = line_list_1[0]
-            game_result = line_list_1[1]
-
-            if tour_name_old == tour_name:
+            if line[:9] != 'winner is':
+                line_list_1 = line.split(sep='\t', maxsplit=1)
+                name_gamer = line_list_1[0]
+                game_result = line_list_1[1]
                 res_one = bowling.Game(game_result=None)
                 res = res_one.run_game(game_result=game_result)
                 res_str = str(res)
@@ -75,23 +66,42 @@ def open_file_tour(file_input, file_output):
                 write_result_tour(file_output=file_output, name_gamer=name_gamer, game_result=game_result, res=res_str)
             else:
                 list_tour.sort(reverse=True)
-                # res_winner = list_tour[0][0]
+                res_winner = str(list_tour[0][0])
                 name_winner = list_tour[0][1]
-                write_result_tour(file_output=file_output, name_winner=name_winner)
-                write_result_tour(file_output=file_output, tour_name=tour_name)
-                tour_name_old += 1
-                # print(f'{tour_name_old} ТУР')
                 list_tour = []
-                res_one = bowling.Game(game_result=None)
-                res = res_one.run_game(game_result=game_result)
-                list_tour.append((res, name_gamer))
-                write_result_tour(file_output=file_output, name_gamer=name_gamer, game_result=game_result, res=res_str)
+                if res_winner == '0':
+                    name_winner = 'Not win!'
+                    write_result_tour(file_output=file_output, name_winner=name_winner, res_winner=res_winner)
+                else:
+                    write_result_tour(file_output=file_output, name_winner=name_winner, res_winner=res_winner)
+
+
+
+            # if tour_name == tour_name:
+            #     res_one = bowling.Game(game_result=None)
+            #     res = res_one.run_game(game_result=game_result)
+            #     res_str = str(res)
+            #     list_tour.append((res, name_gamer))
+            #     write_result_tour(file_output=file_output, name_gamer=name_gamer, game_result=game_result, res=res_str)
+            # else:
+            #     list_tour.sort(reverse=True)
+            #     res_winner = list_tour[0][0]
+            #     name_winner = list_tour[0][1]
+            #     write_result_tour(file_output=file_output, name_winner=name_winner)
+            #     write_result_tour(file_output=file_output, tour_name=tour_name)
+            #     tour_name_old += 1
+            #     # print(f'{tour_name_old} ТУР')
+            #     res_winner=res_winner
+            #     res_one = bowling.Game(game_result=None)
+            #     res = res_one.run_game(game_result=game_result)
+            #     res_str = str(res)
+            #     list_tour.append((res, name_gamer))
+            #     write_result_tour(file_output=file_output, name_gamer=name_gamer, game_result=game_result, res=res_str)
 
 
 def write_result_tour(tour_name=None, name_gamer=None, game_result=None, res=None, name_winner=None,
-                      file_output=None):
+                      file_output=None, res_winner=None):
     file_name = file_output
-
     with open(file_name, mode='a', encoding='utf8') as file:
         if tour_name:
             file.write('### Tour ' + str(tour_name) + '\n')
@@ -102,6 +112,7 @@ def write_result_tour(tour_name=None, name_gamer=None, game_result=None, res=Non
         if res:
             file.write(str(res) + '\n')
         if name_winner:
+            # file.write('winner is ' + name_winner + ' ' + res_winner + '\n')
             file.write('winner is ' + name_winner + '\n')
             file.write('\n')
 
@@ -126,7 +137,8 @@ def printed_gamer_rating(file_name=None):
 
     dict_count_game = Counter(name_gamer_list)
     dict_count_winner = Counter(name_winner_list)
-
+    dict_count_game['Not win!'] = 0
+    # print(dict_count_game)
     print('+------------+-----------------+-------------+')
     print('|  Игрок     |  сыграно матчей | всего побед |')
     print('+------------+-----------------+-------------+')
@@ -156,9 +168,9 @@ if __name__ == '__main__':
     open_file_tour(file_input=file_input, file_output=file_output)
     printed_gamer_rating(file_name=file_output)
 
-# TODO Ошибка в расчётах
+# Ошибка в расчётах
 # ### Tour 2
-# Татьяна	42X--3/4/2-8271171/	113  TODO здесь есть фрейм 82 - он должен вызывать ошибку (т.к. 8+2 больше 9)
+# Татьяна	42X--3/4/2-8271171/	113  здесь есть фрейм 82 - он должен вызывать ошибку (т.к. 8+2 больше 9)
 # Роман	811/X--3/XX171/43	129
 # Ринат	-263X815/5/27-----6	85
 # Алексей	--8-X3/4/1/-12651X	108
