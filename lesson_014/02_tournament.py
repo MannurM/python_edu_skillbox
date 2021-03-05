@@ -28,6 +28,7 @@
 
 import argparse
 from datetime import datetime
+from bowling import BadData, TenThrows
 
 import bowling
 
@@ -60,7 +61,11 @@ def open_file_tour(file_input, file_output):
                 name_gamer = line_list_1[0]
                 game_result = line_list_1[1]
                 res_one = bowling.Game(game_result=None)
-                res = res_one.run_game(game_result=game_result)
+                try:
+                    res = res_one.run_game(game_result=game_result)
+                except (BadData, TenThrows) as exc:
+                    print(f'Ошибка - {exc}')
+                    res = 0
                 res_str = str(res)
                 list_tour.append((res, name_gamer))
                 write_result_tour(file_output=file_output, name_gamer=name_gamer, game_result=game_result, res=res_str)
@@ -74,7 +79,6 @@ def open_file_tour(file_input, file_output):
                     write_result_tour(file_output=file_output, name_winner=name_winner, res_winner=res_winner)
                 else:
                     write_result_tour(file_output=file_output, name_winner=name_winner, res_winner=res_winner)
-
 
 
             # if tour_name == tour_name:
