@@ -11,7 +11,7 @@
 # Сделать это можно 2 способами
 # 1) использовать команду терминала cd (change directory)
 # 2) ПКМ на нужной папке в пайчарме - open in terminal
-import bowling
+
 from bowling import Game, TenThrows, BadData
 import unittest
 
@@ -48,15 +48,9 @@ class MyTestCase(unittest.TestCase):
 
     def test_more_numbers(self):
         """Лишние броски"""
-        # Эти проверки работают некорректно (все, которые ниже)
         game_result = 'XXXXX2/-724--1234'
-        # self.test_game_run = self.test_game.run_game(game_result=game_result)
         with self.assertRaises(TenThrows):
             self.test_game.run_game(game_result=game_result)
-            # вам нужно вызывать какое-то действие внутри этого блока
-            # вот тут нужно вызывать функцию из программы с таким вводом, чтобы она завершилась ошибкой
-            # (поэтому я и говорил, что ловить ошибки внутри блока bowling не стоит, их нужно только raise-ить)
-
 
     def test_less_numbers(self):
         """Не хватает бросков!"""
@@ -87,6 +81,75 @@ class MyTestCase(unittest.TestCase):
         game_result = 'X46XX2/-724--23X'
         with self.assertRaises(BadData):
             self.test_game.run_game(game_result=game_result)
+
+    # internal
+    def test_X_eu(self):
+        game_result = 'XXXXXXXXXX'
+        self.test_game_run = self.test_game.run_game_eu(game_result=game_result)
+        self.assertEqual(self.test_game_run, 270)
+
+    def test_slach_eu(self):
+        game_result = '1/2/3/4/5/6/7/8/9/1/'
+        self.test_game_run = self.test_game.run_game_eu(game_result=game_result)
+        self.assertEqual(self.test_game_run, 145)
+
+    def test_dash_eu(self):
+        game_result = '-1-2-3-4-5-6-7-8----'
+        self.test_game_run = self.test_game.run_game_eu(game_result=game_result)
+        self.assertEqual(self.test_game_run, 36)
+
+    def test_double_number_eu(self):
+        game_result = '11122334455443322122'
+        self.test_game_run = self.test_game.run_game_eu(game_result=game_result)
+        self.assertEqual(self.test_game_run, 54)
+
+    def test_ten_numbers_eu(self):
+        game_result = 'XXXXX2/-724--X'
+        self.test_game_run = self.test_game.run_game_eu(game_result=game_result)
+        self.assertEqual(self.test_game_run, 157)
+
+    def test_more_numbers_eu(self):
+        """Лишние броски"""
+        game_result = 'XXXXX2/-724--1234'
+        with self.assertRaises(TenThrows):
+            self.test_game.run_game_eu(game_result=game_result)
+
+    def test_less_numbers_eu(self):
+        """Не хватает бросков!"""
+        game_result = 'XXXXX2/-724--'
+        with self.assertRaises(TenThrows):
+            self.test_game.run_game_eu(game_result=game_result)
+
+    def test_bad_slash_eu(self):
+        """Неверная запись данных! - двойной слеш!"""
+        game_result = 'XXXXX2//-724--X'
+        with self.assertRaises(BadData):
+            self.test_game.run_game_eu(game_result=game_result)
+
+    def test_bad_zero_eu(self):
+        """Неверная запись данных! - нули во фрейме!"""
+        game_result = 'X0XXX2/-724--X'
+        with self.assertRaises(BadData):
+            self.test_game.run_game_eu(game_result=game_result)
+
+    def test_bad_letter_eu(self):
+        """Неверная запись данных! - буквы во фрейме!"""
+        game_result = 'FOXXX2/-724--X'
+        with self.assertRaises(BadData):
+            self.test_game.run_game_eu(game_result=game_result)
+
+    def test_bad_summ_number_eu(self):
+        """Неверная запись данных! - неправильная запись суммы бросков!"""
+        game_result = 'X46XX2/-724--23X'
+        with self.assertRaises(BadData):
+            self.test_game.run_game_eu(game_result=game_result)
+
+
+    def test_number_eu(self):
+        game_result = 'X1/--275/5/X-79-1/'
+        self.test_game_run = self.test_game.run_game_eu(game_result=game_result)
+        self.assertEqual(self.test_game_run,101 )
+
 
 
 if __name__ == '__main__':
