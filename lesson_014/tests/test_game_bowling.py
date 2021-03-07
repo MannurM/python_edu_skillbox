@@ -85,6 +85,7 @@ class MyTestCase(unittest.TestCase):
     # internal
     def test_X_eu(self):
         game_result = 'XXXXXXXXXX'
+        # 30+30+30+30+30+30+30+30+20+10
         self.test_game_run = self.test_game.run_game_eu(game_result=game_result)
         self.assertEqual(self.test_game_run, 270)
 
@@ -105,8 +106,9 @@ class MyTestCase(unittest.TestCase):
 
     def test_ten_numbers_eu(self):
         game_result = 'XXXXX2/-724--X'
+        # 30 + 30 + 30 + 22 + 20 + 10 + 7 + 6 + 10
         self.test_game_run = self.test_game.run_game_eu(game_result=game_result)
-        self.assertEqual(self.test_game_run, 157)
+        self.assertEqual(self.test_game_run, 165)
 
     def test_more_numbers_eu(self):
         """Лишние броски"""
@@ -147,8 +149,9 @@ class MyTestCase(unittest.TestCase):
 
     def test_number_eu(self):
         game_result = 'X1/--275/5/X-79-1/'
+        # 20 + 10 + 9 + 15+ 20 + 17 +7 +9+ 10
         self.test_game_run = self.test_game.run_game_eu(game_result=game_result)
-        self.assertEqual(self.test_game_run,101 )
+        self.assertEqual(self.test_game_run, 117)
 
 
 

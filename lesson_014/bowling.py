@@ -88,32 +88,32 @@ class Hit2(GameBowling):
         self.game_result = game_result
         self.result_counter = result_counter
         current_hit = self.game_result[:1]
-        current_hit_next = self.game_result[1:2]
-        if current_hit_next == '0':
+        current_hit_2 = self.game_result[1:2]
+        if current_hit_2 == '0':
             raise BadData('Некорректные данные во фрейме! - 0 во фрейме!')
         if current_hit == '-':
-            if current_hit_next == '-':
+            if current_hit_2 == '-':
                 self.game_result = self.game_result[1:]
                 return self.game_result, self.result_counter
             else:
-                if current_hit_next.isdigit():
-                    self.result_counter += int(current_hit_next)
+                if current_hit_2.isdigit():
+                    self.result_counter += int(current_hit_2)
                     self.game_result = self.game_result[1:]
                     return self.game_result, self.result_counter
                 else:
                     raise BadData('Некорректные данные во фрейме! - второй бросок не цифра и ('-')')
-        if current_hit.isdigit() and current_hit_next.isdigit():
-            sum_digit = int(current_hit) + int(current_hit_next)
+        if current_hit.isdigit() and current_hit_2.isdigit():
+            sum_digit = int(current_hit) + int(current_hit_2)
             if sum_digit > 9:
                 raise BadData('Некорректные данные во фрейме! - сумма 2 бросков больше 9')
             self.result_counter += sum_digit
             self.game_result = self.game_result[1:]
             return self.game_result, self.result_counter
-        if current_hit.isdigit() and current_hit_next == '-':
+        if current_hit.isdigit() and current_hit_2 == '-':
             self.result_counter += int(current_hit)
             self.game_result = self.game_result[1:]
             return self.game_result, self.result_counter
-        if current_hit.isdigit() and current_hit_next == '/':
+        if current_hit.isdigit() and current_hit_2 == '/':
             self.result_counter += 15
             self.game_result = self.game_result[1:]
             return self.game_result, self.result_counter
@@ -130,25 +130,39 @@ class Hit1_eu(GameBowling):
     def count_hit(self, game_result, result_counter):
         self.game_result = game_result
         current_hit = self.game_result[:1]
-        current_hit_next = self.game_result[1:2]
-        current_hit_next_2 = self.game_result[2:3]
+        current_hit_2 = self.game_result[1:2]
+        current_hit_3 = self.game_result[2:3]
         self.result_counter = result_counter
         if current_hit == '0':
             raise BadData('Некорректные данные во фрейме! - 0 во фрейме!')
         if current_hit.isalpha():  # XXX
             if current_hit == 'X':
                 self.result_counter += 10
-                if current_hit_next == 'X':
+                if current_hit_2 == 'X' and current_hit_3 == 'X':
+                    self.result_counter += 20
+                elif current_hit_2 == 'X' and current_hit_3.isdigit():
+                    self.result_counter += 10 + int(current_hit_3)
+                elif current_hit_2 == 'X' and current_hit_3 == '-':
                     self.result_counter += 10
-                    if current_hit_next_2 == 'X':
-                        self.result_counter += 10
-                    elif current_hit_next_2.isdigit():
-                        self.result_counter += int(current_hit_next_2)
-                    elif current_hit_next_2 == '/':
-                        raise BadData('Некорректные данные во фрейме! - / не может быть первым!')
-                elif current_hit_next.isdigit():
-                    self.result_counter += int(current_hit_next)
-                elif current_hit_next_2 == '/':
+                elif current_hit_2 == 'X' and current_hit_3 == '':
+                    self.result_counter += 10
+                elif current_hit_2 == 'X' and current_hit_3 == '/':
+                    raise BadData('Некорректные данные во фрейме! - / не может быть первым!')
+                elif current_hit_2.isdigit() and current_hit_3 == '/':
+                    self.result_counter += 10
+                elif current_hit_2.isdigit() and current_hit_3 == 'X':
+                    self.result_counter += 10 + int(current_hit_2)
+                elif current_hit_2.isdigit() and current_hit_3.isdigit():
+                    self.result_counter += int(current_hit_2) + int(current_hit_3)
+                elif current_hit_2.isdigit() and current_hit_3 == '-':
+                    self.result_counter += int(current_hit_2)
+                elif current_hit_2 == '-' and current_hit_3 == 'X':
+                    self.result_counter += 10
+                elif current_hit_2 == '-' and current_hit_3.isdigit():
+                    self.result_counter += int(current_hit_3)
+                elif current_hit_2 == '-' and current_hit_3 == '/':
+                    raise BadData('Некорректные данные во фрейме!  -/ не может быть !')
+                elif current_hit_2 == '/':
                     raise BadData('Некорректные данные во фрейме! - / не может быть первым!')
             else:
                 raise BadData('Некорректные данные во фрейме! - буква во фрейме!')
@@ -172,40 +186,40 @@ class Hit2_eu(GameBowling):
         self.game_result = game_result
         self.result_counter = result_counter
         current_hit = self.game_result[:1]
-        current_hit_next = self.game_result[1:2]
-        current_hit_next_2 = self.game_result[2:3]
-        if current_hit_next == '0':
+        current_hit_2 = self.game_result[1:2]
+        current_hit_3 = self.game_result[2:3]
+        if current_hit_2 == '0' or current_hit_3 == '0':
             raise BadData('Некорректные данные во фрейме! - 0 во фрейме!')
         if current_hit == '-':
-            if current_hit_next == '-':
+            if current_hit_2 == '-':
                 self.game_result = self.game_result[1:]
                 return self.game_result, self.result_counter
             else:
-                if current_hit_next.isdigit():
-                    self.result_counter += int(current_hit_next)
+                if current_hit_2.isdigit():
+                    self.result_counter += int(current_hit_2)
                     self.game_result = self.game_result[1:]
                     return self.game_result, self.result_counter
                 else:
                     raise BadData('Некорректные данные во фрейме! - второй бросок не цифра и ('-')')
-        if current_hit.isdigit() and current_hit_next.isdigit():
-            sum_digit = int(current_hit) + int(current_hit_next)
+        if current_hit.isdigit() and current_hit_2.isdigit():
+            sum_digit = int(current_hit) + int(current_hit_2)
             if sum_digit > 9:
                 raise BadData('Некорректные данные во фрейме! - сумма 2 бросков больше 9')
             self.result_counter += sum_digit
             self.game_result = self.game_result[1:]
             return self.game_result, self.result_counter
-        if current_hit.isdigit() and current_hit_next == '-':
+        if current_hit.isdigit() and current_hit_2 == '-':
             self.result_counter += int(current_hit)
             self.game_result = self.game_result[1:]
             return self.game_result, self.result_counter
-        if current_hit.isdigit() and current_hit_next == '/':
+        if current_hit.isdigit() and current_hit_2 == '/':
             self.result_counter += 10
-            if current_hit_next_2 == '/':
+            if current_hit_3 == '/':
                 raise BadData('Некорректные данные во фрейме! - // во фрейме!')
-            elif current_hit_next_2 == 'X':
+            elif current_hit_3 == 'X':
                 self.result_counter += 10
-            elif current_hit_next_2.isdigit():
-                self.result_counter += int(current_hit)
+            elif current_hit_3.isdigit():
+                self.result_counter += int(current_hit_3)
             self.game_result = self.game_result[1:]
             return self.game_result, self.result_counter
         else:

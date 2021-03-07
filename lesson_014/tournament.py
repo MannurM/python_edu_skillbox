@@ -1,39 +1,10 @@
-# -*- coding: utf-8 -*-
-
-# Прибежал менеджер и сказал что нужно срочно просчитать протокол турнира по боулингу в файле tournament.txt
-#
-# Пример записи из лога турнира
-#   ### Tour 1
-#   Алексей	35612/----2/8-6/3/4/
-#   Татьяна	62334/6/4/44X361/X
-#   Давид	--8/--8/4/8/-224----
-#   Павел	----15623113-95/7/26
-#   Роман	7/428/--4-533/34811/
-#   winner is .........
-#
-# Нужно сформировать выходной файл tournament_result.txt c записями вида
-#   ### Tour 1
-#   Алексей	35612/----2/8-6/3/4/    98
-#   Татьяна	62334/6/4/44X361/X      131
-#   Давид	--8/--8/4/8/-224----    68
-#   Павел	----15623113-95/7/26    69
-#   Роман	7/428/--4-533/34811/    94
-#   winner is Татьяна
-
-# Код обаботки файла расположить отдельном модуле, модуль bowling использовать для получения количества очков
-# одного участника. Если захочется изменить содержимое модуля bowling - тесты должны помочь.
-#
-# Из текущего файла сделать консольный скрипт для формирования файла с результатами турнира.
-# Параметры скрипта: --input <файл протокола турнира> и --output <файл результатов турнира>
-
 import argparse
-from datetime import datetime
+
 from bowling import BadData, TenThrows
 
 import bowling
 
 from collections import Counter
-import os
 
 
 def create_parser():
@@ -64,9 +35,9 @@ def open_file_tour(file_input, file_output, choise_rules):
                 res_one = bowling.Game(game_result=None)
                 try:
                     if choise_rules == '2':
-                        res = res_one.run_game(game_result=game_result)
-                    else:
                         res = res_one.run_game_eu(game_result=game_result)
+                    else:
+                        res = res_one.run_game(game_result=game_result)
                 except (BadData, TenThrows) as exc:
                     print(f'Ошибка - {exc}')
                     res = 0
@@ -153,25 +124,3 @@ if __name__ == '__main__':
     args = parser.parse_args('--file_input tournament.txt --file_output tournament_result.txt'.split())
     open_file_tour(file_input=file_input, file_output=file_output)
     printed_gamer_rating(file_name=file_output)
-
-# Ошибка в расчётах
-# ### Tour 2
-# Татьяна	42X--3/4/2-8271171/	113  здесь есть фрейм 82 - он должен вызывать ошибку (т.к. 8+2 больше 9)
-# Роман	811/X--3/XX171/43	129
-# Ринат	-263X815/5/27-----6	85
-# Алексей	--8-X3/4/1/-12651X	108
-# Павел	3-6/5/9/5---1/--5-52	80
-# winner is Роман
-
-# Усложненное задание (делать по желанию)
-#
-# После обработки протокола турнира вывести на консоль рейтинг игроков в виде таблицы:
-#
-# +----------+------------------+--------------+
-# | Игрок    |  сыграно матчей  |  всего побед |
-# +----------+------------------+--------------+
-# | Татьяна  |        99        |      23      |
-# ...
-# | Алексей  |        20        |       5      |
-# +----------+------------------+--------------+
-#зачёт!
