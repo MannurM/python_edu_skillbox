@@ -53,7 +53,7 @@ if __name__ == '__main__':
         '--file_input tournament.txt --file_output tournament_result.txt --choise_rules choise_rules'.split())
     tournament.open_file_tour(file_input=file_input, file_output=file_output, choise_rules=choise_rules)
     
-    # TODO вероятно, пайчарм не дает импортировать 02_tournament.py, поэтому пришлось скопировать в новый файл.
+    # вероятно, пайчарм не дает импортировать 02_tournament.py, поэтому пришлось скопировать в новый файл.
 
 # Расчёты по новым правилам(чтобы подправить свой алгоритм расчётов):
 # Новые правила
@@ -78,3 +78,4 @@ if __name__ == '__main__':
 #           0+8+20+14+11+10+1+8+6+10 88
 # Павел	3-6/5/9/5---1/--5-52     79
 # winner is Роман
+#зачёт!
