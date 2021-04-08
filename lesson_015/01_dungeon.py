@@ -91,12 +91,155 @@
 #  ...
 #
 # и так далее...
-
+import csv
+import sys
+import json
+import datetime
+from decimal import *
+getcontext().prec = 10
 
 remaining_time = '123456.0987654321'
 # если изначально не писать число в виде строки - теряется точность!
-field_names = ['current_location', 'current_experience', 'current_date']
-
-# TODO тут ваш код
-
+field_names = ['current_location', 'current_experience', 'current_date', 'selected_action']
 # Учитывая время и опыт, не забывайте о точности вычислений!
+
+
+def act_in_location(current_choise, location, skill, time_left):
+    if current_choise == 1:
+        attack_monstr(skill, time_left)
+    if current_choise == 2:
+        go_in_next_location(location, skill, time_left)
+    if current_choise == 3:
+        quit_game()
+
+
+def attack_monstr(skill, time_left):
+    # Распаковать Mob_exp10_tm0, прибавить уровень и время
+    pass
+
+
+def go_in_next_location(location, skill, time_left):
+    # Распаковать Location_1_tm1040, изменить текущую локацию, прибавить время
+    pass
+
+
+def quit_game():
+    choise_game = input('Хотите сыграть еще 0 -  Нет, любой другой символ - Да :')
+    if choise_game.isdigit() and choise_game == 0:
+        print('ИГРА закончилась!!!')
+        sys.exit()
+    else:
+        current_choise = 0
+        location = 0
+        skill = 0
+        time_left = 0
+        run_game(current_choise, location, skill, time_left)
+
+
+def open_json_file():
+    with open("rpg.json", "r") as read_file:
+        data = json.load(read_file)
+        # TODO не понимаю как извлечь следующий уровень из rpg.json??
+        #  - вкладывать очередной цикл или можно как-то использовать рекурсию??
+    if data:
+        current_loc_key = list(data.keys())
+        location_json = current_loc_key[0]
+        print(location_json)
+        current_loc_value = list(data.values())[0]
+        print(current_loc_value)
+        for val in range(len(current_loc_value)):
+            if type(current_loc_value[val]) == dict:
+                next_data = list(current_loc_value[val].keys())
+                next_location = next_data[0]
+                print(next_location)
+            else:
+                print(current_loc_value[val])
+            print('')
+    # TODO  а может использовать лучше генератор? и работает ли он с json.  и посоветуйте хороший мануал по json,
+    #  если возможно. как то поиск гугла выдает однообразную информацию.
+
+    # print(data["Location_0_tm0"][1]["Location_1_tm1040"][2]['Location_3_tm33000'][0]['Location_7_tm33300'][0]
+    #       ['Location_10_tm55100'][4]['Location_12_tm0.0987654320'][1])
+
+
+def state_location(location, skill, time_left):
+    # состояние текущей позиции игры(в начале игры или после выполнения локации):
+    # - текущая локация
+    # - текущее количество опыта
+    # - текущие дату и время (для этого используйте библиотеку datetime)
+    you_time = float(remaining_time) - time_left
+    current_location, next_location, mob_json = open_json_file()  # пока не работает!!!
+    location = current_location
+    print(f'Вы находитесь в локации {location}, у Вас {skill} опыта и осталось {you_time} секунд')
+    if time_left != 0:
+        print(f'прошло уже {time_left}')
+    list_next_location = next_location
+    list_current_mob = mob_json
+    print(list_next_location, list_current_mob)
+    print(f'Внутри в видите: \n'
+          f' Входы в другие локации {list_next_location} \n'
+          f' Монстров {list_current_mob}')
+
+    print(f'Выберите действие. Введите соответствующее число: \n'
+          f'1.Атаковать монстра '
+          f'2.Перейти в другую локацию '
+          f'3.Сдаться и выйти из игры '
+          f' Выберите вариант действия??? ')
+    current_choise = input(':')
+    while not current_choise.isdigit() and 3 > int(current_choise) < 1:
+        print('Вы ввели неверно!')
+        print('Введите число от 1 до 3')
+        current_choise = input(':')
+    return current_choise, location, skill, time_left
+
+
+def run_game(current_choise, location, skill, time_left):
+    print('ИГРА начинается!!!')
+    state_location(location, skill, time_left)
+    while time_left > 0 or skill < 280:
+        act_in_location(current_choise, location, skill, time_left)
+        state_location(location, skill, time_left)
+        write_info(current_choise, location, skill, time_left)
+        if time_left <= 0:
+            current_choise = 4
+            write_info(current_choise, location, skill, time_left)
+            quit_game()
+
+    current_choise = 5
+    write_info(current_choise, location, skill, time_left)
+    quit_game()
+
+    # запуск цикла программы, вызов выхода из программы,  вызов записывания результата
+
+
+def write_info(current_choise, location, skill, time_left):
+    choise_act = ''
+    if current_choise == 1:
+        choise_act = ' Выбрано - Атаковать монстра'
+    if current_choise == 2:
+        choise_act = ' Выбрано - Перейти в другую локацию'
+    if current_choise == 3:
+        choise_act = ' Выбрано - Сдаться и выйти из игры'
+    if current_choise == 4:
+        choise_act = ' Вы проиграли!!!'
+    if current_choise == 5:
+        choise_act = ' Вы победили!!!'
+
+    file = 'dungeon.csv'
+    write_data = [location, skill, time_left, choise_act]
+    if not file:
+        with open(file, 'a', newline='', encoding='cp-1251') as file_csv:
+            writer = csv.writer(file_csv)
+            writer.writerow(field_names)
+
+    with open(file, 'a', newline='', encoding='cp-1251') as file_csv:
+        writer = csv.writer(file_csv)
+        writer.writerow(write_data)
+
+    # 'current_location', 'current_experience', 'current_date'
+    # После успешного или неуспешного завершения игры вам необходимо записать
+    # всю собранную информацию в csv файл dungeon.csv.
+
+
+if __name__ == '__main__':
+    run_game(current_choise=0, location=0, skill=0, time_left=0)
