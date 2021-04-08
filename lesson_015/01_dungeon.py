@@ -103,7 +103,7 @@ remaining_time = '123456.0987654321'
 field_names = ['current_location', 'current_experience', 'current_date', 'selected_action']
 # Учитывая время и опыт, не забывайте о точности вычислений!
 
-
+# TODO я бы советовал тут использовать классы и по ним сгруппировать функции для удобного взаимодействия
 def act_in_location(current_choise, location, skill, time_left):
     if current_choise == 1:
         attack_monstr(skill, time_left)
@@ -128,6 +128,10 @@ def quit_game():
     if choise_game.isdigit() and choise_game == 0:
         print('ИГРА закончилась!!!')
         sys.exit()
+        # TODO При вызове этого метода нужно гарантировать, что все финализаторы всяких объектов отработают.
+        # TODO Это прокатит при их вызове в __del__, но не везде это возможно.
+        # TODO Старайтесь избегать вызова exit, давайте программе штатно завершиться
+
     else:
         current_choise = 0
         location = 0
@@ -139,8 +143,15 @@ def quit_game():
 def open_json_file():
     with open("rpg.json", "r") as read_file:
         data = json.load(read_file)
-        # TODO не понимаю как извлечь следующий уровень из rpg.json??
+        # не понимаю как извлечь следующий уровень из rpg.json??
         #  - вкладывать очередной цикл или можно как-то использовать рекурсию??
+        # TODO рекурсия не нужна
+        # TODO Просто нужно в цикле давать выбор пользователю
+        # TODO Вам для "перехода" на новый уровень нужны индекс + название ключа
+        # TODO данные_из_локации = словарь["Location_0_tm0"] -- сперва вы тут
+        # TODO чтобы перейти дальше надо указать индекс, чтобы выбрать словарь из списка
+        # TODO и ключ, чтобы обратить к данным внутри локации:
+        # TODO данные_из_локации = данные_из_локации[1]["Location_1_tm1040"]
     if data:
         current_loc_key = list(data.keys())
         location_json = current_loc_key[0]
@@ -148,16 +159,28 @@ def open_json_file():
         current_loc_value = list(data.values())[0]
         print(current_loc_value)
         for val in range(len(current_loc_value)):
+            # TODO https://habr.com/ru/company/ruvds/blog/485648/
             if type(current_loc_value[val]) == dict:
+                # TODO тут и дальше: так проверять тип объекта - антипаттерн
+                #  тип надо проверять через isinstance(other, Class)
                 next_data = list(current_loc_value[val].keys())
                 next_location = next_data[0]
                 print(next_location)
             else:
                 print(current_loc_value[val])
             print('')
-    # TODO  а может использовать лучше генератор? и работает ли он с json.  и посоветуйте хороший мануал по json,
+    #  а может использовать лучше генератор? и работает ли он с json.  и посоветуйте хороший мануал по json,
     #  если возможно. как то поиск гугла выдает однообразную информацию.
-
+    # TODO json - способ хранения, после загрузки json-а - это просто словарь с вложенной структурой
+    # TODO Логика следующая - первую локацию вы инициализируете вручную, при старте
+    # TODO Дальше проводите анализ - собираете из списка монстров в одну переменную
+    # TODO и локации в другую ([(1, "Location_1_tm1040"), (2, "Location_2_tm33300")...])
+    # TODO затем спрашиваете у пользователя - куда вы хотите перейти
+    # TODO и показываете ему варианты - локация1, локация2
+    # TODO он вводит число 1,2, вы уменьшаете его на 1 и используете как индекс
+    # TODO получаете кортеж (1, "Location_1_tm1040")
+    # TODO и дальше, как я говорил выше - подставляете это к текущей локации и перезаписываете её
+    # TODO данные_из_локации = данные_из_локации[1]["Location_1_tm1040"]
     # print(data["Location_0_tm0"][1]["Location_1_tm1040"][2]['Location_3_tm33000'][0]['Location_7_tm33300'][0]
     #       ['Location_10_tm55100'][4]['Location_12_tm0.0987654320'][1])
 
