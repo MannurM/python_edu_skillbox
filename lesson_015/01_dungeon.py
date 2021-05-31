@@ -294,6 +294,9 @@ class Game:
                     for number in range(len(self.mob_from_json)):
                         print(f'Введите номер {number + 1} --- для вызова на бой --- {self.mob_from_json[number]}')
                     number_mob = int(input(':'))
+                    # TODO int+input использовать не стоит вместе
+                    # TODO при вводе букв такой код приведет к ошибке
+                    # TODO ввод стоит проверить через isdigit
                     while self.mob_from_json[number_mob - 1] == '!':
                         print('монстр уже уничтожен,  выберите другого')
                         number_mob = int(input(':'))
@@ -333,6 +336,9 @@ class Game:
                 print('self.name_location', self.name_location)
                 self.go_in_next_location(self.name_location)
             elif self.location_sum == 1:
+                # TODO если атрибут действительно нужен (если он используется в нескольких методах)
+                # TODO то его создание нужно вынести в init
+                # TODO хотя бы простое self.x = None
                 self.name_location = self.location_from_json[0]
                 self.go_in_next_location(self.name_location)
             else:
