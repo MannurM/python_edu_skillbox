@@ -91,15 +91,14 @@
 #  ...
 #
 # и так далее...
-import csv
 import json
 # import datetime
 from decimal import *
 
+from lesson_015.write_info import write_info
+
 getcontext().prec = 10
-
 remaining_time = '123456.0987654321'
-
 # если изначально не писать число в виде строки - теряется точность!
 field_names = ['current_location', 'current_experience', 'current_date', 'selected_action']
 
@@ -108,11 +107,23 @@ field_names = ['current_location', 'current_experience', 'current_date', 'select
 # я бы советовал тут использовать классы и по ним сгруппировать функции для удобного взаимодействия
 
 class Game:
-    def __init__(self, current_choise, location, skill, time_left, location_index):
+    """ струкура класса
+            run_game - основной цикл игры
+            open_data - считывание данных из json файла
+            state_location - фиксация действий на панели
+            change_act - выбор номера деймствия в локации,  проверка номера
+            act_in_location - действия в локации
+            attack_monstr - атака монстров по одному
+            go_in_next_location -  переход в другую локацию
+            check_choise_location - проверка перехода в другую локацию/ не поключено.
+            quit_game - выход из игры, обнуление параметров
+            """
+
+    def __init__(self, current_choise, location, skill, time_left):
         self.number_mob = 0
         self.location = location
         self.skill = skill
-        self.time_left = time_left
+        self.time_left = Decimal(time_left)
         self.current_choise = current_choise
         self.you_time = 0
         self.mob_from_json = []
@@ -120,67 +131,249 @@ class Game:
         self.choise_game = 0
         self.location_from_json = []
         self.location_sum = 0
-        self.location_index = location_index
         self.data_loc = {}
-        self.list_parametr = []
-        self.state_parametr = []
+        self.state_parametr = {}
 
-    def act_in_location(self, current_choise, location, skill, time_left, mob_from_json, location_from_json,
-                        location_index):
+    def run_game(self, current_choise, location, skill, time_left):
         self.location = location
         self.skill = skill
         self.time_left = time_left
         self.current_choise = current_choise
-        self.mob_from_json = mob_from_json
-        self.location_from_json = location_from_json
-        self.location_index = location_index
+        self.sum_loc = 0
+
+        print('____________________________________________________')
+        print('ИГРА начинается!!!')
+        print('____________________________________________________')
+        if not self.data_loc:
+            self.data_loc = open_json_file()
+        self.state_parametr = {
+            'current_choise': self.current_choise,
+            'location': self.location,
+            'skill': self.skill,
+            'time_left': self.time_left,
+            'mob_from_json': '',
+            'location_from_json': '',
+            'location_index': 0,
+        }
+        self.state_parametr = self.open_data(self.state_parametr['location'], self.state_parametr['location_index'])
+        print('___open_data')
+        self.state_location(self.state_parametr)  # начальные параметры
+        print('___начальные параметры', self.state_parametr)
+        while self.current_choise != '0':  # цикл выхода из игры по запросу пользователя
+            while int(self.time_left) > 0 or self.skill < 280:  # цикл игры
+                print('___цикл')
+                self.state_parametr['current_choise'] = self.change_act(self.state_parametr)
+                print('0,5_____')
+                self.state_parametr = self.act_in_location(self.state_parametr)
+                print('1___', self.state_parametr)
+
+                if self.state_parametr['current_choise'] == '2':
+                    self.open_data(self.state_parametr['location'], self.state_parametr['location_index'])
+                    # self.sum_loc = len(self.state_parametr['location_from_json'])
+                    # if self.sum_loc >= 2:
+                    #     for x, val in enumerate(self.state_parametr['location_from_json']):
+                    #         self.state_parametr['location_from_json'][x] = val[1]
+                    # else:
+                    #     self.state_parametr['location_from_json'] = self.state_parametr["location_from_json"][0]
+                elif self.state_parametr['current_choise'] == '1':
+                    print('проверка уничтожения монстра!!', self.state_parametr['mob_from_json'])
+                elif self.state_parametr['current_choise'] == '0':
+                    current_move = 3
+                    write_info(current_move, self.state_parametr)
+                    break
+                self.state_location(self.state_parametr)
+                print('2___')
+                current_move = self.current_choise
+                write_info(current_move, self.state_parametr)
+                print('3___')
+                if self.state_parametr['time_left'] < 0:
+                    current_move = 4
+                    write_info(current_move, self.state_parametr)
+                    self.quit_game()
+                    break
+                print('4_____')  # обновление параметров
+
+            if self.current_choise == '0':
+                break
+        current_move = 5
+        write_info(current_move, self.state_parametr)
+        self.quit_game()
+
+        print('___________________________________________')
+        print('ИГРА закончилась!!!')
+        print('___________________________________________')
+
+    def open_data(self, location, location_index):
+        print('!___location =', self.state_parametr['location'], self.state_parametr['location_index'])
+        self.location = location
+        self.location_index = int(location_index)
+        self.mob_from_json = []
+        self.location_from_json = []
+        if self.location == 'Location_0_tm0':
+            self.state_parametr['location_index'] = 0
+            self.data_loc = self.data_loc[self.location]
+        else:
+            print('____ state_parametr', self.state_parametr)
+            print('!_________ self.data_loc \n', self.data_loc)
+            self.data_loc = self.data_loc[self.location_index][self.location]
+        print('loc2')
+        index_loc = 0
+        for index, value in enumerate(self.data_loc):
+            if isinstance(value, dict):
+                index_loc += 1
+                key_data = list(value.keys())
+                data_tuple = (index_loc, key_data[0])
+                self.location_from_json.append(data_tuple)
+            else:
+                data_mob = value
+                self.mob_from_json.append(data_mob)
+        self.state_parametr['mob_from_json'] = self.mob_from_json
+        sum = len(self.mob_from_json) + len(self.location_from_json)
+        self.state_parametr['location_index'] = sum
+        self.state_parametr['location_from_json'] = self.location_from_json
+        print('loc3', self.state_parametr['location_from_json'])
+        return self.state_parametr
+
+    def state_location(self, state_parametr):
+        self.state_parametr = state_parametr
+        self.you_time = Decimal(remaining_time) - Decimal(self.state_parametr['time_left'])
+        print('__________________________________________________________')
+        print(f"Вы находитесь в локации {self.state_parametr['location']}, ",
+              f"у Вас - {self.state_parametr['skill']} опыта",
+              f' и осталось {self.you_time} секунд')
+        if self.time_left != '0':
+            print(f'прошло уже {self.state_parametr["time_left"]} секунд')
+
+    def change_act(self, state_parametr):
+        self.state_parametr = state_parametr
+        print(f'Внутри локации {self.state_parametr["location"]} вы видите:',
+              f' Входы в другие локации {self.state_parametr["location_from_json"]}, ',
+              f' Монстров - {self.state_parametr["mob_from_json"]}')
+        print(f'Выберите действие. Введите соответствующее число: \n'
+              f'1.Атаковать монстра(ов) \n'
+              f'2.Перейти в другую локацию \n'
+              f'0.Сдаться и выйти из игры  \n'
+              f' Выберите вариант действия? \n'
+              f'   Введите число 0, 1 или 2:')
+        self.current_choise = input(':')
+        while not self.current_choise.isdigit():
+            print('Вы ввели  не число!')
+            print('Введите число 0, 1 или 2')
+            self.current_choise = input(':')
+        while (0 > int(self.current_choise)) or (int(self.current_choise) > 2):
+            print('Вы ввели неверное число!')
+            print('Введите число 0, 1 или 2')
+            self.current_choise = input(':')
+        else:
+            if self.current_choise == '1':
+                print(f'Выбранo - атака монстров!')
+            if self.current_choise == '2':
+                print(f'Выбрано -  смена локации!')
+            if self.current_choise == '0':
+                print(f'Выбрано - завершение  игры!')
+        return self.current_choise
+
+    def act_in_location(self, state_parametr):
+        self.state_parametr['time_left'] = Decimal(self.state_parametr['time_left'])
+        self.state_parametr = state_parametr
+        self.location = self.state_parametr['location']
+        self.skill = self.state_parametr['skill']
+        self.time_left = self.state_parametr['time_left']
+        self.current_choise = self.state_parametr['current_choise']
+        self.mob_from_json = self.state_parametr['mob_from_json']
+        self.location_from_json = self.state_parametr['location_from_json']
 
         if self.current_choise == '1':
             mob_count = len(self.mob_from_json)
-
+            if self.mob_from_json == '0' or self.mob_from_json == []:
+                print('Монстры уже все уничтожены! Перейдите в другую локация или выходите из игры!')
+                return self.state_parametr
             if mob_count > 1:
-                while mob_count == 0:
+                while mob_count != 0:
                     print('Выберите монстра для Атаки')
-                    number_mob = int(input('   Введите номер монстра?'))
+                    for number in range(len(self.mob_from_json)):
+                        print(f'Введите номер {number + 1} --- для вызова на бой --- {self.mob_from_json[number]}')
+                    number_mob = int(input(':'))
+                    while self.mob_from_json[number_mob - 1] == '!':
+                        print('монстр уже уничтожен,  выберите другого')
+                        number_mob = int(input(':'))
+
                     self.name_mob = self.mob_from_json[number_mob - 1]
-                    self.name_mob, self.skill, self.time_left = self.attack_monstr(self.name_mob, self.skill,
-                                                                                   self.time_left)
-                    self.name_mob = '000'
+                    self.skill, self.time_left = self.attack_monstr(self.name_mob, self.skill, self.time_left)
+                    self.name_mob = ''
                     mob_count -= 1
                     self.mob_from_json[number_mob - 1] = '!'
+                    self.state_parametr['skill'] += self.skill
+                    self.state_parametr['time_left'] += Decimal(self.time_left)
+                    self.state_parametr['mob_from_json'] = '0'
+                    if mob_count == 0:
+                        break
                     print(' Уничтожить еще монстра?')
-                    choise_answer = int(input('Любой символ - да, 0 - нет :'))  # проверка ввода! а может так??
+                    choise_answer = int(input('Любой символ - да, 0 - нет :'))  # проверка ввода!
                     if choise_answer == 0:
-                        return self.current_choise, self.location, self.skill, self.time_left, self.mob_from_json, \
-                self.location_from_json, self.location_index
+                        return self.state_parametr
+
 
             else:
                 self.name_mob = self.mob_from_json[0]
-                self.name_mob, self.skill, self.time_left = self.attack_monstr(self.name_mob, self.skill, self.time_left)
-                self.skill += self.skill
-                self.time_left += self.time_left
-                self.mob_from_json[0] = '!'
-            return self.current_choise, self.location, self.skill, self.time_left, self.mob_from_json, \
-                self.location_from_json, self.location_index
+                self.skill, self.time_left = self.attack_monstr(self.name_mob, self.skill, self.time_left)
+                self.state_parametr['skill'] += self.skill
+                self.state_parametr['time_left'] += Decimal(self.time_left)
+                self.state_parametr['mob_from_json'] = '0'
+            return self.state_parametr
 
         if self.current_choise == '2':
             self.location_sum = len(self.location_from_json)
+            print('self.location_sum', self.location_sum)
             if self.location_sum > 1:
-
-                print(f'Выберите локацию для перехода от 1 до {self.location_sum}')
+                print(f'Имеются локации {self.location_from_json} \n')
+                print(f'Выберите номер локации для перехода от 1 до {self.location_sum}')
                 number_location = self.check_choise_location(self.location_sum)
                 self.name_location = self.location_from_json[number_location - 1]
-                self.location, self.skill, self.time_left, self.location_index = self.go_in_next_location(
-                    self.name_location, self.skill, self.time_left)
-            else:
+                print('self.name_location', self.name_location)
+                self.go_in_next_location(self.name_location)
+            elif self.location_sum == 1:
                 self.name_location = self.location_from_json[0]
-                self.location, self.skill, self.time_left, self.location_index = self.go_in_next_location(
-                    self.name_location, self.skill, self.time_left)
-            return self.current_choise, self.location, self.skill, self.time_left, self.mob_from_json, \
-                self.location_from_json, self.location_index
-
+                self.go_in_next_location(self.name_location)
+            else:
+                print('локаций нет ')
+            return self.state_parametr
         if self.current_choise == '0':
-            self.quit_game()
+            return self.state_parametr
+
+    def attack_monstr(self, name_mob, skill, time_left):
+        self.skill = skill
+        self.time_left = Decimal(time_left)
+        self.name_mob = name_mob
+        self.name_mob_short, self.skill_mob, self.time_mob = self.name_mob.split('_', 3)
+        self.skill_mob = int(self.skill_mob[3:])
+        self.time_mob = self.time_mob[2:]
+        print('_______________________')
+        print(f'Монстр {self.name_mob} атакован! ')
+        print(f'Монстр {self.name_mob_short} уничтожен! \n')
+        print(f'Получено опыта - {self.skill_mob}, потрачено времени - {self.time_mob} ')
+        print('_______________________')
+        self.time_left += Decimal(self.time_mob)
+        self.skill += self.skill_mob
+        return self.skill, self.time_left
+
+    def go_in_next_location(self, location):
+        print('go_in_next_location', location)
+        self.name_location = location[1]
+        self.location_index = location[0]
+        self.time_location = ''
+        self.location_short = ''
+        self.location_digit = ''
+        self.location_short, self.location_digit, self.time_location = self.name_location.split('_', 3)
+        self.time_location = self.time_location[2:]
+        print('_______________________')
+        print(f'Вы перешли в локацию {self.name_location}! \n')
+        print(f' Потрачено времени - {self.time_location} ')
+        print('_______________________')
+        self.state_parametr['time_left'] += Decimal(self.time_location)
+        self.state_parametr['location'] = self.name_location
+        self.state_parametr['location_index'] = self.location_index
+        return self.state_parametr
 
     def check_choise_location(self, location_sum):
         self.location_sum = location_sum
@@ -195,162 +388,16 @@ class Game:
             number_location = input(':')
         return int(number_location)
 
-    def attack_monstr(self, name_mob, skill, time_left):
-        self.skill = skill
-        self.time_left = time_left
-        self.name_mob = name_mob
-        self.skill_mob = ''
-        self.time_mob = ''
-        self.name_mob_short, self.skill_mob, self.time_mob = self.name_mob.split('_', 3)
-        # print('Разделение на 3', self.name_mob_short, self.skill_mob, self.time_mob)
-        self.skill_mob = self.skill_mob[3:]
-        self.time_mob = self.time_mob[2:]
-        print('_______________________')
-        print(f'Монстр {self.name_mob} атакован! ')
-        print(f'Монстр уничтожен! Получено опыта - {self.skill_mob}, потрачено времени - {self.time_mob} ')
-        print('_______________________')
-        self.time_left += self.time_mob
-        self.skill += self.skill
-        return self.name_mob, self.skill, self.time_left
-
-    def go_in_next_location(self, location, skill, time_left):
-        print('go_in_next_location', location, skill, time_left )
-        self.skill = skill
-        self.time_left = time_left
-        self.name_location = location
-        self.time_location = ''
-        self.location_short = ''
-        self.location_digit = ''
-        # print('self.name_location',self.name_location)
-        self.location_short, self.location_index, self.time_location = self.name_location.split('_', 3)
-        self.time_location = self.time_location[2:]
-        print('_______________________')
-        print(f'Вы перешли в локацию {self.name_location}! ')
-        print(f' Получено опыта - {self.skill}, потрачено времени - {self.time_location} ')
-        print('_______________________')
-        self.time_left += self.time_location
-        self.location = self.name_location
-        self.skill += self.skill
-        self.location_index = int(self.location_index) - 1
-        # Распаковать Location_1_tm1040, изменить текущую локацию, прибавить время
-        return self.location, self.skill, self.time_left, self.location_index
-
     def quit_game(self):
         self.choise_game = input('Хотите сыграть еще 0 -  Нет, любой другой символ - Да :')
-        if self.choise_game == '0':
-            print('___________________________________________')
-            print('ИГРА закончилась!!!')
-            print('___________________________________________')
-        else:
-            self.current_choise = '5'
+        if self.choise_game != '0':
+            self.current_choise = '0'
             self.location = "Location_0_tm0"
             self.skill = 0
             self.time_left = '0'
-            self.location_index = 0
-            self.run_game(self.current_choise, self.location, self.skill, self.time_left, self.location_index)
-
-    def run_game(self, current_choise, location, skill, time_left, location_index):
-        self.location = location
-        self.skill = skill
-        self.time_left = time_left
-        self.current_choise = current_choise
-        self.location_index = location_index
-        print('____________________________________________________')
-        print('ИГРА начинается!!!')
-        print('____________________________________________________')
-        self.list_parametr = [self.current_choise, self.location, self.skill, self.time_left,
-                              self.mob_from_json, self.location_from_json, self.location_index]
-        self.state_parametr = [self.list_parametr[1], self.list_parametr[2], self.list_parametr[3], self.location_index]
-        self.state_location(self.state_parametr)
-        while self.current_choise != '0':
-            while int(self.time_left) > 0 or self.skill < 280:
-                self.list_parametr = self.act_in_location(self.list_parametr)
-                if self.current_choise == '0':
-                    current_move = 3
-                    write_info(current_move, self.list_parametr[1:4])
-                    break
-                self.state_parametr = [self.list_parametr[1], self.list_parametr[2], self.list_parametr[3],
-                                       self.location_index]
-                self.state_location(self.state_parametr)
-                current_move = self.current_choise
-                write_info(current_move, self.list_parametr[1:4])
-                if self.time_left <= '0':
-                    current_move = 4
-                    write_info(current_move, self.list_parametr[1:4])
-                    self.quit_game()
-            if self.current_choise == '0':
-                break
-        current_move = 5
-        write_info(current_move, self.list_parametr[1:4])
-        self.quit_game()
-
-    def state_location(self, self.state_parametr):
-        self.current_choise, self.location, self.skill, self.time_left,  self.location_index = self.state_parametr
-        self.location_index = int(location_index)
-        self.you_time = Decimal(remaining_time) - Decimal(self.time_left)
-        if not self.data_loc:
-            self.data_loc = open_json_file()
-        self.location_from_json, self.mob_from_json = self.open_data(self.location)
-        self.sum_loc = len(self.location_from_json)
-        if self.sum_loc >= 2:
-            for x, val in enumerate(self.location_from_json):
-                self.location_from_json[x] = val[1]
+            self.run_game(self.current_choise, self.location, self.skill, self.time_left)
         else:
-            self.location_from_json = self.location_from_json[0][1]
-        print(f'Вы находитесь в локации {self.location}, у Вас {self.skill} опыта и осталось {self.you_time} секунд')
-        if self.time_left != '0':
-            print(f'прошло уже {self.time_left}')
-        print(f'Внутри в видите: \n'
-              f' Входы в другие локации {self.location_from_json} \n'
-              f' Монстров - {len(self.mob_from_json)}')
-        print(f'Выберите действие. Введите соответствующее число: \n'
-              f'1.Атаковать монстра(ов) '
-              f'2.Перейти в другую локацию '
-              f'0.Сдаться и выйти из игры '
-              f' Выберите вариант действия? '
-              f'   Введите число 0, 1 или 2')
-        self.current_choise = input(':')
-        while not self.current_choise.isdigit():
-            print('Вы ввели  не число!')
-            print('Введите число 0, 1 или 2')
-            self.current_choise = input(':')
-        while 2 < int(self.current_choise) < 0:
-            print('Вы ввели неверное число!')
-            print('Введите число 0, 1 или 2')
-            self.current_choise = input(':')
-
-        else:
-            if self.current_choise == '1':
-                print(f'Выбранo - атака монстров')
-                # if self.mob_from_json == 0:
-            if self.current_choise == '2':
-                print(f'Выбрано -  смена локации')
-            if self.current_choise == '0':
-                print(f'Выбрано - завершение  игры')
-        print("state",  'current_choise -', self.current_choise, ', Location-', self.location, ', Skill-', self.skill,
-              ', Time laps-', self.time_left,
-              ', mob_json-', self.mob_from_json,
-              ', loc_json-', self.location_from_json)
-        return self.current_choise, self.location, self.skill, self.time_left, self.mob_from_json, \
-               self.location_from_json
-
-    def open_data(self, location):
-        print(location, 'Location!!!')
-        self.data_loc_index = location
-        self.data_loc_index_1 = self.data_loc[self.data_loc_index]
-
-        for index, value in enumerate(self.data_loc_index_1):
-            print(index, value, '- index, value')
-            if isinstance(value, dict):
-                key_data = list(value.keys())
-                data_tuple = (index, key_data[0])
-                self.location_from_json.append(data_tuple)
-            else:
-                data_mob = value
-                self.mob_from_json.append(data_mob)
-        print(self.location_from_json)
-        print(self.mob_from_json)
-        return self.location_from_json, self.mob_from_json
+            print('выходим из игры')
 
 
 def open_json_file():
@@ -358,32 +405,7 @@ def open_json_file():
         data = json.load(read_file)
     return data
 
-def write_info(current_move, write_data_list):
-    choise_act = ''
-    if current_move == '1':
-        choise_act = ' Выбрано - Атаковать монстра'
-    if current_move == '2':
-        choise_act = ' Выбрано - Перейти в другую локацию'
-    if current_move == '3':
-        choise_act = ' Выбрано - Сдаться и выйти из игры'
-    if current_move == '4':
-        choise_act = ' Вы проиграли!!!'
-    if current_move == '5':
-        choise_act = ' Вы победили!!!'
-
-    file = 'dungeon.csv'
-    location, skill, time_left = write_data_list[0], write_data_list[1], write_data_list[2]
-    write_data = [location, skill, time_left, choise_act]
-    if file:
-        with open(file, 'a', newline='', encoding='cp1251') as file_csv:
-            writer = csv.writer(file_csv)
-            writer.writerow(write_data)
-    else:
-        with open(file, 'a', newline='', encoding='cp1251') as file_csv:
-            writer = csv.writer(file_csv)
-            writer.writerow(field_names)
-
 
 if __name__ == '__main__':
-    game = Game(current_choise=0, location=0, skill=0, time_left=0, location_index=0)
-    game.run_game(current_choise='0', location='Location_0_tm0', skill=0, time_left='0', location_index=0)
+    game = Game(current_choise=0, location=0, skill=0, time_left=0)
+    game.run_game(current_choise='10', location='Location_0_tm0', skill=0, time_left='0')
