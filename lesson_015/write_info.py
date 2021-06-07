@@ -9,7 +9,7 @@ def write_info(current_move, state_parametr):
         choise_act = ' Выбрано - Атаковать монстра'
     if current_move == '2':
         choise_act = ' Выбрано - Перейти в другую локацию'
-    if current_move == '3':
+    if current_move == '0':
         choise_act = ' Выбрано - Сдаться и выйти из игры'
     if current_move == '4':
         choise_act = ' Вы проиграли!!!'
