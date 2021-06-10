@@ -124,13 +124,15 @@ class Game:
         self.current_choise = current_choise
         self.you_time = 0
         self.mob_from_json = []
-        self.name_location = []
+        self.name_location = 0
         self.name_mob = ''
         self.choise_game = 0
         self.location_from_json = []
         self.location_sum = 0
         self.data_loc = {}
         self.state_parametr = {}
+        self.name_mob_short,  self.skill_mob, self.time_mob = '', '', ''
+        self.time_location, self.location_short, self.location_digit = '', '', ''
 
     def run_game(self, current_choise, location, skill, time_left):
         self.location = location
@@ -138,7 +140,6 @@ class Game:
         self.time_left = time_left
         self.current_choise = current_choise
         self.data_loc = {}
-        print('self.data_loc', self.data_loc)
         print('____________________________________________________')
         print('ИГРА начинается!!!')
         print('____________________________________________________')
@@ -158,8 +159,10 @@ class Game:
         self.state_location(self.state_parametr)  # начальные параметры
 
         while self.current_choise != '0':  # цикл выхода из игры по запросу пользователя
-            while int(self.time_left) > 0 or self.skill < 280:  # цикл игры
+            while int(self.time_left) > 0 or self.skill < 280:  # цикл игры ! int
                 self.state_parametr['current_choise'] = self.change_act(self.state_parametr)
+                if self.state_parametr['current_choise'] == '0':
+                    break
                 self.state_parametr = self.act_in_location(self.state_parametr)
                 self.state_parametr = self.condition_analysis(self.state_parametr)
                 current_move = self.state_parametr['current_choise']
@@ -223,22 +226,22 @@ class Game:
               f'0.Сдаться и выйти из игры  \n'
               f' Выберите вариант действия? \n'
               f'   Введите число 0, 1 или 2:')
+        self.current_choise = self.check_choise_act()
+        if self.current_choise == '1':
+            print(f'Выбранo - атака монстров!')
+        if self.current_choise == '2':
+            print(f'Выбрано -  смена локации!')
+        if self.current_choise == '0':
+            print(f'Выбрано - завершение  игры!')
+        return self.current_choise
+
+    def check_choise_act(self):
         self.current_choise = input(':')
-        while not self.current_choise.isdigit():
-            print('Вы ввели  не число!')
-            print('Введите число 0, 1 или 2')
+        # while not(self.current_choise == '1' or self.current_choise == '2' or self.current_choise == '0'):
+        while not (self.current_choise in ('1', '2', '0')):
+            print('Вы ввели  неверно!')
+            print('Введите число - 0 или 1 или 2')
             self.current_choise = input(':')
-        while (0 > int(self.current_choise)) or (int(self.current_choise) > 2):
-            print('Вы ввели неверное число!')
-            print('Введите число 0, 1 или 2')
-            self.current_choise = input(':')
-        else:
-            if self.current_choise == '1':
-                print(f'Выбранo - атака монстров!')
-            if self.current_choise == '2':
-                print(f'Выбрано -  смена локации!')
-            if self.current_choise == '0':
-                print(f'Выбрано - завершение  игры!')
         return self.current_choise
 
     def act_in_location(self, state_parametr):
@@ -259,31 +262,29 @@ class Game:
             if mob_count > 1:
                 while mob_count != 0:
                     print('Выберите монстра для Атаки')
-                    for number in range(len(self.mob_from_json)):
-                        print(f'Введите номер {number + 1} --- для вызова на бой --- {self.mob_from_json[number]}')
-                    number_mob = int(input(':'))
-                    while self.mob_from_json[number_mob - 1] == '!':
-                        print('монстр уже уничтожен,  выберите другого')
-                        number_mob = int(input(':'))
-
+                    for number, value in enumerate(self.mob_from_json):
+                        print(f'Введите номер {number + 1} --- для вызова на бой --- {value}')
+                    number_mob = self.check_choise_mob()
                     self.name_mob = self.mob_from_json[number_mob - 1]
                     self.skill, self.time_left = self.attack_monstr(self.name_mob, self.skill, self.time_left)
                     self.name_mob = ''
                     mob_count -= 1
                     self.mob_from_json[number_mob - 1] = '!'
-                    self.state_parametr['skill'] += self.skill
+                    self.state_parametr['skill'] += int(self.skill)
                     self.state_parametr['time_left'] += Decimal(self.time_left)
-                    self.state_parametr['mob_from_json'] = '0'
                     if mob_count == 0:
-                        break
+                        self.state_parametr['mob_from_json'] = '0'
+                        return self.state_parametr
                     print(' Уничтожить еще монстра?')
                     choise_answer = input('Любой символ - да, 0 - нет :')  # проверка ввода!
-                    if int(choise_answer) == 0:
+                    if choise_answer == '0':
                         return self.state_parametr
             else:
                 self.name_mob = self.mob_from_json[0]
+                print('self.name_mob', self.name_mob)
                 self.skill, self.time_left = self.attack_monstr(self.name_mob, self.skill, self.time_left)
-                self.state_parametr['skill'] += self.skill
+                self.skill = int(self.skill)
+                self.state_parametr['skill'] += self.skill  # !!! int  -- str
                 self.state_parametr['time_left'] += Decimal(self.time_left)
                 self.state_parametr['mob_from_json'] = '0'
             return self.state_parametr
@@ -294,6 +295,7 @@ class Game:
                 print(f'Имеются локации {self.location_from_json} \n')
                 print(f'Выберите номер локации для перехода от 1 до {self.location_sum}')
                 number_location = self.check_choise_location(self.location_sum)
+                number_location = int(number_location)
                 self.name_location = self.location_from_json[number_location - 1]
                 self.state_parametr['location_index'] = number_location + self.state_parametr['sum_mob'] - 1
                 self.go_in_next_location(self.name_location)
@@ -304,17 +306,37 @@ class Game:
             else:
                 print('локаций нет !')
                 self.state_parametr['location'] = 'dead_end'
-
             return self.state_parametr
         if self.current_choise == '0':
             return self.state_parametr
+
+    def check_choise_mob(self):
+        count = len(self.mob_from_json)
+        while True:
+            number_mob = input(':')
+            if number_mob.isdigit():
+                number_mob = int(number_mob)
+                if number_mob > count or number_mob < 1:
+                    print('Вы ввели  неверно!')
+                    print('Введите число 1 или 2, или ...')
+                    continue
+            else:
+                print('Вы ввели  не число!')
+                print('Введите число 1 или 2, ...')
+                continue
+            if self.mob_from_json[number_mob - 1] == '!':
+                print('Монстр уже уничтожен')
+                print('ВВедите номер монстра')
+            else:
+                break
+        return number_mob
 
     def attack_monstr(self, name_mob, skill, time_left):
         self.skill = skill
         self.time_left = Decimal(time_left)
         self.name_mob = name_mob
         self.name_mob_short, self.skill_mob, self.time_mob = self.name_mob.split('_', 3)
-        self.skill_mob = int(self.skill_mob[3:])
+        self.skill_mob = self.skill_mob[3:]
         self.time_mob = self.time_mob[2:]
         print('_______________________')
         print(f'Монстр {self.name_mob} атакован! ')
@@ -344,18 +366,14 @@ class Game:
         return self.state_parametr
 
     def check_choise_location(self, location_sum):
-        self.location_sum = location_sum
-        number_location = input('   Введите номер локации!')
-        while not number_location.isdigit():
-            print('Вы ввели  не число!')
-            print('Введите число 1 или 2')
+        self.location_sum = str(location_sum)
+        print('   Введите номер локации!')
+        number_location = input(':')
+        while not number_location.isdigit() or number_location > self.location_sum or number_location < '1':
+            print('Вы ввели  неверно!')
+            print('Введите число 1 или 2, ...')
             number_location = input(':')
         number_location = int(number_location)
-        while number_location > self.location_sum or number_location < 1:
-            print('Вы ввели неверное число!')
-            print(f'Введите число от 1 до {self.location_sum}')
-            number_location = input(':')
-            number_location = int(number_location)
         return number_location
 
     def condition_analysis(self, state_parametr):
@@ -376,7 +394,7 @@ class Game:
                 return self.state_parametr
             if self.state_parametr['location'] == 'Hatch_tm159.098765432':
                 print('____________________________')
-                print('Игра закончилась, вы  победили!!!')
+                print('ПОБЕДА !!!')
                 print('____________________________')
                 self.state_parametr['current_choise'] = '5'
         elif self.state_parametr['current_choise'] == '1':
@@ -393,7 +411,7 @@ def open_json_file():
 
 
 if __name__ == '__main__':
-    game = Game(current_choise=0, location=0, skill=0, time_left=0)
+    game = Game(current_choise='0', location=0, skill=0, time_left=0)
     print('Хотите сыграть в игру?')
     choise_game = input('Нажмите 0 -  Нет, любой другой символ - Да :')
     while choise_game != '0':
