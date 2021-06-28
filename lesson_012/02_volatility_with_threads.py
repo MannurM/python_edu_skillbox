@@ -18,8 +18,9 @@
 # Волатильности указывать в порядке убывания. Тикеры с нулевой волатильностью упорядочить по имени.
 
 import csv
-import prepare
 from threading import Thread
+
+import prepare
 
 
 class VolatilityObject(Thread):
@@ -56,7 +57,7 @@ class VolatilityObject(Thread):
 
 
 if __name__ == '__main__':
-    file_path_list = [VolatilityObject(file_path=file_path)for file_path in prepare.file_to_path(folder_name='trades')]
+    file_path_list = [VolatilityObject(file_path=file_path) for file_path in prepare.file_to_path(folder_name='trades')]
     list_volatil = []
     for volatil in file_path_list:
         volatil.start()
@@ -74,4 +75,4 @@ if __name__ == '__main__':
             volatility_dict.update({volatil.secid: volatil.volatility_rezult})
 
     prepare.printed_rezult(dict_value=volatility_dict, list_zero=volatility_zero)
-#зачёт!
+# зачёт!

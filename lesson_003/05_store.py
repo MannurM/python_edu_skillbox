@@ -65,7 +65,6 @@ for good,  good_key in goods.items():
 
     for store_key in store_items:
         article_quantity = store_key['quantity']
-
         article_price = store_key['price']
 
         article_cost += article_quantity * article_price

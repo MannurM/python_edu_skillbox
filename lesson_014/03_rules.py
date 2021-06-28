@@ -52,7 +52,7 @@ if __name__ == '__main__':
     args = parser.parse_args(
         '--file_input tournament.txt --file_output tournament_result.txt --choise_rules choise_rules'.split())
     tournament.open_file_tour(file_input=file_input, file_output=file_output, choise_rules=choise_rules)
-    
+
     # вероятно, пайчарм не дает импортировать 02_tournament.py, поэтому пришлось скопировать в новый файл.
 
 # Расчёты по новым правилам(чтобы подправить свой алгоритм расчётов):

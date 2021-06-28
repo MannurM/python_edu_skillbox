@@ -42,8 +42,9 @@
 # степень счастья  - не меняется, всегда ==100 ;)
 
 
-from termcolor import cprint
 from random import randint, choice
+
+from termcolor import cprint
 
 
 class House:

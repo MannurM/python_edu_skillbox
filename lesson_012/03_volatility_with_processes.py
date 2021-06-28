@@ -21,6 +21,7 @@
 
 import csv
 from multiprocessing import Process, Queue
+
 import prepare
 
 
@@ -88,4 +89,4 @@ if __name__ == '__main__':
 # здесь понял - измененнный модуль 'prepare' не запушил.
 
 # а с трубами в чём была проблема? можете создать ещё один файл и показать вариант с ними?
-#зачёт!
+# зачёт!

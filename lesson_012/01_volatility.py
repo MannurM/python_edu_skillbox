@@ -123,4 +123,4 @@ if __name__ == '__main__':
         volatility_dict.update({volatil.secid: volatil.volatility_rezult})
 
     prepare.printed_rezult(dict_value=volatility_dict, list_zero=volatility_zero)
-#зачёт!
+# зачёт!
