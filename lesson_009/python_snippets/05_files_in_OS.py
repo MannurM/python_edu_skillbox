@@ -5,6 +5,7 @@ import os
 # Все файлы лежат на диске и имеют путь в файловой системе. Как работать с файлами на уровне ОС?
 # Есть встроенные модули для этого: os, os.path, shutil
 # Пригодятся они для написания скриптов-аналогов bash (.bat файлов в Windows)
+from IPython.testing.iptest import sec
 
 path = 'C:\\Windows\\help'
 
@@ -23,7 +24,7 @@ os.path.getmtime(path)
 
 # вернет кол-во секунд с начала эпохи. преобразовать в года/месяца можно так
 import time
-time.gmtime(secs)  # вернет тьюпл со временем https://docs.python.org/3/library/time.html#time.struct_time
+time.gmtime(sec)  # вернет тьюпл со временем https://docs.python.org/3/library/time.html#time.struct_time
 
 # сформирвать правильный путь к файлу с учетом особенностей ОС.
 # os.path.join(path1[, path2[, ...]])
